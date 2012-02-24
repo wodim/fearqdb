@@ -1,0 +1,228 @@
+#: HACK
+msgid "search the database..."
+msgstr "buscar..."
+
+#: include/utils.php:65
+msgid "one year ago"
+msgstr "hace un año"
+
+#: include/utils.php:65
+#, php-format
+msgid "%d years ago"
+msgstr "hace %d años"
+
+#: include/utils.php:68
+msgid "one month ago"
+msgstr "hace un mes"
+
+#: include/utils.php:68
+#, php-format
+msgid "%d months ago"
+msgstr "hace %d meses"
+
+#: include/utils.php:71
+msgid "one week ago"
+msgstr "hace una semana"
+
+#: include/utils.php:71
+#, php-format
+msgid "%d weeks ago"
+msgstr "hace %d semanas"
+
+#: include/utils.php:74
+msgid "one day ago"
+msgstr "hace un día"
+
+#: include/utils.php:74
+#, php-format
+msgid "%d days ago"
+msgstr "hace %d días"
+
+#: include/utils.php:77
+msgid "one hour ago"
+msgstr "hace una hora"
+
+#: include/utils.php:77
+#, php-format
+msgid "%d hours ago"
+msgstr "hace %d horas"
+
+#: include/utils.php:80
+msgid "one minute ago"
+msgstr "hace un minuto"
+
+#: include/utils.php:80
+#, php-format
+msgid "%d minutes ago"
+msgstr "hace %d minutos"
+
+#: include/utils.php:82
+msgid "just now"
+msgstr "ahora mismo"
+
+#: include/utils.php:82
+#, php-format
+msgid "%d seconds ago"
+msgstr "hace %d segundos"
+
+#: modules/list.php:33 modules/list.php:45 modules/search.php:64
+#: modules/quote.php:31
+msgid "Page not found"
+msgstr "Página no encontrada"
+
+#: modules/list.php:53
+#, php-format
+msgid "Latest quotes"
+msgstr "Últimos quotes"
+
+#: modules/list.php:53
+#, php-format
+msgid "Latest quotes - Page %d"
+msgstr "Últimos quotes - Página %d"
+
+#: modules/search.php:66
+msgid "No quotes found"
+msgstr "No se han encontrado quotes"
+
+#: modules/search.php:66
+msgid "There are no quotes matching your criteria."
+msgstr "No hay quotes que se correspondan con tu criterio de búsqueda."
+
+#: modules/search.php:70
+#, php-format
+msgid "Search results for \"%s\""
+msgstr "Resultados de la búsqueda de \"%s\""
+
+#: modules/submit.php:49
+msgid "Quote sent!"
+msgstr "¡Quote enviado!"
+
+#: modules/submit.php:49
+msgid "Your quote has been submitted and is now pending approval!"
+msgstr "Tu quote ha sido enviado y está esperando ser aprobado."
+
+#: modules/submit.php:56 templates/header.html:46
+msgid "Submit new quote"
+msgstr "Enviar nuevo quote"
+
+#: modules/quote.php:46
+msgid "No such quote"
+msgstr "Quote no encontrado"
+
+#: modules/quote.php:49
+#, php-format
+msgid "Quote %d"
+msgstr "Quote %d"
+
+#: modules/login.php:45 templates/header.html:38 templates/login.html:2
+msgid "Log in"
+msgstr "Iniciar sesión"
+
+#: classes/html.php:87 classes/html.php:89
+msgid "« prev"
+msgstr "« anterior"
+
+#: classes/html.php:109 classes/html.php:111
+msgid "next »"
+msgstr "siguiente »"
+
+#: classes/html.php:120
+msgid "Are you lost?"
+msgstr "¿Te has perdido?"
+
+#: classes/quote.php:82
+msgid "Imported from the bot"
+msgstr "Importado del bot"
+
+#: templates/header.html:34
+msgid "Random"
+msgstr "Al azar"
+
+#: templates/header.html:36
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: templates/rss-header.html:11
+msgid "Quote database"
+msgstr "Base de datos de quotes"
+
+#: templates/login.html:3
+msgid "Log in so you can read all the hidden quotes."
+msgstr "Inicia sesión para poder leer todos los quotes ocultos."
+
+#: templates/login.html:5
+msgid "Password:"
+msgstr "Clave:"
+
+#: templates/login.html:9 templates/sysmsg.html:3
+msgid "Go back"
+msgstr "Volver atrás"
+
+#: templates/quote.html:6
+msgid "Sent by"
+msgstr "Enviado por"
+
+#: templates/quote.html:8
+msgid "Yet to be approved"
+msgstr "No aprobado aún"
+
+#: templates/quote.html:21
+msgid "This quote is hidden."
+msgstr "Este quote está oculto."
+
+#: templates/quote.html:22
+msgid "Log in to read it."
+msgstr "Inicia sesión para leerlo."
+
+#: templates/quote.html:30 templates/submit.html:5
+msgid "Comment:"
+msgstr "Comentario:"
+
+#: templates/rss-quote.html:3
+msgid "Hidden quote"
+msgstr "Quote oculto"
+
+#: templates/rss-quote.html:14
+msgid "Hidden quote. Log into the web site to read it."
+msgstr "Quote oculto. Inicia sesión en la web para leerlo."
+
+#: templates/foo.html:3
+msgid "Submit"
+msgstr "Enviar"
+
+#: templates/foo.html:4
+msgid "Remove timestamps"
+msgstr "Quitar timestamps"
+
+#: templates/submit.html:7
+msgid "Your nick:"
+msgstr "Tu nick:"
+
+#: templates/submit.html:11
+#: templates/submit.html:11
+msgid "Hide quote (padlock)"
+msgstr "Ocultar texto"
+
+#: templates/submit.html:16
+msgid ""
+"Your quote will be pending approval once submitted.<br />To avoid that, log "
+"in before submitting it."
+msgstr ""
+"Tu quote deberá ser aprobado por un administrador antes de ser visible en el "
+"sitio.<br />Para evitar esto, inicia sesión antes de enviarlo."
+
+#: modules/login.php:29
+msgid "Invalid password"
+msgstr "Clave incorrecta"
+
+#: modules/login.php:29
+msgid ""
+"The password that link provided was not valid. Maybe you clicked an outdated "
+"link?"
+msgstr ""
+"La clave dada por el enlace que has seguido no era válida. ¿Quizás has hecho "
+"clic en un enlace antiguo?"
+
+#: templates/quote.html:26
+msgid "Log in from IRC to read it."
+msgstr "Inicia sesión desde el IRC para leerlo."

@@ -1,0 +1,18 @@
+	<item>
+{% if c.hidden %}
+		<title>{% trans _('Hidden quote') %}</title>
+{% else %}
+		<title><![CDATA[{{c.title}}]]></title>
+{% endif %}
+		<link>{{c.permalink}}</link>
+		<pubDate>{{c.ts}}</pubDate>
+		<dc:creator>{{c.nick}}</dc:creator>
+
+		<guid>{{c.permalink}}</guid>
+
+{% if c.hidden %}
+		<description><![CDATA[{% trans _('Hidden quote. Log into the web site to read it.') %}]]></description>
+{% else %}
+		<description><![CDATA[{{c.text}}]]></description>
+{% endif %}
+	</item>

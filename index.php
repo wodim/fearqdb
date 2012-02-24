@@ -1,0 +1,89 @@
+<?php
+/*
+	fearqdb - quote database system
+	Copyright (C) 2011-2012 David Martí <neikokz at gmail dot com>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation, either version 3 of the
+	License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+require('config.php');
+
+$params = explode('/', trim($_SERVER['REQUEST_URI']));
+array_shift($params);
+
+foreach ($params as $k => $v) {
+	$params[$k] = urldecode($v);
+}
+
+$params[0] = isset($params[0]) ? $params[0] : 'home';
+
+switch ($params[0]) {
+	// TODO this should be configurable on config.php, per domain
+	case 'robots.txt':
+		header('Content-Type: text/plain');
+		die("User-agent: *\nDisallow: /");
+		break;
+	case 'direct_query':
+		header('HTTP/1.0 403');
+		die('fbd DIRECT_DBQ error');
+	case 'flush':
+	case 'purge':
+		header('Content-Type: text/plain, charset=UTF-8');
+		system('rm templates/compiled/* -rfv');
+		die();
+		break;
+	case 'admin':
+		require(modules_dir.'admin.php');
+		break;
+	case 'submit':
+		require(modules_dir.'submit.php');
+		break;
+	case 'quote':
+		require(modules_dir.'quote.php');
+		break;
+	case 'random':
+		require(modules_dir.'random.php');
+		break;
+	case 'last':
+		require(modules_dir.'last.php');
+		break;
+	case 'submit':
+		require(modules_dir.'submit.php');
+		break;
+	case 'rss':
+		require(modules_dir.'rss.php');
+		break;
+	case 'api':
+		require(modules_dir.'api.php');
+		break;
+	case 'search':
+		require(modules_dir.'search.php');
+		break;
+	case 'login':
+	case 'logout':
+		require(modules_dir.'login.php');
+		break;
+	case 'hidden':
+	case 'page':
+	case 'home':
+		require(modules_dir.'list.php');
+		break;
+	default:
+		if ((int)$params[0]) {
+			require(modules_dir.'quote.php');
+		} else {
+			// TODO obvious 404, but don't do die()
+			require(modules_dir.'list.php');
+		}
+}

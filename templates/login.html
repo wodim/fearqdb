@@ -1,0 +1,11 @@
+<div class="sysmsg">
+	<h3>{% trans _('Log in') %}</h3>
+<!--	<h4>{% trans _('Log in so you can read all the hidden quotes.') %}</h4> -->
+	<form action="/login/post" method="post">
+		<label for="password">{% trans _('Password:') %}</label>
+		<input type="text" name="password" id="password" class="sep" />
+		<input type="hidden" name="origin" value="{{origin}}" />
+		<input type="submit" value="{% trans _('Log in') %}" />
+	</form>
+	<h4><a href="/">{% trans _('Go back') %}</a></h4>
+</div>

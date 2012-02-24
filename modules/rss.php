@@ -1,0 +1,49 @@
+<?php
+/*
+	fearqdb - quote database system
+	Copyright (C) 2011-2012 David Martí <neikokz at gmail dot com>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation, either version 3 of the
+	License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+require_once('config.php');
+require_once(classes_dir.'quote.php');
+
+global $params, $config;
+
+if ($_GET['q'] != '/rss') {
+	redir('/rss');
+}
+
+$quotes = $db->get_results(sprintf('SELECT %s FROM quotes WHERE approved = 1 AND db = \'%s\' AND hidden = 0 ORDER BY date DESC LIMIT %d',
+	Quote::READ, $config['db']['table'], $config['site']['page_size']));
+
+if (!$quotes) {
+	header('HTTP/1.1 404');
+	die('No quotes'); // heh
+}
+
+$rss['date'] = date('r', $quotes[0]->ts);
+
+$vars = compact('rss');
+
+Haanga::Load('rss-header.html', $vars);
+
+$quote = new Quote();
+foreach ($quotes as $this_quote) {
+	$quote->read(0, $this_quote);
+	$quote->output_rss();
+}
+
+Haanga::Load('rss-footer.html');

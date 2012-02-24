@@ -1,0 +1,57 @@
+<div class="qc">
+	<div class="quote {{c.style}}">
+		<div class="meta">
+			<a href="{{c.permalink}}" class="id">#{% trans _('%03d') c.id %}</a> -
+			<span class="sent">
+				{% trans _('Sent by') %} <strong>{{c.nick|escape}}</strong>
+				{% if !c.approved %}
+					({% trans _('Yet to be approved') %})
+				{% endif %}
+				{% if session.logged && config.site.ip.show %}
+					{% if c.host && config.site.ip.host %}
+						{% if config.site.ip.part %}
+							(<span title="{{c.semiip}}">{{c.semihost}}</span>)
+						{% else %}
+							(<span title="{{c.ip}}">{{c.host}}</span>)
+						{% endif %}
+					{% else %}
+						{% if config.site.ip.part %}
+							({{c.semiip}})
+						{% else %}
+							({{c.sip}})
+						{% endif %}
+					{% endif %}
+				{% endif %}
+				{% if 1 == 0 %}
+					<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
+					<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.id}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.id}});">↓</a></span>
+				{% endif %}
+			</span>
+			{% if c.timelapse %}
+				<span class="ts lapse" title="{{c.date}}">{{c.timelapse}}</span>
+			{% else %}
+				<span class="ts">{{c.date}}</span>
+			{% endif %}
+		</div>
+	{% if c.hidden %}
+		<div class="text hidden">
+		{% if session.logged %}
+			{{c.text}}
+		{% else %}
+			<span>{% trans _('This quote is hidden.') %}<br />
+			<strong>{% trans _('Log in from IRC to read it.') %}</strong></span>
+		{% endif %}
+		</div>
+	{% else %}
+		<div class="text">{{c.text}}</div>
+	{% endif %}
+		<div class="meta small">
+	{% if c.comment && (!c.hidden || session.logged) %}
+			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
+	{% endif %}
+		</div>
+	</div>
+{% if c.new %}
+	<div class="star">*</div>
+{% endif %}
+</div>

@@ -1,0 +1,84 @@
+<?php
+/*
+	fearqdb - quote database system
+	Copyright (C) 2011-2012 David Martí <neikokz at gmail dot com>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation, either version 3 of the
+	License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+require_once('config.php');
+
+class Session {
+	var $logged = false;
+	var $ip = '';
+	var $date = '';
+	var $search = '';
+	var $unapproved = 0;
+	var $origin = '';
+	var $expected_cookie = '';
+	var $visitor = 'anonymous';
+	var $xsrf = '';
+	var $admin = false;
+
+	function init() {
+		global $config, $db, $params;
+
+		$this->unapproved = $db->get_var('SELECT COUNT(*) FROM quotes WHERE approved = 0');
+
+		$this->date = date('d/m/Y');
+		$this->ip = $_SERVER['REMOTE_ADDR'];
+		$this->origin = urlencode($_SERVER['REQUEST_URI']);
+		/* today's lesson: the more bullshit you get into a cookie, the more secure it is. */
+		$this->expected_cookie = md5(sprintf('ni%sna%snu%sne', $this->password(), $config['site']['key'], date('YdmYdYmdYmdY')));
+		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $config['site']['key'])), 0, 8);
+
+		if (!isset($_COOKIE[$config['site']['cookie_name']])) {
+			return false;
+		}
+
+		if ($this->expected_cookie != $_COOKIE[$config['site']['cookie_name']]) { // twice, lopl
+			return false;
+		}
+
+		$this->logged = true;
+		$this->visitor = 'logged';
+		return $this->logged;
+	}
+
+	function create($password) {
+		global $config;
+
+		if ($password != $this->password()) {
+			return false;
+		}
+
+		// the password is generated daily soooo exp time = 24 hours
+		setcookie($config['site']['cookie_name'], $this->expected_cookie, time() + 86400, '/');
+		return true;
+	}
+
+	function destroy() {
+		global $config;
+
+		setcookie($config['site']['cookie_name'], '', time() - 3600, '/');
+		return true;
+	}
+
+	/* current password, it's generated every day. in case of disclosure, change the site key. */
+	function password() {
+		global $config;
+
+		return(substr(md5(date('d/m/Y').$config['site']['key']), 0, 8));
+	}
+}
