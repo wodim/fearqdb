@@ -82,8 +82,9 @@ switch ($params[0]) {
 	default:
 		if ((int)$params[0]) {
 			require(modules_dir.'quote.php');
-		} else {
-			// TODO obvious 404, but don't do die()
+		} elseif (!$params[0]) {
 			require(modules_dir.'list.php');
+		} else {
+			require(modules_dir.'fourohfour.php');
 		}
 }

@@ -61,8 +61,6 @@ $rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approv
 	$search, $config['site']['collate'], $config['db']['table']));
 $pager = $html->do_pages(++$page_number, ceil($rows / $config['site']['page_size']), sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
 
-echo($pager);
-
 $quote = new Quote();
 $odd = true;
 foreach ($quotes as $this_quote) {

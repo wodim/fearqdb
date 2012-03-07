@@ -23,6 +23,7 @@ class HTML {
 	function do_header($title) {
 		global $session;
 
+		header('Content-Type: text/html; charset=UTF-8');
 		$vars = compact('title', 'session');
 		Haanga::Load('header.html', $vars);
 	}
@@ -32,7 +33,7 @@ class HTML {
 
 		$vars = compact('session');
 		Haanga::Load('footer.html', $vars);
-		printf('<!-- Delivered in %.4f seconds with %d queries -->', (microtime(true) - $start), $db->num_queries);
+		printf('<!-- %.4f - %d -->', (microtime(true) - $start), $db->num_queries);
 		// always die here.
 		die();
 	}

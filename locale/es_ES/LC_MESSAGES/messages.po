@@ -1,3 +1,22 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-15 23:17+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 #: HACK
 msgid "search the database..."
 msgstr "buscar..."
@@ -91,7 +110,7 @@ msgstr "No hay quotes que se correspondan con tu criterio de búsqueda."
 #: modules/search.php:70
 #, php-format
 msgid "Search results for \"%s\""
-msgstr "Resultados de la búsqueda de \"%s\""
+msgstr "Resultados de la búsqueda de «%s»"
 
 #: modules/submit.php:49
 msgid "Quote sent!"
@@ -201,7 +220,7 @@ msgstr "Tu nick:"
 #: templates/submit.html:11
 #: templates/submit.html:11
 msgid "Hide quote (padlock)"
-msgstr "Ocultar texto"
+msgstr "Ocultar texto (candado)"
 
 #: templates/submit.html:16
 msgid ""
@@ -223,6 +242,8 @@ msgstr ""
 "La clave dada por el enlace que has seguido no era válida. ¿Quizás has hecho "
 "clic en un enlace antiguo?"
 
+
 #: templates/quote.html:26
 msgid "Log in from IRC to read it."
 msgstr "Inicia sesión desde el IRC para leerlo."
+

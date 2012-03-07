@@ -46,7 +46,7 @@ if (isset($params[1])) {
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on') ? '1' : '0';
 			$quote->approved = $session->logged ? '1' : '0';
 			$quote->save();
-			if ($session->logged) {
+			if ($quote->approved) {
 				redir('/last');
 			} else {
 				redir('/submit/sent');

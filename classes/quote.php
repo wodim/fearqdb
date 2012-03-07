@@ -132,8 +132,6 @@ class Quote {
 	}
 
 	function output_rss() {
-		global $config;
-
 		if (!$this->read) {
 			printf('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
 			die();
@@ -165,6 +163,9 @@ class Quote {
 		// clean special chars from copypasting from irc
 		$text = preg_replace('/[\x00-\x09\x0b-\x1F\x7F]/', '', $text);
 
+		// delete timestamps
+		$text = preg_replace('/^[\(\[]?\d+:\d+(:\d+)?[\)\]]?\s/m', '', $text);
+
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'rss_title') {
 			// add * to mark actions, joins, parts etc
 			$text = preg_replace('/^([a-z0-9\-\[\]\{\}_])/smi', '* $1', $text); // :D
@@ -175,7 +176,7 @@ class Quote {
 
 		if ($for == 'www_body') {
 			// nicks for the website
-			$text = preg_replace('/^&lt;[@+]?([a-z0-9\-\[\]\{\}_]+)&gt;/mi', '<strong>&lt;$1&gt;</strong>', $text);
+			$text = preg_replace_callback('/^&lt;[@+]?([a-z0-9\-\[\]\{\}_]+)&gt;/mi', array($this, 'nick_colour'), $text);
 		}
 
 		if ($for == 'rss_body' || $for == 'rss_title') {
@@ -207,6 +208,12 @@ class Quote {
 		}
 
 		return $text;
+	}
+	
+	private function nick_colour($nick) {
+		$nick = $nick[1];
+		$colour = substr(md5(strtolower($nick)), 0, 1);
+		return(sprintf('<strong>&lt;<em class="colour-%s"><a href="/search/%s">%s</a></em>&gt;</strong>', $colour, $nick, $nick));
 	}
 
 	// unused? hm

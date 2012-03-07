@@ -53,8 +53,6 @@ $rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes %s',
 $mod = sprintf('/%s/', $params[0] != '' ? $params[0] : 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $config['site']['page_size']), $mod.'%d', 4);
 
-echo($pager);
-
 $quote = new Quote();
 $odd = true;
 foreach ($quotes as $this_quote) {

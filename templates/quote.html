@@ -46,9 +46,9 @@
 		<div class="text">{{c.text}}</div>
 	{% endif %}
 		<div class="meta small">
-	{% if c.comment && (!c.hidden || session.logged) %}
+		{% if c.comment && (session.logged || !c.hidden) %}
 			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
-	{% endif %}
+		{% endif %}
 		</div>
 	</div>
 {% if c.new %}
