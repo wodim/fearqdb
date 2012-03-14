@@ -18,27 +18,29 @@
 */
 
 require_once('config.php');
+require_once(classes_dir.'user.php');
 
 class Session {
-	var $logged = false;
+	var $level = 'anonymous';
+	var $user = 0;
 	var $ip = '';
 	var $date = '';
 	var $search = '';
 	var $unapproved = 0;
 	var $origin = '';
 	var $expected_cookie = '';
-	var $visitor = 'anonymous';
 	var $xsrf = '';
-	var $admin = false;
+	var $type = '';
 
 	function init() {
 		global $config, $db, $params;
 
-		$this->unapproved = $db->get_var('SELECT COUNT(*) FROM quotes WHERE approved = 0');
-
-		$this->date = date('d/m/Y');
+		// $this->unapproved = $db->get_var('SELECT COUNT(*) FROM quotes WHERE approved = 0');
+		
+		$this->date = strftime('%d/%m');
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 		$this->origin = urlencode($_SERVER['REQUEST_URI']);
+
 		/* today's lesson: the more bullshit you get into a cookie, the more secure it is. */
 		$this->expected_cookie = md5(sprintf('ni%sna%snu%sne', $this->password(), $config['site']['key'], date('YdmYdYmdYmdY')));
 		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $config['site']['key'])), 0, 8);
@@ -47,13 +49,33 @@ class Session {
 			return false;
 		}
 
-		if ($this->expected_cookie != $_COOKIE[$config['site']['cookie_name']]) { // twice, lopl
+		$tmp = base64_decode($_COOKIE[$config['site']['cookie_name']]);
+		$tmp = explode('!', $tmp);
+
+		if (count($tmp) < 2) {
+			// garbage; destroy
+			$this->destroy();
+			return false;
+		}
+		
+		if ((int)$tmp[0] == 0) {
+			if ($this->expected_cookie == $tmp[1]) {
+				$this->level = 'reader';
+				/* return already */
+				return true;
+			}
+			return false;
+		} else {
+			$user = new User();
+			if ($user->cookie_check((int)$tmp[0], $tmp[1])) {
+				$this->level = $user->level;
+				$this->user = (int)$tmp[0];
+			}
+			$this->destroy();
 			return false;
 		}
 
-		$this->logged = true;
-		$this->visitor = 'logged';
-		return $this->logged;
+		return false;
 	}
 
 	function create($password) {
@@ -64,7 +86,22 @@ class Session {
 		}
 
 		// the password is generated daily soooo exp time = 24 hours
-		setcookie($config['site']['cookie_name'], $this->expected_cookie, time() + 86400, '/');
+		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
+		return true;
+	}
+
+	// we DO NOT ESCAPE
+	function create_user($nick, $password) {
+		global $config;
+
+		$user = new User();
+		$tmp = $user->login_check($nick, $password);
+		
+		if (!$tmp) {
+			return false;
+		}
+
+		setcookie($config['site']['cookie_name'], base64_encode(sprintf('%d!%s', $user->id, $tmp)), time() + 86400, '/');
 		return true;
 	}
 

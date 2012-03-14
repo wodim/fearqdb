@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	redir(sprintf('/search/%s', urlencode($_POST['query'])));
 }
 
-if (!isset($params[1]) || (clean($params[1]) == '')) {
+if (!isset($params[1]) || (trim($params[1]) == '')) {
 	redir();
 }
 

@@ -80,11 +80,9 @@ switch ($params[0]) {
 		require(modules_dir.'list.php');
 		break;
 	default:
-		if ((int)$params[0]) {
-			require(modules_dir.'quote.php');
-		} elseif (!$params[0]) {
+		if (!$params[0]) {
 			require(modules_dir.'list.php');
 		} else {
-			require(modules_dir.'fourohfour.php');
+			require(modules_dir.'quote.php');
 		}
 }

@@ -20,13 +20,50 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $params, $config;
+global $params, $config, $db;
 
 if (!isset($params[1])) {
 	$params[1] = 'index';
 }
 
 switch ($params[1]) {
+	/* example modules. */
+	case 'assign':
+		/* assign permaids to all quotes. 
+			useful if you had no permaids... */
+		header('Content-Type: text/plain');
+		die('Permaids already assigned');
+		for ($i = 2; $i < 650; $i++) {
+			printf("Creating permaid for %d...\n", $i);
+			$quote = new Quote();
+			if ($quote->read($i)) {
+				printf("Read %d!\n", $i);
+				$quote->permaid = sprintf('%04x', rand(0, 65535));
+				printf("New permaid for %d is %s\n", $i, $quote->permaid);
+				$quote->save(false);
+				printf("Saved %d\n", $i);
+			} else {
+				printf("Unreadable %d\n", $i);
+			}
+			unset($quote);
+		}
+		printf("End\n");
+		break;
+	case 'massimport':
+		/* import all quotes from a text file.
+			one line per quote. */
+		header('Content-Type: text/plain');
+		die('Importing done');
+		$lines = file('quotes.txt');
+		foreach ($lines as $line) {
+			$db->query(sprintf('INSERT INTO quotes (permaid, ip, nick, date, text, db, approved)
+				VALUES (\'%s\', \'kobaz\', \'Import\', NOW(), \'%s\', \'default\', 1)',
+				sprintf('%04x', rand(0, 65535)),
+				mysql_real_escape_string($line)));
+			printf("Inserted line.\n");
+		}
+		break;
+/*
 	case 'query':
 		require_once(classes_dir.'admin/query.php');
 		break;
@@ -39,4 +76,5 @@ switch ($params[1]) {
 	case 'index':
 	default:
 		require_once(classes_dir.'admin/index.php');
+*/
 }

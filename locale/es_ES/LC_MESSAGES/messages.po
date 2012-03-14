@@ -17,6 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "You must log in to read any quote."
+msgstr "Debes iniciar sesión para poder leer quotes."
+
+msgid "Submit quote"
+msgstr "Enviar quote"
+
+msgid "Share it:"
+msgstr "Compártelo:"
+
 #: HACK
 msgid "search the database..."
 msgstr "buscar..."
@@ -236,11 +245,11 @@ msgstr "Clave incorrecta"
 
 #: modules/login.php:29
 msgid ""
-"The password that link provided was not valid. Maybe you clicked an outdated "
+"The password that that link provided was not valid. Maybe you clicked an outdated "
 "link?"
 msgstr ""
-"La clave dada por el enlace que has seguido no era válida. ¿Quizás has hecho "
-"clic en un enlace antiguo?"
+"La clave dada por el enlace que has seguido no era válida. ¿Quizás has pinchado "
+"en un enlace antiguo?"
 
 
 #: templates/quote.html:26

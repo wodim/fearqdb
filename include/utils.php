@@ -50,7 +50,7 @@ function system_message($code, $message) {
 /* END LEGACY */
 
 function clean($string, $maxlen = 0) {
-	return(!$maxlen ? mysql_real_escape_string(trim($string)) : mysql_real_escape_string(substr(trim($string), 0, $maxlen)));
+	return(!$maxlen ? (trim($string)) : (substr(trim($string), 0, $maxlen)));
 }
 
 function is_bot() {

@@ -26,7 +26,7 @@ global $params, $config, $session;
 $nick = '';
 
 if (isset($params[2])) {
-	if (!$session->logged) {
+	if ($session->level != 'reader') {
 		$session->create($params[2]); // if it can't be created, who cares? redir anyway, we don't want the pwd to stay in the url bar...
 	}
 	redir(sprintf('/submit/%s', $params[1]));
@@ -44,7 +44,7 @@ if (isset($params[1])) {
 			$quote->text = clean($_POST['text'], 10000);
 			$quote->comment = clean($_POST['comment'], 1000);
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on') ? '1' : '0';
-			$quote->approved = $session->logged ? '1' : '0';
+			$quote->approved = 0;
 			$quote->save();
 			if ($quote->approved) {
 				redir('/last');

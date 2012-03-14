@@ -1,13 +1,13 @@
 <div class="qc">
 	<div class="quote {{c.style}}">
 		<div class="meta">
-			<a href="{{c.permalink}}" class="id">#{% trans _('%03d') c.id %}</a> -
+			<a href="{{c.permalink}}" class="id">#{{c.permaid}}</a> -
 			<span class="sent">
 				{% trans _('Sent by') %} <strong>{{c.nick|escape}}</strong>
 				{% if !c.approved %}
 					({% trans _('Yet to be approved') %})
 				{% endif %}
-				{% if session.logged && config.site.ip.show %}
+				{% if (session.level != 'anonymous') && config.site.ip.show %}
 					{% if c.host && config.site.ip.host %}
 						{% if config.site.ip.part %}
 							(<span title="{{c.semiip}}">{{c.semihost}}</span>)
@@ -24,7 +24,7 @@
 				{% endif %}
 				{% if 1 == 0 %}
 					<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
-					<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.id}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.id}});">↓</a></span>
+					<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.permaid}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.permaid}});">↓</a></span>
 				{% endif %}
 			</span>
 			{% if c.timelapse %}
@@ -32,10 +32,13 @@
 			{% else %}
 				<span class="ts">{{c.date}}</span>
 			{% endif %}
+			{% if ((session.level != 'anonymous') || !c.hidden && 1 == 0) %}
+				<span class="share">{% trans _('Share it:') %} <a href="{{c.tweet}}" target="_blank">Twitter</a></span>
+			{% endif %}
 		</div>
 	{% if c.hidden %}
 		<div class="text hidden">
-		{% if session.logged %}
+		{% if (session.level != 'anonymous') %}
 			{{c.text}}
 		{% else %}
 			<span>{% trans _('This quote is hidden.') %}<br />
@@ -46,7 +49,7 @@
 		<div class="text">{{c.text}}</div>
 	{% endif %}
 		<div class="meta small">
-		{% if c.comment && (session.logged || !c.hidden) %}
+		{% if c.comment && ((session.level != 'anonymous') || !c.hidden) %}
 			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
 		{% endif %}
 		</div>

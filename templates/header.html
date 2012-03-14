@@ -7,15 +7,24 @@
 {% else %}
 		<title>{{config.site.name}}</title>
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{config.core.statics}}core-bump-tres.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="{{config.core.statics}}core-septem.css" />
 		<link rel="shortcut icon" href="{{config.core.statics}}favorite_icon_quote_database.png" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{config.core.domain}}rss" />
+{% if config.site.snowstorm %}
+		<script src="{{config.core.statics}}snowstorm.js"></script>
+		<script>
+			snowStorm.flakesMax = 100;
+			snowStorm.flakesMaxActive = 100;
+			snowStorm.useTwinkleEffect = true;
+			snowStorm.snowCharacter= "卍";
+		</script>
+{% endif %}
 {% if config.site.analytics.enabled %}
-		<script type="text/javascript">
+		<script>
 			var _gaq = _gaq || [];
 				_gaq.push(['_setAccount', '{{config.site.analytics.code}}']);
 				_gaq.push(['_setCustomVar', 1, 'ip', '{{session.ip}}']);
-				_gaq.push(['_setCustomVar', 2, 'visitor', '{{session.visitor}}']);
+				_gaq.push(['_setCustomVar', 2, 'level', '{{session.level}}']);
 				_gaq.push(['_trackPageview']);
 
 			(function() {
@@ -32,17 +41,20 @@
 			<div class="header">
 				<span class="name"><a href="{{config.site.root}}">{{config.site.name}}</a></span>
 				<ul class="bar">
-					<li><a href="{{config.site.root}}random">{% trans _('Random') %}</a></li>
-{% if session.logged %}
-					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.date}})</a></li>
-{% endif %}
 					<li>
 						<form method="post" action="/search">
 							<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
 							<input type="submit" />
 						</form>
 					</li>
-					<li><a href="{{config.site.root}}submit" class="submit">{% trans _('Submit new quote') %}</a></li>
+					<li><a href="{{config.site.root}}random">{% trans _('Random') %}</a></li>
+{% if session.level == 'reader' %}
+					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} (<em>{{session.level}}</em>, {{session.date}})</a></li>
+{% endif %}
+{% if (session.level == 'user') || (session.level == 'admin') %}
+					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
+{% endif %}
+					<li><a href="{{config.site.root}}submit" class="submit">{% trans _('Submit quote') %}</a></li>
 				</ul>
 			</div>
 			<div class="content">

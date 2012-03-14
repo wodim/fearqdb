@@ -39,7 +39,7 @@ switch ($params[0]) {
 		origin_redir($origin);
 		break;
 	case 'logout':
-		if (!isset($params[1]) || $params[1] != $session->xsrf || !$session->logged) {
+		if (!isset($params[1]) || $params[1] != $session->xsrf || $session->level == 'anonymous') {
 			$html->do_sysmsg('e.e', null, 403);
 		}
 		$session->destroy();
@@ -48,7 +48,7 @@ switch ($params[0]) {
 		break;
 }
 
-if ($session->logged) { // it's already logged in, it's not logging out... so what the hell
+if ($session->level != 'anonymous') { // it's already logged in, it's not logging out... so what the hell
 	redir();
 }
 

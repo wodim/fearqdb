@@ -5,7 +5,7 @@ html * {
 
 body {
 	background: url("shadow.png") repeat-y center, url("bodybg.png");
-	font-family: 'Arial', sans-serif;
+	font-family: "Arial", serif;
 }
 
 .clear {
@@ -27,13 +27,13 @@ a {
 	width: 100%;
 	background: black;
 	height: 60px;
-	margin: -20px auto 0;
+	margin: -19px auto 0;
 	background: #5c7ba7;
 	z-index: 2;
 }
 
 .header {
-	height: 35px;
+	height: 34px;
 	display: block;
 	padding: 0 8px;
 	margin: -38px 0 0;
@@ -54,54 +54,72 @@ a {
 
 .header ul {
 	float: right;
-	line-height: 35px;
+	line-height: 25px;
 	font-size: 9pt;
+}
+
+.bar {
+	box-shadow: 0 1px 2px #3e5270;
+	margin-top: 5px;
+	/* compensate -3px left margin for li */
+	padding-left: 3px;
+}
+
+.bar li a {
+	color: black;
+	text-decoration: none;
+	padding: 4px 9px;
+}
+
+.bar li a.submit {
 	font-weight: bold;
 }
 
-.header li {
-	list-style: none;
-	display: inline;
-}
-
-.header li a {
-	color: white;
-	text-decoration: none;
-	padding: 4px 6px;
-}
-
 .bar input {
+	width: 160px;
 	background: white;
-	border-radius: 2px;
 	box-shadow: 0px 1px 2px #ddd inset;
 	border: 0 none;
 	font-size: 9pt;
-	padding: 4px;
+	padding: 4px 6px;
 	color: #777;
-	opacity: 0.8;
 	-moz-transition: all 0.3s ease-in-out 0s;
 	-webkit-transition: all 0.3s ease-in-out 0s;
 	-o-transition: all 0.3s ease-in-out 0s;
 	-ms-transition: all 0.3s ease-in-out 0s;
+	height: 17px;
+	border-radius: 2px 0 0 2px;
 }
 
-.header input:hover,
-.header input:focus {
+.bar input:hover,
+.bar input:focus {
 	color: #333;
 	opacity: 1;
 }
 
-.header input[type=submit] {
+.bar input[type=submit] {
 	display: none;
 }
 
-.header li a.submit {
+.bar li {
+	list-style: none;
+	display: inline;
 	background: #f8f8f8;
-	border-radius: 2px;
-	box-shadow: 0px 1px 2px #3e5270;
 	color: #444;
 	text-shadow: 0 1px 2px white;
-	margin-left: 5px;
+	/* haanga's fault */
+	margin: 0 0 0 -3px;
+	display: inline-block;
+	border-left: 1px solid #ccc;
+}
+
+.bar li:first-child {
+	border-radius: 2px 0 0 2px;
+	border-left: 0 none;
+}
+
+.bar li:last-child {
+	border-radius: 0 2px 2px 0;
 }
 
 .page {
@@ -236,7 +254,7 @@ a {
 .quote .meta {
 	color: white;
 	font-size: 9pt;
-	padding: 6px 8px 4px;
+	padding: 6px 10px 4px;
 	font-family: 'Arial', sans-serif;
 	/* Opera */
 	border-top-left-radius: 3px;
@@ -255,24 +273,34 @@ a {
 	box-shadow: 0px 0px 1px #3e5270 inset;
 }
 
+.quote .meta span.share {
+	display: none;
+}
+
+.quote:hover .meta span.share {
+	display: block;
+	float: right;
+	font-size: 8pt;
+}
+
 .quote .meta a {
+	color: white;
 }
 
 .quote .meta a.id {
-	color: white;
 	font-weight: bold;
-	font-family: monospace;
+	font-family: 'Consolas', monospace;
+	font-size: 9pt;
 }
 
 .quote .meta .ts {
 	font-style: italic;
 	font-size: 8pt;
 	margin-left: 1px;
-	float: right;
 }
 
 .quote .meta .ts:before {
-	/* content: "- "; */
+	content: "- ";
 }
 
 .quote .meta .ts.lapse {
@@ -404,10 +432,6 @@ input {
 	font-family: 'Arial', sans-serif;
 }
 
-.bar input {
-	width: 160px;
-}
-
 input[type=submit],
 input[type=button] {
 	border-radius: 2px;
@@ -464,9 +488,9 @@ input[type=checkbox] {
 .qc .star {
 	font-weight: bold;
 	position: absolute;
-	top: -18px;
-	left: -1px;
-	font-size: 35pt;
+	top: -13px;
+	left: -4px;
+	font-size: 30pt;
 	color: white;
 	text-shadow: 0 0 1px rgba(0,0,0,1);
 	-moz-transform: rotate(334deg);
@@ -477,10 +501,6 @@ input[type=checkbox] {
 
 input[type=text].sep {
 	margin: 0 8px;
-}
-
-.bar li {
-	margin-left: 5px;
 }
 
 	/*

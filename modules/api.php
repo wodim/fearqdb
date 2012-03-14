@@ -41,12 +41,12 @@ function enforce_post() {
 function get_last() {
 	global $db, $config;
 
-	return $db->get_var(sprintf('SELECT id FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
+	return $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
 		$config['db']['table']));
 }
 
 if (isset($params[2]) && $params[2] == $session->password()) {
-	$session->logged = true;
+	$session->level = 'reader';
 }
 
 if (!isset($params[1])) {
@@ -62,29 +62,41 @@ switch ($params[1]) {
 		$quote->text = clean($_POST['text'], 10000);
 		$quote->comment = clean($_POST['comment'], 1000);
 		$quote->hidden = (isset($_POST['hidden']) && ((int)$_POST['hidden'] == 0 || (int)$_POST['hidden'] == 1)) ? (int)$_POST['hidden'] : '0';
-		$quote->approved = $session->logged ? '1' : '0';
+		$quote->approved = ($session->level != 'anonymous') ? '1' : '0';
 		$quote->save();
 		$last = get_last();
 		out(array('results' =>
 			array('success' => 1,
-				'url' => sprintf('%s%d', $config['core']['domain'], $last),
+				'url' => sprintf('%s%s', $config['core']['domain'], $last),
 				'id' => $last)));
 		break;
 	case 'last':
 		$last = get_last();
 		out(array('results' =>
-			array('url' => sprintf('%s%d', $config['core']['domain'], $last),
+			array('url' => sprintf('%s%s', $config['core']['domain'], $last),
 				'id' => $last)));
 		break;
 	case 'read':
-		if (!isset($params[2]) || !(int)$params[2]) {
+		if (!isset($params[2])) {
 			generic_error('not_enough_parameters');
 		}
 		$quote = new Quote();
-		$quote->read((int)$params[2]);
-		out(array('results' =>
-			array('success' => 1,
-				'data' => $quote)));
+		$quote->read_permaid($params[2]);
+		if ($quote->read) {
+			if (!$quote->hidden) {
+				out(array('results' =>
+					array('success' => 1,
+						'data' => $quote)));
+			} else {
+				out(array('results' =>
+					array('success' => 0,
+						'error' => 'hidden_quote')));
+			}
+		} else {
+			out(array('results' =>
+				array('success' => 0,
+					'error' => 'no_such_quote')));
+		}
 		break;
 	default:
 		generic_error('method_not_implemented');

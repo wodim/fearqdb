@@ -30,7 +30,7 @@ if (isset($params[1]) && is_numeric($params[1])) {
 
 $where = sprintf('WHERE db = \'%s\' %s %s',
 	$config['db']['table'],
-	$session->logged ? 'AND (approved = 1 OR approved = 0)' : 'AND approved = 1',
+	($session->level != 'anonymous') ? 'AND (approved = 1 OR approved = 0)' : 'AND approved = 1',
 	($params[0] == 'hidden') ? 'AND hidden = 1' : '');
 
 $quotes = $db->get_results(sprintf('SELECT %s FROM quotes %s ORDER BY date DESC LIMIT %d,%d',
@@ -49,7 +49,7 @@ if (!$quotes) { // there are no quotes. but... there are no quotes in this page 
 $html->do_header(sprintf($page_number == 1 ? _('Latest quotes') : _('Latest quotes - Page %d'), $page_number));
 $rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes %s',
 	$where));
-//echo $rows;
+
 $mod = sprintf('/%s/', $params[0] != '' ? $params[0] : 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $config['site']['page_size']), $mod.'%d', 4);
 

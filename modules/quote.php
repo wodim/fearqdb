@@ -22,32 +22,34 @@ require_once(classes_dir.'quote.php');
 
 global $params, $config, $q;
 
-if (isset($params[1])) {
-	$redirhack = true;
-	$quote_no = (int)$params[1];
-} elseif ((int)$params[0]) {
-	$quote_no = (int)$params[0];
+$quoteid = $permaid = null;
+
+if (isset($params[0]) && ctype_digit($params[0]) && (int)$params[0] < 1000) {
+	$quoteid = (int)$params[0];
+} elseif (isset($params[0])) {
+	$permaid = substr($params[0], 0, 4);
 } else {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
-if ($_GET['q'] != sprintf('/quote/%d', $quote_no)) {
-	/* breaks analytics */
-	// redir(sprintf('/quote/%d', $quote_no));
-}
-
-if (isset($redirhack) && $redirhack) {
-	redir(sprintf('/%s', $params[1]));
-}
-
 $quote = new Quote();
-$quote->read($quote_no);
 
-if (!$quote->read) {
+if ($quoteid) {
+	$quote->read($quoteid);
+} else {
+	$quote->read_permaid($permaid);
+}
+
+if (!$quote->read || $quote->approved != 1) {
 	$html->do_sysmsg(_('No such quote'), null, 404);
 }
 
-$html->do_header(sprintf(_('Quote %d'), $quote_no));
+if ($quoteid) {
+	redir(sprintf('/%s', $quote->permaid));
+	die();
+}
+
+$html->do_header(sprintf(_('Quote %s'), $permaid));
 
 $quote->output();
 

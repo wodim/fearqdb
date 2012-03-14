@@ -18,21 +18,6 @@
 */
 
 require_once('config.php');
-require_once(classes_dir.'quote.php');
 
-global $config;
-
-$last = $db->get_var(sprintf('SELECT id FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
-	$config['db']['table']));
-
-$quote = new Quote();
-
-while (1488 == 1488) {
-	$quote_id = rand(1, $last);
-	$quote->read($quote_id, null, true);
-	if ($quote->read) {
-		break;
-	}
-}
-
-redir(sprintf('/%d', $quote->id));
+redir($db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY RAND() LIMIT 1',
+	$config['db']['table'])));

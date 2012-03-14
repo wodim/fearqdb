@@ -51,6 +51,8 @@ $config['db']['pass'] = 'qdb';
 $config['db']['name'] = 'qdb';
 $config['db']['host'] = 'localhost';
 
+$config['site']['snowstorm'] = false;
+
 // per domain config
 switch ($_SERVER['HTTP_HOST']) {
 	case 'productionqdb.example.com':
@@ -63,6 +65,7 @@ switch ($_SERVER['HTTP_HOST']) {
 		$config['core']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
 		$config['site']['analytics']['enabled'] = true;
 		$config['site']['analytics']['code'] = 'UA-123123123-9';
+		$config['site']['snowstorm'] = true;
 		break;
 	case 'localhost':
 		$config['db']['table'] = 'test';
@@ -140,6 +143,12 @@ require(classes_dir.'session.php');
 $session = new Session();
 $session->init();
 
+// configure gettext's locale
+putenv('LC_ALL='.$config['site']['locale']);
+setlocale(LC_ALL, $config['site']['locale']);
+bindtextdomain('messages', './locale');
+textdomain('messages');
+
 // force https ?
 if (isset($_SERVER['HTTPS'])) {
 	redir(sprintf('http://%s%s', $_SERVER['HTTP_HOST'], $_GET['q']));
@@ -147,7 +156,7 @@ if (isset($_SERVER['HTTPS'])) {
 
 // redir to /login if not in ^/login already
 if (!is_bot() && ($config['site']['privacy_level'] == 2
-	&& !$session->logged && !preg_match('/^\/(login|api)/', $_SERVER['REQUEST_URI']))) {
+	&& $session->level == 'anonymous' && !preg_match('/^\/(login|api)/', $_SERVER['REQUEST_URI']))) {
 	$html->do_sysmsg(_('Log in'), _('You must log in to read any quote.'), 403);
 	die();
 }
@@ -156,9 +165,3 @@ if (is_bot() && $config['site']['privacy_level_for_bots'] == 2) {
 	header('HTTP/1.1 403 Forbidden');
 	die('403 Forbidden'); /* so what */
 }
-
-// configure gettext's locale
-putenv('LC_ALL='.$config['site']['locale']);
-setlocale(LC_ALL, $config['site']['locale']);
-bindtextdomain('messages', './locale');
-textdomain('messages');

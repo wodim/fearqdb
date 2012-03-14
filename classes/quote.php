@@ -17,23 +17,17 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-<!--
-		<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
-		<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.id}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.id}});">↓</a></span>
--->
-*/
-
 require_once('config.php');
 require_once(include_dir.'utils.php');
 
 class Quote {
-	const READ = 'id, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts';
-	const READ_SPEC = 'SELECT id, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts FROM quotes WHERE id = %d AND approved = 1 AND db = \'%s\'';
-	const READ_SPEC_GUESS = 'SELECT id, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts FROM quotes WHERE id >= %d AND approved = 1 AND db = \'%s\'';
+	const READ = 'id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts';
+	const READ_SPEC = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
+	const READ_SPEC_GUESS = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id >= %d AND db = \'%s\'';
 
 	var $read = false;
 	var $id = 0;
+	var $permaid = '';
 	var $nick = '';
 	var $date = '';
 	var $ip = '';
@@ -46,6 +40,7 @@ class Quote {
 	var $approved = 0;
 	var $hidden = 0;
 	var $ts = 0;
+	var $db = 0;
 
 	// made out by the script (not stoerd in the db)
 	var $new = false;
@@ -53,12 +48,27 @@ class Quote {
 	var $permalink = '';
 	var $timelapse = '';
 	var $host = '';
+	var $tweet = '';
 
-	function read($id = 0, $results = null, $guess = false) {
+	function read_permaid($permaid) {
+		global $db, $config;
+
+		$result = $db->get_var(sprintf('SELECT id FROM quotes WHERE permaid = \'%s\' AND db = \'%s\'',
+			mysql_read_escape_string($permaid), $config['db']['table']));
+			
+		if ($result) {
+			$this->read($result);
+			return true;
+		}
+		
+		return false;
+	}
+
+	function read($id = 0, $results = null, $guess = false, $permaid = false) {
 		global $db, $config;
 
 		if ($id && !$results) {
-			$results = $db->get_row(sprintf($guess ? Quote::READ_SPEC_GUESS : Quote::READ_SPEC, $id, $config['db']['table']));
+			$results = $db->get_row(sprintf($guess ? Quote::READ_SPEC_GUESS : Quote::READ_SPEC, (int)$id, $config['db']['table']));
 		}
 
 		// what a lose of time this shit is, especially when already having $obj
@@ -79,7 +89,7 @@ class Quote {
 					$this->hidden = 1;
 					break;
 			}
-			$this->new = (date('U') - $this->ts < 86400);
+			$this->new = (date('U') - $this->ts < (60 * 60 * 24));
 			$valid = preg_match_all('/(\d+)$/', $this->ip, $hide);
 			$hide = $valid ? $hide[1][0] : '';
 
@@ -101,10 +111,10 @@ class Quote {
 					}
 				}
 			} else {
-				$this->ip = $this->semiip = _('Imported from the bot');
+				$this->semiip = _('Imported from the bot');
 			}
 
-			$this->permalink = sprintf('%s%d', $config['core']['domain'], $this->id);
+			$this->permalink = sprintf('%s%s', $config['core']['domain'], $this->permaid);
 			$date = elapsed_time(date('U') - $this->ts);
 			$this->timelapse = ($date == -1) ? false : $date;
 			$this->read = true;
@@ -122,6 +132,9 @@ class Quote {
 		$c = $this;
 		$c->style = sprintf('%s%s', $odd ? 'odd' : 'even', $c->approved ? '' : ' unapproved');
 		$c->date = date('d/m/Y H:i:s', $c->ts);
+		$c->tweet = $this->text_clean($c->text, 'www_tweet');
+		$c->tweet = urlencode(sprintf('%s - %s', $c->tweet, $c->permalink));
+		$c->tweet = sprintf('https://twitter.com/intent/tweet?text=%s', $c->tweet);
 		$c->text = $this->text_clean($c->text, 'www_body');
 		$c->comment = $this->text_clean($c->comment, 'www_comment');
 
@@ -189,7 +202,7 @@ class Quote {
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'www_comment') {
 			// don't add links to rss titles!
-			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%]*)/mi', '<a href="$1" target="_blank">$1</a>', $text);
+			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
 			$text = str_replace("\n", '<br />', $text);
 			// hashtags
 			// $text = preg_replace('/#([a-z0-9\-_\?]*\w)/mi', sprintf('<a href="%ssearch/%%23$1" target="_blank">#$1</a>', $config['core']['domain']), $text);
@@ -201,10 +214,15 @@ class Quote {
 		$text = str_replace('  ', '&nbsp;&nbsp;', $text);
 
 		// cut long title
-		if ($for == 'rss_title') {
-			if (mb_strlen($text) > 120) {
+		if ($for == 'rss_title' || $for == 'www_tweet') {
+			if (mb_strlen($text) > 110) {
 				$text = sprintf('%s...', mb_substr($text, 0, 110));
 			}
+		}
+
+		// fix double utf8 encoding
+		if (strpos($text, 'Ã') !== false || strpos($text, 'Â') !== false) {
+			$text = iconv('utf8', 'cp1252', $text);
 		}
 
 		return $text;
@@ -220,15 +238,34 @@ class Quote {
 	function save($new = 'true') {
 		global $db, $config;
 
-		$result = $db->query(sprintf('INSERT INTO quotes (nick, date, ip, text, comment, db, hidden, approved)
-			VALUES (\'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\')',
-			$this->nick,
-			$this->ip,
-			$this->text,
-			$this->comment,
-			$config['db']['table'],
-			$this->hidden,
-			$this->approved));
+		if ($new) {
+			$result = $db->query(sprintf('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, approved)
+				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%d\')',
+				/* no way of forcing a permaid */
+				sprintf('%04x', rand(0, 65535)),
+				mysql_real_escape_string($this->nick),
+				/* date */
+				mysql_real_escape_string($this->ip),
+				mysql_real_escape_string($this->text),
+				mysql_real_escape_string($this->comment),
+				$config['db']['table'],
+				(int)$this->hidden,
+				(int)$this->approved));
+		} else {
+			$result = $db->query(sprintf('UPDATE quotes SET 
+				nick = \'%s\', permaid = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
+				db = \'%s\', hidden = %d, approved = %d
+				where id = %d',
+				mysql_real_escape_string($this->nick),
+				$this->permaid,
+				$this->ip,
+				mysql_real_escape_string($this->text),
+				mysql_real_escape_string($this->comment),
+				$config['db']['table'],
+				(int)$this->hidden,
+				(int)$this->approved,
+				(int)$this->id));
+		}		
 
 		return true;
 	}

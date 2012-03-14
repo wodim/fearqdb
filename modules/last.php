@@ -22,7 +22,7 @@ require_once(classes_dir.'quote.php');
 
 global $config;
 
-$last = $db->get_var(sprintf('SELECT id FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
+$last = $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
 	$config['db']['table']));
 
-redir(sprintf('/%d', $last));
+redir(sprintf('/%s', $last));
