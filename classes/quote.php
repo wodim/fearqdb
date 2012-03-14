@@ -54,7 +54,7 @@ class Quote {
 		global $db, $config;
 
 		$result = $db->get_var(sprintf('SELECT id FROM quotes WHERE permaid = \'%s\' AND db = \'%s\'',
-			mysql_read_escape_string($permaid), $config['db']['table']));
+			mysql_real_escape_string($permaid), $config['db']['table']));
 			
 		if ($result) {
 			$this->read($result);
