@@ -50,13 +50,7 @@ function system_message($code, $message) {
 /* END LEGACY */
 
 function escape($string) {
-	global $db;
-	
-	if ($string) {
-		return $db->escape($string);
-	} else {
-		return '';
-	}
+	return mysql_real_escape_string($string);
 }
 
 function clean($string, $maxlen = 0, $escape = false) {
