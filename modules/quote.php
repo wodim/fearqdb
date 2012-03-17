@@ -24,7 +24,7 @@ global $params, $config, $q;
 
 $quoteid = $permaid = null;
 
-if (isset($params[0]) && ctype_digit($params[0]) && (int)$params[0] < 1000) {
+if (isset($params[0]) && preg_match('/^\d\d\d$/', $params[0])) {
 	$quoteid = (int)$params[0];
 } elseif (isset($params[0])) {
 	$permaid = substr($params[0], 0, 4);
