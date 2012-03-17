@@ -53,22 +53,22 @@ if (!$quotes) {
 	} else {
 		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.'), 404);
 	}
+} else {
+	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
+
+	$rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\'',
+		$search, $config['site']['collate'], $config['db']['table']));
+	$pager = $html->do_pages(++$page_number, ceil($rows / $config['site']['page_size']), sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
+
+	$quote = new Quote();
+	$odd = true;
+	foreach ($quotes as $this_quote) {
+		$quote->read(0, $this_quote);
+		$quote->output($odd);
+		$odd = !$odd;
+	}
+
+	echo($pager);
+
+	$html->do_footer();
 }
-
-$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
-
-$rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\'',
-	$search, $config['site']['collate'], $config['db']['table']));
-$pager = $html->do_pages(++$page_number, ceil($rows / $config['site']['page_size']), sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
-
-$quote = new Quote();
-$odd = true;
-foreach ($quotes as $this_quote) {
-	$quote->read(0, $this_quote);
-	$quote->output($odd);
-	$odd = !$odd;
-}
-
-echo($pager);
-
-$html->do_footer();
