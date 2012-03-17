@@ -31,6 +31,7 @@ class Session {
 	var $expected_cookie = '';
 	var $xsrf = '';
 	var $type = '';
+	var $hit = false;
 
 	function init() {
 		global $config, $db, $params;
@@ -80,8 +81,12 @@ class Session {
 
 	// store a hit
 	function hit() {
+		if ($this->hit) {
+			return;
+		}
+
 		global $config, $module, $db;
-	
+
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
 		$search = clean($this->search, 256, true);
@@ -104,6 +109,7 @@ class Session {
 			$user,
 			$referer,
 			$user_agent));
+		$this->hit = true;
 	}
 
 	function create($password) {
