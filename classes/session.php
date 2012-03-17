@@ -85,7 +85,7 @@ class Session {
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
 		/* $module = $module; */
-		$db = $config['db']['table'];
+		$db_table = $config['db']['table'];
 		$level = $this->level;
 		$user = $this->user;
 		$referer = isset($_SERVER['HTTP_REFERER']) ? clean($_SERVER['HTTP_REFERER'], 256, true) : '';
@@ -97,7 +97,7 @@ class Session {
 			$ip,
 			$url,
 			$module,
-			$db,
+			$db_table,
 			$level,
 			$user,
 			$referer,
