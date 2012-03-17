@@ -35,7 +35,7 @@ $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]
 
 $search = urldecode($params[1]);
 $session->search = htmlspecialchars($search);
-$search = mysql_real_escape_string($search); // y tu madre la chupa
+$search = escape($search);
 $search = preg_replace('/^\*|\*$/', '', $search);
 $search = preg_replace('/^\?|\?$/', '', $search);
 $search = str_replace('%', '\%', $search);
@@ -49,9 +49,9 @@ $quotes = $db->get_results(sprintf('SELECT %s FROM quotes WHERE approved = 1 AND
 
 if (!$quotes) {
 	if ($page_number) {
-		$html->do_sysmsg(_('Page not found'), sprintf('<!-- Busqueda convertida a: %s -->', $search), 404);
+		$html->do_sysmsg(_('Page not found'), null, 404);
 	} else {
-		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.').sprintf('<!-- Busqueda convertida a: %s -->', $search), 404);
+		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.'), 404);
 	}
 }
 

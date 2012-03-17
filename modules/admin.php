@@ -59,7 +59,7 @@ switch ($params[1]) {
 			$db->query(sprintf('INSERT INTO quotes (permaid, ip, nick, date, text, db, approved)
 				VALUES (\'%s\', \'kobaz\', \'Import\', NOW(), \'%s\', \'default\', 1)',
 				sprintf('%04x', rand(0, 65535)),
-				mysql_real_escape_string($line)));
+				escape($line)));
 			printf("Inserted line.\n");
 		}
 		break;

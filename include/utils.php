@@ -53,6 +53,12 @@ function clean($string, $maxlen = 0) {
 	return(!$maxlen ? (trim($string)) : (substr(trim($string), 0, $maxlen)));
 }
 
+function escape($string) {
+	global $db;
+	
+	return $db->escape($string);
+}
+
 function is_bot() {
 	return(preg_match('/bot|slurp/i', $_SERVER['HTTP_USER_AGENT']));
 }

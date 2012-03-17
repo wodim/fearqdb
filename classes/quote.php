@@ -54,7 +54,7 @@ class Quote {
 		global $db, $config;
 
 		$result = $db->get_var(sprintf('SELECT id FROM quotes WHERE permaid = \'%s\' AND db = \'%s\'',
-			mysql_real_escape_string($permaid), $config['db']['table']));
+			clean(escape($permaid), 4), $config['db']['table']));
 			
 		if ($result) {
 			$this->read($result);
@@ -243,11 +243,11 @@ class Quote {
 				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%d\')',
 				/* no way of forcing a permaid */
 				sprintf('%04x', rand(0, 65535)),
-				mysql_real_escape_string($this->nick),
+				escape($this->nick),
 				/* date */
-				mysql_real_escape_string($this->ip),
-				mysql_real_escape_string($this->text),
-				mysql_real_escape_string($this->comment),
+				escape($this->ip),
+				escape($this->text),
+				escape($this->comment),
 				$config['db']['table'],
 				(int)$this->hidden,
 				(int)$this->approved));
@@ -256,11 +256,11 @@ class Quote {
 				nick = \'%s\', permaid = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
 				db = \'%s\', hidden = %d, approved = %d
 				where id = %d',
-				mysql_real_escape_string($this->nick),
+				escape($this->nick),
 				$this->permaid,
 				$this->ip,
-				mysql_real_escape_string($this->text),
-				mysql_real_escape_string($this->comment),
+				escape($this->text),
+				escape($this->comment),
 				$config['db']['table'],
 				(int)$this->hidden,
 				(int)$this->approved,
