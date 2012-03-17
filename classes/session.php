@@ -93,7 +93,7 @@ class Session {
 		$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? clean($_SERVER['HTTP_USER_AGENT'], 256, true) : '';
 		/* $time = NOW(); */
 
-		$db->query(sprintf('INSERT INTO hits (ip, url, module, db, level, user, referer, user_agent, time)
+		$db->query(sprintf('INSERT INTO hits (ip, url, search, module, db, level, user, referer, user_agent, time)
 			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
 			$ip,
 			$url,
