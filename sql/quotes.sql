@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `hits` (
   `ip` varchar(15) NOT NULL,
   `url` varchar(256) NOT NULL,
   `module` varchar(8) NOT NULL,
+  `search` varchar(256) NOT NULL,
   `db` varchar(16) NOT NULL,
   `level` enum('anonymous','reader','user') NOT NULL,
   `user` int(11) NOT NULL DEFAULT '0',

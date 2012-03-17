@@ -84,6 +84,7 @@ class Session {
 	
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		$search = clean($this->search, 256, true);
 		/* $module = $module; */
 		$db_table = $config['db']['table'];
 		$level = $this->level;
@@ -93,10 +94,11 @@ class Session {
 		/* $time = NOW(); */
 
 		$db->query(sprintf('INSERT INTO hits (ip, url, module, db, level, user, referer, user_agent, time)
-			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
+			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
 			$ip,
 			$url,
 			$module,
+			$search,
 			$db_table,
 			$level,
 			$user,
