@@ -88,8 +88,8 @@ class Session {
 		$db = $config['db']['table'];
 		$level = $this->level;
 		$user = $this->user;
-		$referer = clean($_SERVER['HTTP_REFERER'], 256, true);
-		$user_agent = clean($_SERVER['HTTP_USER_AGENT'], 256, true);
+		$referer = isset($_SERVER['HTTP_REFERER']) ? clean($_SERVER['HTTP_REFERER'], 256, true) : '';
+		$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? clean($_SERVER['HTTP_USER_AGENT'], 256, true) : '';
 		/* $time = NOW(); */
 
 		$db->query(sprintf('INSERT INTO hits (ip, url, module, db, level, user, referer, user_agent, time)
