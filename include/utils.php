@@ -52,7 +52,11 @@ function system_message($code, $message) {
 function escape($string) {
 	global $db;
 	
-	return $db->escape($string);
+	if ($string) {
+		return $db->escape($string);
+	} else {
+		return '';
+	}
 }
 
 function clean($string, $maxlen = 0, $escape = false) {
