@@ -34,8 +34,6 @@ class HTML {
 		$vars = compact('session');
 		Haanga::Load('footer.html', $vars);
 		printf('<!-- %.4f - %d -->', (microtime(true) - $start), $db->num_queries);
-		// always die here.
-		die();
 	}
 
 	function do_error($error, $status = null) {

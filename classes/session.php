@@ -78,6 +78,32 @@ class Session {
 		return false;
 	}
 
+	// store a hit
+	function hit() {
+		global $config, $module, $db;
+	
+		$ip = $this->ip;
+		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		/* $module = $module; */
+		$db = $config['db']['table'];
+		$level = $this->level;
+		$user = $this->user;
+		$referer = clean($_SERVER['HTTP_REFERER'], 256, true);
+		$user_agent = clean($_SERVER['HTTP_USER_AGENT'], 256, true);
+		/* $time = NOW(); */
+
+		$db->query(sprintf('INSERT INTO hits (ip, url, module, db, level, user, referer, user_agent, time)
+			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
+			$ip,
+			$url,
+			$module,
+			$db,
+			$level,
+			$user,
+			$referer,
+			$user_agent));
+	}
+
 	function create($password) {
 		global $config;
 

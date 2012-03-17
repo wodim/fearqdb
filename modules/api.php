@@ -24,7 +24,7 @@ global $params, $config, $session;
 
 /* move json functions to utils.php? */
 function out($out) {
-	die(json_encode($out));
+	echo(json_encode($out));
 }
 
 function generic_error($error = 'unspecified') {
