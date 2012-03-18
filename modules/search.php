@@ -35,7 +35,6 @@ $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]
 
 $search = urldecode($params[1]);
 $session->search = htmlspecialchars($search);
-$session->hit();
 $search = escape($search);
 $search = preg_replace('/^\*|\*$/', '', $search);
 $search = preg_replace('/^\?|\?$/', '', $search);
