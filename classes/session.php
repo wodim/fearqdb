@@ -80,7 +80,7 @@ class Session {
 	}
 
 	// store a hit
-	function hit($is_redir = false, $location) {
+	function hit($is_redir = false, $location = null) {
 		if ($this->hit) {
 			$this-log('Tried to store a hit twice.');
 			return;
