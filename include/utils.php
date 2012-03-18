@@ -18,11 +18,13 @@
 */
 
 function redir($location = null) {
-	global $config;
+	global $config, $session;
 
 	if (!$location) {
 		$location = $config['site']['root'];
 	}
+
+	$session->hit(true, $location);
 
 	header('HTTP/1.0 302 Found');
 	header('Location: '.$location);

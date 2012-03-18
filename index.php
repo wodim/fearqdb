@@ -28,24 +28,6 @@ foreach ($params as $k => $v) {
 
 $params[0] = isset($params[0]) ? $params[0] : 'home';
 
-/* hits storing */
-$module = $params[0];
-switch ($module) {
-	case 'login':
-	case 'logout':
-		$module = 'session';
-		break;
-	case 'hidden':
-	case 'page':
-	case 'home':
-		$module = 'list';
-		break;
-	default:
-		$module = $params[0] ? 'list' : 'quote';
-}
-$session->hit();
-/* end hits storing */
-
 switch ($params[0]) {
 	// TODO this should be configurable on config.php, per domain
 	case 'robots.txt':
@@ -81,17 +63,27 @@ switch ($params[0]) {
 		break;
 	case 'login':
 	case 'logout':
+		$module = 'session';
 		require(modules_dir.'login.php');
 		break;
 	case 'hidden':
 	case 'page':
 	case 'home':
+		$module = 'list';
 		require(modules_dir.'list.php');
 		break;
 	default:
 		if (!$params[0]) {
+			$module = 'list';
 			require(modules_dir.'list.php');
 		} else {
+			$module = 'quote';
 			require(modules_dir.'quote.php');
 		}
 }
+
+if (!$module) {
+	$module = $params[0];
+}
+
+$session->hit();

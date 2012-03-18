@@ -80,8 +80,9 @@ class Session {
 	}
 
 	// store a hit
-	function hit() {
+	function hit($is_redir = false, $location) {
 		if ($this->hit) {
+			$this-log('Tried to store a hit twice.');
 			return;
 		}
 
@@ -89,6 +90,7 @@ class Session {
 
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		$redir = $is_redir ? clean($location, 256, true) : '';
 		$search = clean($this->search, 256, true);
 		/* $module = $module; */
 		$db_table = $config['db']['table'];
@@ -98,10 +100,11 @@ class Session {
 		$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? clean($_SERVER['HTTP_USER_AGENT'], 256, true) : '';
 		/* $time = NOW(); */
 
-		$db->query(sprintf('INSERT INTO hits (ip, url, module, search, db, level, user, referer, user_agent, time)
-			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
+		$db->query(sprintf('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, time)
+			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
 			$ip,
 			$url,
+			$redir,
 			$module,
 			$search,
 			$db_table,
@@ -110,6 +113,21 @@ class Session {
 			$referer,
 			$user_agent));
 		$this->hit = true;
+	}
+	
+	function log($text) {
+		$ip = $this->ip;
+		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		$db_table = $config['db']['table'];
+		$text = clean($text, 256, true);
+
+		$db->query(sprintf('INSERT INTO logs (ip, time, url, db, text)
+			VALUES(\'%s\', NOW(), \'%s\', \'%s\', \'%s\')',
+			$ip,
+			/* NOW() */
+			$url,
+			$db_table,
+			$text));
 	}
 
 	function create($password) {
