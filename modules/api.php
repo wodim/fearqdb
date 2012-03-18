@@ -29,6 +29,7 @@ function out($out) {
 
 function generic_error($error = 'unspecified') {
 	header('503 Unavailable');
+	$session->log(clean(sprintf('JSON API error: "%s"', print_r($error, true)), 256, true));
 	out(array('error' => $error));
 }
 
