@@ -59,7 +59,7 @@ function clean($string, $maxlen = 0, $escape = false) {
 	$string = $maxlen ? substr(trim($string), 0, $maxlen) : trim($string);
 
 	if ($escape) {
-		escape($string);
+		$string = escape($string);
 	}
 
 	return $string;
