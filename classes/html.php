@@ -34,21 +34,6 @@ class HTML {
 		$vars = compact('session');
 		Haanga::Load('footer.html', $vars);
 		printf('<!-- %.4f - %d -->', (microtime(true) - $start), $db->num_queries);
-		// always die here.
-		die();
-	}
-
-	function do_error($error, $status = null) {
-		if ($status) {
-			header('HTTP/1.0 '.$status);
-		}
-
-		$this->do_header($error);
-
-		$vars = compact('error');
-		Haanga::Load('error.html', $vars);
-
-		$this->do_footer();
 	}
 
 	function do_pages($page = 1, $total_pages, $query, $adjacents = 3) {
@@ -90,13 +75,19 @@ class HTML {
 	}
 
 	function do_sysmsg($title, $message, $code) {
+		global $session;
+
 		header('HTTP/1.1 '.$code);
 		$this->do_header($title);
 		if (!$message) {
 			$message = _('Are you lost?');
 		}
+		
+		$session->log(clean(sprintf('Soft error: "(%d) %s - %s"', $code, $title, $message), 256, true));
+		
 		$vars = compact('title', 'message');
 		Haanga::Load('sysmsg.html', $vars);
 		$this->do_footer();
+		die();
 	}
 }

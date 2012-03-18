@@ -51,5 +51,3 @@ switch ($params[0]) {
 if ($session->level != 'anonymous') { // it's already logged in, it's not logging out... so what the hell
 	redir();
 }
-
-die();

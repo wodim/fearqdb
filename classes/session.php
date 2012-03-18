@@ -31,6 +31,7 @@ class Session {
 	var $expected_cookie = '';
 	var $xsrf = '';
 	var $type = '';
+	var $hit = false;
 
 	function init() {
 		global $config, $db, $params;
@@ -54,6 +55,7 @@ class Session {
 
 		if (count($tmp) < 2) {
 			// garbage; destroy
+			$this->log(clean(sprintf('Garbage cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
 			$this->destroy();
 			return false;
 		}
@@ -64,6 +66,7 @@ class Session {
 				/* return already */
 				return true;
 			}
+			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
 			return false;
 		} else {
 			$user = new User();
@@ -78,12 +81,67 @@ class Session {
 		return false;
 	}
 
+	// store a hit
+	function hit($is_redir = false, $location = null) {
+		if ($this->hit) {
+			$this->log('Tried to store a hit twice.');
+			return;
+		}
+
+		global $config, $module, $db;
+
+		$ip = $this->ip;
+		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		$redir = $is_redir ? clean($location, 256, true) : '';
+		$search = clean($this->search, 256, true);
+		/* $module = $module; */
+		$db_table = $config['db']['table'];
+		$level = $this->level;
+		$user = $this->user;
+		$referer = isset($_SERVER['HTTP_REFERER']) ? clean($_SERVER['HTTP_REFERER'], 256, true) : '';
+		$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? clean($_SERVER['HTTP_USER_AGENT'], 256, true) : '';
+		/* $time = NOW(); */
+
+		$db->query(sprintf('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, time)
+			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
+			$ip,
+			$url,
+			$redir,
+			$module,
+			$search,
+			$db_table,
+			$level,
+			$user,
+			$referer,
+			$user_agent));
+		$this->hit = true;
+	}
+	
+	function log($text) {
+		global $config, $db;
+	
+		$ip = $this->ip;
+		$url = clean($_SERVER['REQUEST_URI'], 256, true);
+		$db_table = $config['db']['table'];
+		$text = clean($text, 256, true);
+
+		$db->query(sprintf('INSERT INTO logs (ip, time, url, db, text)
+			VALUES(\'%s\', NOW(), \'%s\', \'%s\', \'%s\')',
+			$ip,
+			/* NOW() */
+			$url,
+			$db_table,
+			$text));
+	}
+
 	function create($password) {
 		global $config;
 
 		if ($password != $this->password()) {
 			return false;
 		}
+
+		$this->log('Created session');
 
 		// the password is generated daily soooo exp time = 24 hours
 		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
@@ -107,6 +165,8 @@ class Session {
 
 	function destroy() {
 		global $config;
+
+		$this->log('Destroyed session');
 
 		setcookie($config['site']['cookie_name'], '', time() - 3600, '/');
 		return true;

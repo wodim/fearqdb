@@ -24,11 +24,12 @@ global $params, $config, $session;
 
 /* move json functions to utils.php? */
 function out($out) {
-	die(json_encode($out));
+	echo(json_encode($out));
 }
 
 function generic_error($error = 'unspecified') {
 	header('503 Unavailable');
+	$session->log(clean(sprintf('JSON API error: "%s"', print_r($error, true)), 256, true));
 	out(array('error' => $error));
 }
 

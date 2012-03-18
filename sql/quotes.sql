@@ -10,6 +10,46 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Database: `quotes`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hits`
+--
+
+CREATE TABLE IF NOT EXISTS `hits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(15) NOT NULL,
+  `url` varchar(256) NOT NULL,
+  `redir` varchar(256) NOT NULL,
+  `module` varchar(8) NOT NULL,
+  `search` varchar(256) NOT NULL,
+  `db` varchar(16) NOT NULL,
+  `level` enum('anonymous','reader','user') NOT NULL,
+  `user` int(11) NOT NULL DEFAULT '0',
+  `referer` varchar(256) NOT NULL,
+  `user_agent` varchar(256) NOT NULL,
+  `time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(15) NOT NULL,
+  `time` datetime NOT NULL,
+  `url` varchar(256) NOT NULL,
+  `db` varchar(10) NOT NULL,
+  `text` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `quotes`
 --

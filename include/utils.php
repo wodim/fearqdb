@@ -18,11 +18,13 @@
 */
 
 function redir($location = null) {
-	global $config;
+	global $config, $session;
 
 	if (!$location) {
 		$location = $config['site']['root'];
 	}
+
+	$session->hit(true, $location);
 
 	header('HTTP/1.0 302 Found');
 	header('Location: '.$location);
@@ -49,14 +51,18 @@ function system_message($code, $message) {
 }
 /* END LEGACY */
 
-function clean($string, $maxlen = 0) {
-	return(!$maxlen ? (trim($string)) : (substr(trim($string), 0, $maxlen)));
+function escape($string) {
+	return mysql_real_escape_string($string);
 }
 
-function escape($string) {
-	global $db;
-	
-	return $db->escape($string);
+function clean($string, $maxlen = 0, $escape = false) {
+	$string = $maxlen ? substr(trim($string), 0, $maxlen) : trim($string);
+
+	if ($escape) {
+		$string = escape($string);
+	}
+
+	return $string;
 }
 
 function is_bot() {

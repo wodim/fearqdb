@@ -32,16 +32,7 @@ switch ($params[0]) {
 	// TODO this should be configurable on config.php, per domain
 	case 'robots.txt':
 		header('Content-Type: text/plain');
-		die("User-agent: *\nDisallow: /");
-		break;
-	case 'direct_query':
-		header('HTTP/1.0 403');
-		die('fbd DIRECT_DBQ error');
-	case 'flush':
-	case 'purge':
-		header('Content-Type: text/plain, charset=UTF-8');
-		system('rm templates/compiled/* -rfv');
-		die();
+		echo("User-agent: *\nDisallow: /");
 		break;
 	case 'admin':
 		require(modules_dir.'admin.php');
@@ -72,17 +63,27 @@ switch ($params[0]) {
 		break;
 	case 'login':
 	case 'logout':
+		$module = 'session';
 		require(modules_dir.'login.php');
 		break;
 	case 'hidden':
 	case 'page':
 	case 'home':
+		$module = 'list';
 		require(modules_dir.'list.php');
 		break;
 	default:
 		if (!$params[0]) {
+			$module = 'list';
 			require(modules_dir.'list.php');
 		} else {
+			$module = 'quote';
 			require(modules_dir.'quote.php');
 		}
 }
+
+if (!isset($module)) {
+	$module = $params[0];
+}
+
+$session->hit();
