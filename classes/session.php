@@ -116,6 +116,8 @@ class Session {
 	}
 	
 	function log($text) {
+		global $config, $db;
+	
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
 		$db_table = $config['db']['table'];
