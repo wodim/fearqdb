@@ -82,7 +82,7 @@ switch ($params[0]) {
 		}
 }
 
-if (!$module) {
+if (!isset($module)) {
 	$module = $params[0];
 }
 
