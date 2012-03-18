@@ -55,6 +55,7 @@ class Session {
 
 		if (count($tmp) < 2) {
 			// garbage; destroy
+			$this->log(clean(sprintf('Garbage cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
 			$this->destroy();
 			return false;
 		}
@@ -65,6 +66,7 @@ class Session {
 				/* return already */
 				return true;
 			}
+			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
 			return false;
 		} else {
 			$user = new User();
@@ -139,6 +141,8 @@ class Session {
 			return false;
 		}
 
+		$this->log('Created session');
+
 		// the password is generated daily soooo exp time = 24 hours
 		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
 		return true;
@@ -161,6 +165,8 @@ class Session {
 
 	function destroy() {
 		global $config;
+
+		$this->log('Destroyed session');
 
 		setcookie($config['site']['cookie_name'], '', time() - 3600, '/');
 		return true;
