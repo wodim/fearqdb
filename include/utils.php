@@ -60,7 +60,7 @@ function escape($string) {
 }
 
 function is_bot() {
-	return(preg_match('/bot|slurp/i', $_SERVER['HTTP_USER_AGENT']));
+	return(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|slurp/i', $_SERVER['HTTP_USER_AGENT']));
 }
 
 function elapsed_time($time) {
