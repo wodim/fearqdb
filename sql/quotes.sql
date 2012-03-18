@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `hits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(15) NOT NULL,
   `url` varchar(256) NOT NULL,
+  `redir` varchar(256) NOT NULL,
   `module` varchar(8) NOT NULL,
   `search` varchar(256) NOT NULL,
   `db` varchar(16) NOT NULL,
@@ -30,6 +31,22 @@ CREATE TABLE IF NOT EXISTS `hits` (
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(15) NOT NULL,
+  `time` datetime NOT NULL,
+  `url` varchar(256) NOT NULL,
+  `db` varchar(10) NOT NULL,
+  `text` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
 
 -- --------------------------------------------------------
 
