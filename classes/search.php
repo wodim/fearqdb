@@ -57,7 +57,7 @@ class Search {
 
 		/* TODO: detect whether $page is out of bounds and don't actually do the query */
 
-		$quotes = $db->get_results(sprintf(Search::SEARCH,
+		$this->results = $db->get_results(sprintf(Search::SEARCH,
 			Quote::READ, 
 			$criteria, 
 			$config['site']['collate'],
@@ -65,7 +65,7 @@ class Search {
 			(($this->page - 1) * $this->page_size), 
 			$this->page_size));
 	
-		return $quotes;
+		return true;
 	}
 		
 	function clean_criteria($criteria) {
