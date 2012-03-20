@@ -21,7 +21,7 @@ require_once('config.php');
 require_once(classes_dir.'quote.php');
 require_once(classes_dir.'search.php');
 
-global $params, $config, $db;
+global $params, $config, $db, $session;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	isset($_POST['query'])) {
@@ -35,9 +35,11 @@ if (!isset($params[1]) || (trim($params[1]) == '')) {
 $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]) : 1);
 
 $search = new Search();
-$search->criteria = $params[1];
+$search->criteria = urldecode($params[1]);
 $search->page = $page_number;
 $search->read();
+
+$session->search = htmlspecialchars(urldecode($params[1]));
 
 if (!$search->results) {
 	if ($search->page_size * $search->page < $search->count) {
