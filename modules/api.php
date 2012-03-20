@@ -46,7 +46,7 @@ function get_last() {
 		$config['db']['table']));
 }
 
-function clean_sensitive($quote) {
+function hide_sensitive($quote) {
 	unset($quote->read);
 	unset($quote->id);
 	$quote->ip = $quote->semiip;
