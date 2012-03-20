@@ -126,8 +126,8 @@ switch ($params[1]) {
 		}
 		$search = new Search();
 		$search->criteria = clean($_POST['criteria']);
-		$search->page = (int)$_POST['page'];
-		$search->page_size = (int)$_POST['page_size'];
+		$search->page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+		$search->page_size = isset($_POST['page_size']) ? (int)$_POST['page_size'] : 0;
 		$results = array();
 		if ($search->count) {
 			foreach ($search->results as $result) {
