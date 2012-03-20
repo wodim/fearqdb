@@ -78,3 +78,4 @@ class Search {
 		
 		return $criteria;
 	}
+}
