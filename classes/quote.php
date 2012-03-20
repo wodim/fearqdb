@@ -22,8 +22,8 @@ require_once(include_dir.'utils.php');
 
 class Quote {
 	const READ = 'id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts';
-	const READ_FROM_ID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
-	const READ_FROM_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = %d AND db = \'%s\'';
+	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
+	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = %d AND db = \'%s\'';
 
 	var $read = false;
 	var $id = 0;
