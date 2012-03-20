@@ -19,6 +19,7 @@
 
 require_once('config.php');
 require_once(classes_dir.'quote.php');
+require_once(classes_dir.'search.php');
 
 global $params, $config, $db;
 
@@ -33,22 +34,12 @@ if (!isset($params[1]) || (trim($params[1]) == '')) {
 
 $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]) : 1);
 
-$search = urldecode($params[1]);
-$session->search = htmlspecialchars($search);
-$search = escape($search);
-$search = preg_replace('/^\*|\*$/', '', $search);
-$search = preg_replace('/^\?|\?$/', '', $search);
-$search = str_replace('%', '\%', $search);
-$search = str_replace('_', '\_', $search);
-$search = str_replace('*', '%', $search);
-$search = str_replace('?', '_', $search);
-$search = $search == '' ? '%' : sprintf('%%%s%%', $search);
+$search = new Search();
+$search->criteria = $params[1];
+$search->search();
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\' ORDER BY date DESC LIMIT %d,%d',
-	Quote::READ, $search, $config['site']['collate'], $config['db']['table'], (--$page_number * $config['site']['page_size']), $config['site']['page_size']));
-
-if (!$quotes) {
-	if ($page_number) {
+if (!$search->results) {
+	if ($search->page_size * $search->page < $search->count) {
 		$html->do_sysmsg(_('Page not found'), null, 404);
 	} else {
 		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.'), 404);
@@ -56,9 +47,8 @@ if (!$quotes) {
 } else {
 	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
 
-	$rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\'',
-		$search, $config['site']['collate'], $config['db']['table']));
-	$pager = $html->do_pages(++$page_number, ceil($rows / $config['site']['page_size']), sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
+	$pager = $html->do_pages(++$search->page, ceil($search->count / $search->page_size), 
+		sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
 
 	$quote = new Quote();
 	$odd = true;
