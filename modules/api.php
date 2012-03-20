@@ -19,6 +19,7 @@
 
 require_once('config.php');
 require_once(classes_dir.'quote.php');
+require_once(classes_dir.'search.php');
 
 global $params, $config, $session;
 
