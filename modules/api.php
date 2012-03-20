@@ -118,6 +118,34 @@ switch ($params[1]) {
 					'error' => 'no_such_quote')));
 		}
 		break;
+	case 'search':
+		enforce_post();
+		if (!isset($_POST['criteria'])) {
+			generic_error('not_enough_parameters');
+		}
+		$search = new Search();
+		$search->criteria = clean($_POST['criteria']);
+		$search->page = (int)$_POST['page'];
+		$search->page_size = (int)$_POST['page_size'];
+		$results = array();
+		if ($search->count)) {
+			foreach ($search->results as $result) {
+				if ($quote->hidden) {
+					$result->text = '';
+					$result->comment = '';
+				}
+				$result = hide_sensitive($result);
+				$results[] = $result;
+			}
+			out(array('results' =>
+				array('success' => 1,
+					'quotes' => $results)));
+		} else {
+			out(array('results' =>
+				array('success' => 0,
+					'error' => 'no_quotes_found')));
+		}		
+		break;
 	default:
 		generic_error('method_not_implemented');
 }
