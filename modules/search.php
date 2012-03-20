@@ -63,7 +63,7 @@ if (!$quotes) {
 	$quote = new Quote();
 	$odd = true;
 	foreach ($quotes as $this_quote) {
-		$quote->read(0, $this_quote);
+		$quote->read($this_quote);
 		$quote->output($odd);
 		$odd = !$odd;
 	}

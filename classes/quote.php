@@ -22,8 +22,8 @@ require_once(include_dir.'utils.php');
 
 class Quote {
 	const READ = 'id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts';
-	const READ_SPEC = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
-	const READ_SPEC_GUESS = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id >= %d AND db = \'%s\'';
+	const READ_FROM_ID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
+	const READ_FROM_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = %d AND db = \'%s\'';
 
 	var $read = false;
 	var $id = 0;
@@ -50,82 +50,82 @@ class Quote {
 	var $host = '';
 	var $tweet = '';
 
-	function read_permaid($permaid) {
-		global $db, $config;
+	function read($results = null) {
+		global $db, $config, $session;
 
-		$result = $db->get_var(sprintf('SELECT id FROM quotes WHERE permaid = \'%s\' AND db = \'%s\'',
-			clean(escape($permaid), 4), $config['db']['table']));
-			
-		if ($result) {
-			$this->read($result);
-			return true;
-		}
-		
-		return false;
-	}
-
-	function read($id = 0, $results = null, $guess = false, $permaid = false) {
-		global $db, $config;
-
-		if ($id && !$results) {
-			$results = $db->get_row(sprintf($guess ? Quote::READ_SPEC_GUESS : Quote::READ_SPEC, (int)$id, $config['db']['table']));
+		/* we may already have results (eg. when called from list.php)
+			but maybe we do not, so fetch from the db */
+		if (!$results) {
+			/* if we didn't have $results, no id and no permaid, this was a faulty rqeuest. */
+			if (!$this->id && !$this->permaid) {
+				$session->log('Using read() with no id or permaid and with no prebaked results');
+				return false;
+			}
+			$query = $this->id ? 
+				sprintf(Quote::READ_BY_ID, (int)$this->id, $config['db']['table']) :
+				sprintf(Quote::READ_BY_PERMAID, clean($this->permaid, PERMAID_LENGTH, true), $config['db']['table']);
+			$results = $db->get_row($query);
 		}
 
-		// what a lose of time this shit is, especially when already having $obj
-		// rework?
-		if ($results) {
-			foreach (get_object_vars($results) as $variable => $value) {
-				$this->$variable = $value;
-			}
-			if (preg_match('/^(.*)!/', $this->nick, $matches)) {
-				$this->nick = $matches[1];
-			}
-			// hackish but still right.
-			switch (is_bot() ? $config['site']['privacy_level_for_bots'] : $config['site']['privacy_level']) {
-				case -1:
-					$this->hidden = 0;
-					break;
-				case 1:
-					$this->hidden = 1;
-					break;
-			}
-			$this->new = (date('U') - $this->ts < (60 * 60 * 24));
-			$valid = preg_match_all('/(\d+)$/', $this->ip, $hide);
-			$hide = $valid ? $hide[1][0] : '';
+		/* still no results? return */
+		if (!$results)
+			return false;
+		}
 
-			if ($this->ip != 'kobaz') {
-				if ($config['site']['ip']['host']) {
-					$host = gethostbyaddr($this->ip);
-					if (!$host || $host == $this->ip) {
-						$this->host = $this->semihost = null;
-					} else {
-						$this->host = $host;
-					}
+		foreach (get_object_vars($results) as $variable => $value) {
+			$this->$variable = $value;
+		}
+
+		if (preg_match('/^(.*)!/', $this->nick, $matches)) {
+			$this->nick = $matches[1];
+		}
+
+		// hackish but still right.
+		switch (is_bot() ? $config['site']['privacy_level_for_bots'] : $config['site']['privacy_level']) {
+			case -1:
+				$this->hidden = 0;
+				break;
+			case 1:
+				$this->hidden = 1;
+				break;
+		}
+
+		$this->new = (date('U') - $this->ts < (60 * 60 * 24));
+		$valid = preg_match_all('/(\d+)$/', $this->ip, $hide);
+		$hide = $valid ? $hide[1][0] : '';
+
+		if ($this->ip != 'kobaz') {
+			if ($config['site']['ip']['host']) {
+				$host = gethostbyaddr($this->ip);
+				if (!$host || $host == $this->ip) {
+					$this->host = $this->semihost = null;
+				} else {
+					$this->host = $host;
 				}
-
-				if ($config['site']['ip']['part']) {
-					preg_match_all('/^(\d*\.\d*\.\d*)\.(.*)/', $this->ip, $parts);
-					$this->semiip = sprintf('%s.*', $parts[1][0]);
-					if ($this->host) {
-						$this->semihost = str_replace($parts[2][0], '*', $this->host);
-					}
-				}
-			} else {
-				$this->semiip = _('Imported from the bot');
 			}
 
-			$this->permalink = sprintf('%s%s', $config['core']['domain'], $this->permaid);
-			$date = elapsed_time(date('U') - $this->ts);
-			$this->timelapse = ($date == -1) ? false : $date;
-			$this->read = true;
-			return true;
+			if ($config['site']['ip']['part']) {
+				preg_match_all('/^(\d*\.\d*\.\d*)\.(.*)/', $this->ip, $parts);
+				$this->semiip = sprintf('%s.*', $parts[1][0]);
+				if ($this->host) {
+					$this->semihost = str_replace($parts[2][0], '*', $this->host);
+				}
+			}
+		} else {
+			$this->semiip = _('Imported from the bot');
 		}
-		return false;
+
+		$this->permalink = sprintf('%s%s', $config['core']['domain'], $this->permaid);
+		$date = elapsed_time(date('U') - $this->ts);
+		$this->timelapse = ($date == -1) ? false : $date;
+		$this->read = true;
+		return true;
 	}
 
 	function output($odd = true) {
+		global $session;
 		if (!$this->read) {
-			printf('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
+			$session->log('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
 			die();
 		}
 
@@ -145,8 +145,9 @@ class Quote {
 	}
 
 	function output_rss() {
+		global $session;
 		if (!$this->read) {
-			printf('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
+			$session->log('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
 			die();
 		}
 
@@ -243,11 +244,11 @@ class Quote {
 				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%d\')',
 				/* no way of forcing a permaid */
 				sprintf('%04x', rand(0, 65535)),
-				escape($this->nick),
+				clean($this->nick, MAX_NICK_LENGTH, true),
 				/* date */
-				escape($this->ip),
+				$this->ip,
 				escape($this->text),
-				escape($this->comment),
+				clean($this->comment, MAX_COMMENT_LENGTH, true),
 				$config['db']['table'],
 				(int)$this->hidden,
 				(int)$this->approved));
@@ -256,11 +257,11 @@ class Quote {
 				nick = \'%s\', permaid = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
 				db = \'%s\', hidden = %d, approved = %d
 				where id = %d',
-				escape($this->nick),
+				clean($this->nick, MAX_NICK_LENGTH, true),
 				$this->permaid,
 				$this->ip,
 				escape($this->text),
-				escape($this->comment),
+				clean($this->comment, MAX_COMMENT_LENGTH, true),
 				$config['db']['table'],
 				(int)$this->hidden,
 				(int)$this->approved,

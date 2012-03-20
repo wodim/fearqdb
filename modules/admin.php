@@ -36,7 +36,8 @@ switch ($params[1]) {
 		for ($i = 2; $i < 650; $i++) {
 			printf("Creating permaid for %d...\n", $i);
 			$quote = new Quote();
-			if ($quote->read($i)) {
+			$quote->id = $i;
+			if ($quote->read()) {
 				printf("Read %d!\n", $i);
 				$quote->permaid = sprintf('%04x', rand(0, 65535));
 				printf("New permaid for %d is %s\n", $i, $quote->permaid);

@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `db` varchar(10) NOT NULL,
   `text` varchar(256) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `ip` varchar(32) NOT NULL,
   `text` text NOT NULL,
   `comment` varchar(1000) NOT NULL,
-  `db` varchar(10) NOT NULL DEFAULT '',
+  `db` varchar(16) NOT NULL DEFAULT '',
   `upvotes` int(11) NOT NULL DEFAULT '0',
   `downvotes` int(11) NOT NULL DEFAULT '0',
   `reports` int(11) NOT NULL DEFAULT '0',

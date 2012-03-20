@@ -102,6 +102,7 @@ define('classes_dir', $config['core']['classes'].'/');
 define('statics_dir', $config['core']['statics'].'/');
 
 require(include_dir.'utils.php');
+require(include_dir.'defines.php');
 
 require(include_dir.'ezsql/shared/ez_sql_core.php');
 require(include_dir.'ezsql/mysql/ez_sql_mysql.php');

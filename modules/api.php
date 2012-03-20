@@ -58,10 +58,10 @@ switch ($params[1]) {
 	case 'send':
 		enforce_post();
 		$quote = new Quote();
-		$quote->nick = clean($_POST['nick'], 20);
+		$quote->nick = clean($_POST['nick'], MAX_NICK_LENGTH);
 		$quote->ip = $session->ip;
-		$quote->text = clean($_POST['text'], 10000);
-		$quote->comment = clean($_POST['comment'], 1000);
+		$quote->text = escape($_POST['text']);
+		$quote->comment = clean($_POST['comment'], MAX_COMMENT_LENGTH);
 		$quote->hidden = (isset($_POST['hidden']) && ((int)$_POST['hidden'] == 0 || (int)$_POST['hidden'] == 1)) ? (int)$_POST['hidden'] : '0';
 		$quote->approved = ($session->level != 'anonymous') ? '1' : '0';
 		$quote->save();
@@ -82,8 +82,24 @@ switch ($params[1]) {
 			generic_error('not_enough_parameters');
 		}
 		$quote = new Quote();
-		$quote->read_permaid($params[2]);
+		$quote->permaid = $params[2];
+		$quote->read();
+		
 		if ($quote->read) {
+			/* hide sensitive fields */
+			unset($quote->read);
+			unset($quote->id);
+			$quote->ip = $quote->semiip;
+			unset($quote->semiip);
+			unset($quote->upvotes);
+			unset($quote->downvotes);
+			unset($quote->reports);
+			unset($quote->views);
+			unset($quote->approved);
+			unset($quote->db);
+			unset($quote->permalink);
+			unset($quote->host);
+			unset($quote->tweet);
 			if (!$quote->hidden) {
 				out(array('results' =>
 					array('success' => 1,

@@ -17,40 +17,18 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('config.php');
-require_once(classes_dir.'quote.php');
+define('MAX_IP_LENGTH', 15);
+define('MAX_URL_LENGTH', 256);
+define('MAX_REDIR_LENGTH', MAX_URL_LENGTH);
+define('MAX_MODULE_LENGTH', 8);
+define('MAX_SEARCH_LENGTH', MAX_URL_LENGTH);
+define('MAX_DB_LENGTH', 16);
+define('MAX_REFERER_LENGTH', MAX_URL_LENGTH);
+define('MAX_UA_LENGTH', MAX_URL_LENGTH);
 
-global $params, $config, $q;
+define('MAX_LOG_LENGTH', MAX_URL_LENGTH);
 
-$quoteid = $permaid = null;
-
-if (isset($params[0]) && preg_match('/^\d\d\d$/', $params[0])) {
-	$quoteid = $params[0];
-} elseif (isset($params[0])) {
-	$permaid = substr($params[0], 0, PERMAID_LENGTH);
-} else {
-	$html->do_sysmsg(_('Page not found'), null, 404);
-}
-
-$quote = new Quote();
-
-if ($quoteid) {
-	$quote->id = $quoteid;
-} else {
-	$quote->permaid = $permaid;
-}
-
-if (!$quote->read() || $quote->approved != 1) {
-	$html->do_sysmsg(_('No such quote'), null, 404);
-}
-
-if ($quoteid) {
-	redir(sprintf('/%s', $quote->permaid));
-	die();
-}
-
-$html->do_header(sprintf(_('Quote %s'), $quote->permaid));
-
-$quote->output();
-
-$html->do_footer();
+define('PERMAID_LENGTH', 4);
+define('MAX_QUOTE_LENGTH', -1);
+define('MAX_NICK_LENGTH', 20);
+define('MAX_COMMENT_LENGTH', 1000);
