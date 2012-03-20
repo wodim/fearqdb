@@ -77,10 +77,10 @@ switch ($params[1]) {
 	case 'send':
 		enforce_post();
 		$quote = new Quote();
-		$quote->nick = clean($_POST['nick'], MAX_NICK_LENGTH);
+		$quote->nick = $_POST['nick'];
 		$quote->ip = $session->ip;
-		$quote->text = escape($_POST['text']);
-		$quote->comment = clean($_POST['comment'], MAX_COMMENT_LENGTH);
+		$quote->text = $_POST['text'];
+		$quote->comment = $_POST['comment'];
 		$quote->hidden = (isset($_POST['hidden']) && ((int)$_POST['hidden'] == 0 || (int)$_POST['hidden'] == 1)) ? (int)$_POST['hidden'] : '0';
 		$quote->approved = ($session->level != 'anonymous') ? '1' : '0';
 		$quote->save();
