@@ -48,7 +48,7 @@ if (!$search->results) {
 } else {
 	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
 
-	$pager = $html->do_pages(($search->page + 1), ceil($search->count / $search->page_size), 
+	$pager = $html->do_pages($search->page, ceil($search->count / $search->page_size), 
 		sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
 
 	$quote = new Quote();
