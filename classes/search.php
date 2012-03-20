@@ -41,7 +41,7 @@ class Search {
 			$this->page_size = $config['site']['page_size'];
 		}
 	
-		$criteria = clean_criteria($criteria);
+		$criteria = $this->clean_criteria($criteria);
 
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;
