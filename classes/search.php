@@ -23,7 +23,7 @@ require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
 	const SEARCH = 'SELECT %s FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\' ORDER BY date DESC LIMIT %d,%d';
-	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\''
+	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE approved = 1 AND text LIKE \'%s\' COLLATE %s AND db = \'%s\'';
 	
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
