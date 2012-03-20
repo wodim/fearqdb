@@ -132,11 +132,13 @@ switch ($params[1]) {
 		$results = array();
 		if ($search->count) {
 			foreach ($search->results as $result) {
-				if ($quote->hidden) {
+				if ($result->hidden) {
 					$result->text = '';
 					$result->comment = '';
 				}
+				$result->semiip = '';
 				$result = hide_sensitive($result);
+				unset($result->ip);
 				$results[] = $result;
 			}
 			out(array('results' =>
