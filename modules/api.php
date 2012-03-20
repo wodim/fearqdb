@@ -46,6 +46,24 @@ function get_last() {
 		$config['db']['table']));
 }
 
+function clean_sensitive($quote) {
+	unset($quote->read);
+	unset($quote->id);
+	$quote->ip = $quote->semiip;
+	unset($quote->semiip);
+	unset($quote->upvotes);
+	unset($quote->downvotes);
+	unset($quote->reports);
+	unset($quote->views);
+	unset($quote->approved);
+	unset($quote->db);
+	unset($quote->permalink);
+	unset($quote->host);
+	unset($quote->tweet);
+
+	return $quote;
+}
+
 if (isset($params[2]) && $params[2] == $session->password()) {
 	$session->level = 'reader';
 }
@@ -84,20 +102,7 @@ switch ($params[1]) {
 		$quote = new Quote();
 		$quote->permaid = $params[2];
 		if ($quote->read()) {
-			/* hide sensitive fields */
-			unset($quote->read);
-			unset($quote->id);
-			$quote->ip = $quote->semiip;
-			unset($quote->semiip);
-			unset($quote->upvotes);
-			unset($quote->downvotes);
-			unset($quote->reports);
-			unset($quote->views);
-			unset($quote->approved);
-			unset($quote->db);
-			unset($quote->permalink);
-			unset($quote->host);
-			unset($quote->tweet);
+			$quote = hide_sensitive($quote);
 			if (!$quote->hidden) {
 				out(array('results' =>
 					array('success' => 1,
