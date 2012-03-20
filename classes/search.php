@@ -40,14 +40,16 @@ class Search {
 		if (!$this->page_size || $this->page_size > 50) {
 			$this->page_size = $config['site']['page_size'];
 		}
-	
-		$criteria = $this->clean_criteria($criteria);
+
+		/* do not modify $this->criteria, the script that called us may want to access
+			it later and we don't want to send garbage back */
+		$criteria = $this->clean_criteria($this->criteria);
 
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;
 			2) we want to know whether $page is out of bounds */
 		$this->count = $db->get_var(sprintf(Search::COUNT,
-			$search, $config['site']['collate'], $config['db']['table']));
+			$criteria, $config['site']['collate'], $config['db']['table']));
 
 		if (!$this->count) {
 			return false;
