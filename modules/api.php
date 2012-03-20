@@ -83,9 +83,7 @@ switch ($params[1]) {
 		}
 		$quote = new Quote();
 		$quote->permaid = $params[2];
-		$quote->read();
-		
-		if ($quote->read) {
+		if ($quote->read()) {
 			/* hide sensitive fields */
 			unset($quote->read);
 			unset($quote->id);

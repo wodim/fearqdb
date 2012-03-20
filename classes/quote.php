@@ -68,7 +68,7 @@ class Quote {
 		}
 
 		/* still no results? return */
-		if (!$results)
+		if (!$results) {
 			return false;
 		}
 
