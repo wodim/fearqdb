@@ -139,7 +139,8 @@ switch ($params[1]) {
 			}
 			out(array('results' =>
 				array('success' => 1,
-					'quotes' => $results)));
+					'quotes' => $results,
+					'count' => $search->count)));
 		} else {
 			out(array('results' =>
 				array('success' => 0,
