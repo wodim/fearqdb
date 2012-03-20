@@ -128,7 +128,7 @@ switch ($params[1]) {
 		$search->page = (int)$_POST['page'];
 		$search->page_size = (int)$_POST['page_size'];
 		$results = array();
-		if ($search->count)) {
+		if ($search->count) {
 			foreach ($search->results as $result) {
 				if ($quote->hidden) {
 					$result->text = '';
