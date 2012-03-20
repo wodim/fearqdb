@@ -31,10 +31,10 @@ class Search {
 	var $results = array();
 	var $count = 0;
 	
-	var $page = 0;
+	var $page = 1;
 	var $page_size = 0;
 	
-	function search() {
+	function read() {
 		global $config, $db;
 
 		if (!$this->page_size || $this->page_size > 50) {

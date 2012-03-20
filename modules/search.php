@@ -37,7 +37,7 @@ $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]
 $search = new Search();
 $search->criteria = $params[1];
 $search->page = $page_number;
-$search->search();
+$search->read();
 
 if (!$search->results) {
 	if ($search->page_size * $search->page < $search->count) {
