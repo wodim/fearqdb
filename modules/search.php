@@ -53,7 +53,7 @@ if (!$search->results) {
 
 	$quote = new Quote();
 	$odd = true;
-	foreach ($quotes as $this_quote) {
+	foreach ($search->results as $this_quote) {
 		$quote->read($this_quote);
 		$quote->output($odd);
 		$odd = !$odd;
