@@ -35,7 +35,7 @@ class Search {
 	var $page_size = 0;
 	
 	function search() {
-		global $this, $db;
+		global $config, $db;
 
 		if (!$this->page_size || $this->page_size > 50) {
 			$this->page_size = $config['site']['page_size'];
