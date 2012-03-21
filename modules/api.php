@@ -37,12 +37,6 @@ function generic_error($error = 'unspecified') {
 	die();
 }
 
-function enforce_post() {
-	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-		generic_error('post_required');
-	}
-}
-
 function get_last() {
 	global $db, $config;
 
@@ -68,7 +62,36 @@ function hide_sensitive($quote) {
 	return $quote;
 }
 
-if (isset($params[2]) && $params[2] == $session->password()) {
+function check_key($key) {
+	global $config;
+	
+	if (!isset($config['site']['api']['keys']) 
+		|| count($config['site']['api']['keys']) == 0) {
+		return false;
+	}
+	
+	foreach ($config['site']['api']['keys'] as $api_key) {
+		if ($key == $api_key) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function required_post($variables) {
+	foreach ($variables as $var) {
+		if (!isset($_POST[$var])) {
+			generic_error('not_enough_parameters');
+		}
+	}
+}
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+	generic_error('post_required');
+}
+
+if (isset($params[2]) && check_key($params[2])) {
 	$session->level = 'reader';
 }
 
@@ -78,7 +101,7 @@ if (!isset($params[1])) {
 
 switch ($params[1]) {
 	case 'send':
-		enforce_post();
+		required_post(array('nick', 'text'));
 		$quote = new Quote();
 		$quote->nick = $_POST['nick'];
 		$quote->ip = $session->ip;
@@ -91,42 +114,35 @@ switch ($params[1]) {
 		out(array('results' =>
 			array('success' => 1,
 				'url' => sprintf('%s%s', $config['core']['domain'], $last),
-				'id' => $last)));
+				'permaid' => $last)));
 		break;
 	case 'last':
 		$last = get_last();
 		out(array('results' =>
 			array('url' => sprintf('%s%s', $config['core']['domain'], $last),
-				'id' => $last)));
+				'permaid' => $last)));
 		break;
 	case 'read':
-		if (!isset($params[2])) {
-			generic_error('not_enough_parameters');
-		}
+		required_post(array('permaid'));
 		$quote = new Quote();
-		$quote->permaid = $params[2];
-		if ($quote->read()) {
-			$quote = hide_sensitive($quote);
-			if (!$quote->hidden) {
-				out(array('results' =>
-					array('success' => 1,
-						'data' => $quote)));
-			} else {
-				out(array('results' =>
-					array('success' => 0,
-						'error' => 'hidden_quote')));
-			}
-		} else {
+		$quote->permaid = $_POST['permaid'];
+		if (!$quote->read()) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'no_such_quote')));
 		}
+		$quote = hide_sensitive($quote);
+		if ($quote->hidden && $session->level == 'anonymous') {
+			unset($quote->text);
+			unset($quote->comment);
+			unset($quote->ip);
+		}
+		out(array('results' =>
+			array('success' => 1,
+				'data' => $quote)));
 		break;
 	case 'search':
-		enforce_post();
-		if (!isset($_POST['criteria'])) {
-			generic_error('not_enough_parameters');
-		}
+		required_post(array('criteria'));
 		$search = new Search();
 		$search->criteria = clean($_POST['criteria']);
 		$search->page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
@@ -146,12 +162,13 @@ switch ($params[1]) {
 			}
 			out(array('results' =>
 				array('success' => 1,
-					'quotes' => $results,
+					'data' => $results,
 					'count' => $search->count)));
 		} else {
 			out(array('results' =>
 				array('success' => 0,
-					'error' => 'no_quotes_found')));
+					'error' => 'no_quotes_found',
+					'count' => 0)));
 		}		
 		break;
 	default:

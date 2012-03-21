@@ -1,0 +1,67 @@
+BRIEF API DOCUMENTATION
+=======================
+
+- All requests require POST, even 'last'.
+- The URL is /api/[method]/[api_key], where /[api_key] is not mandatory. If you
+	don't specify api_key or you specify a wrong one, you will have the same
+	rights as a non-logged in user in the website: you can't read hidden quotes
+	and you can't post a quote without being reviewed first.
+- POST variables marked with * are mandatory.
+	
+METHODS
+=======
+
+send
+----
+	Variables:
+	- *nick
+	- *text
+	- comment
+	- hidden: 1 or 0, whether the quote will be hidden.
+	
+	Returns:
+	- url: URL of the new quote, this is, domain + permaid.
+	- permaid: permaid of the new quote.
+	
+	This method may not fail, it doesn't check whether the params are empty or whether
+they are too long; it will truncate long nicks/comments depending on the limits
+defined in include/defines.php
+
+last
+----
+	Variables:
+	- none
+	
+	Returns:
+	- url: URL of the last quote, this is, domain + permaid.
+	- permaid: permaid of the last quote.
+	
+read
+----
+	Variables:
+	- *permaid
+	
+	Returns:
+	- data (array):
+		- permaid
+		- nick
+		- date
+		- ip: may be partially or completely hidden depending on the site configuration.
+		- comment: may be empty.
+		- hidden: whether the quote is hidden or not; 0 or 1.
+		- ts: quote's unix timestamp.
+		- new: whether the quote has been sent to the site in the latest 24 hours; true or false.
+		- timelapse: human readable time lapse.
+		
+search
+------
+	Variables:
+	- *criteria: using * and ? wildcards; example: "l?l" or "are*sure".
+	- page: results page.
+	- page_size: how many quotes per page.
+	
+	For instance, to read quotes 16-20, use page=4 and page_size=5.
+	
+	Returns:
+	- data (array), with the same parameters as in the 'read' method.
+	- count: number of results.
