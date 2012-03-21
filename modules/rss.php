@@ -42,7 +42,7 @@ Haanga::Load('rss-header.html', $vars);
 
 $quote = new Quote();
 foreach ($quotes as $this_quote) {
-	$quote->read(0, $this_quote);
+	$quote->read($this_quote);
 	$quote->output_rss();
 }
 
