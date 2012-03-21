@@ -25,6 +25,8 @@ global $params, $config, $session;
 
 /* move json functions to utils.php? */
 function out($out) {
+	global $session;
+
 	echo(json_encode($out));
 	$session->hit();
 	die();
