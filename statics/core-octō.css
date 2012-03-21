@@ -251,6 +251,10 @@ a {
 	background: #ececec;
 }
 
+.quote .text strong.criteria {
+	text-decoration: underline;
+}
+
 .quote .meta {
 	color: white;
 	font-size: 9pt;

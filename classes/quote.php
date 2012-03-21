@@ -167,11 +167,36 @@ class Quote {
 	private function text_clean($text, $for = 'www_body') {
 		// this is real crap.
 
-		global $config;
+		global $config, $session;
 
 		// clean only for www. rss uses the CDATA structure which does not require escaping
 		if ($for == 'www_body' || $for == 'www_comment') {
 			$text = htmlspecialchars($text);
+		}
+
+		// mark the search criterium
+		if ($for == 'www_body' && $session->search) {			
+			$pos = 0;
+			$length = mb_strlen($session->search);
+			$criteria = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $session->search));
+			do {
+				// unfortunately we have to do this each time...
+				$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $text));
+				$offset = mb_strpos($plain, $criteria, $pos);
+				if (!$offset) {
+					break;
+				}
+				$first = '<strong class="criteria">';
+				$last = '</strong>';
+				
+				$text = sprintf('%s%s%s%s%s',
+					mb_substr($text, 0, ($offset)),
+					$first,
+					mb_substr($text, $offset, $length),
+					$last,
+					mb_substr($text, ($offset + $length)));
+				$pos = $offset + strlen($first) + $length + strlen($last);
+			} while (1);
 		}
 
 		// clean special chars from copypasting from irc
@@ -222,7 +247,7 @@ class Quote {
 		}
 
 		// fix double utf8 encoding
-		if (strpos($text, 'Ã') !== false || strpos($text, 'Â') !== false) {
+		if (strpos($text, 'Ã') > 0 || strpos($text, 'Â') > 0) {
 			$text = iconv('utf8', 'cp1252', $text);
 		}
 
