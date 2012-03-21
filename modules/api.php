@@ -34,12 +34,12 @@ function generic_error($error = 'unspecified') {
 	header('503 Unavailable');
 	$session->log(clean(sprintf('JSON API error: "%s"', print_r($error, true)), 256, true));
 	out(array('error' => $error));
+	die();
 }
 
 function enforce_post() {
 	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		generic_error('post_required');
-		die();
 	}
 }
 
