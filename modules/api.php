@@ -39,6 +39,7 @@ function generic_error($error = 'unspecified') {
 function enforce_post() {
 	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		generic_error('post_required');
+		die();
 	}
 }
 
