@@ -64,7 +64,7 @@ function hide_sensitive($quote) {
 	unset($quote->host);
 	unset($quote->tweet);
 	
-	if ($quote->hidden && $session->level == 'anonymous') {
+	if ($quote->hidden && !check_key()) {
 		unset($quote->text);
 		unset($quote->comment);
 		unset($quote->ip);
@@ -73,21 +73,18 @@ function hide_sensitive($quote) {
 	return $quote;
 }
 
-function check_key($key) {
-	global $config;
+function check_key() {
+	global $config, $db;
 	
-	if (!isset($config['site']['api']['keys']) 
-		|| count($config['site']['api']['keys']) == 0) {
-		return false;
+	$result = $db->get_var(
+		sprintf('SELECT id FROM api WHERE key = \'%s\' LIMIT 1',
+			escape($params[2])));
+	
+	if ($result) {
+		return $result;
 	}
 	
-	foreach ($config['site']['api']['keys'] as $api_key) {
-		if ($key == $api_key) {
-			return true;
-		}
-	}
-	
-	return false;
+	return 0;
 }
 
 function required_post($variables) {
@@ -100,10 +97,6 @@ function required_post($variables) {
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 	generic_error('post_required');
-}
-
-if (isset($params[2]) && check_key($params[2])) {
-	$session->level = 'reader';
 }
 
 if (!isset($params[1])) {
@@ -130,7 +123,9 @@ switch ($params[1]) {
 					$quote->hidden = false;
 			}
 		}
-		$quote->approved = ($session->level != 'anonymous');
+		$key = check_key();
+		$quote->approved = (bool)$key;
+		$quote->api = $key;
 		$quote->save();
 		$last = get_last();
 		out(array('results' =>
@@ -182,7 +177,7 @@ switch ($params[1]) {
 				array('success' => 0,
 					'error' => 'no_quotes_found',
 					'count' => 0)));
-		}		
+		}
 		break;
 	default:
 		generic_error('method_not_implemented');
