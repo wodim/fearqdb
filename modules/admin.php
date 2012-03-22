@@ -28,6 +28,30 @@ if (!isset($params[1])) {
 
 switch ($params[1]) {
 	/* example modules. */
+	case 'bot':
+		/* delete (bot) and assign an api key */
+		header('Content-Type: text/plain');
+		die('API keys already assigned');
+		for ($i = 2; $i < 650; $i++) {
+			printf("Assigning API key (or not) to %d...\n", $i);
+			$quote = new Quote();
+			$quote->id = $i;
+			if ($quote->read()) {
+				printf("Read %d!\n", $i);
+				if (strpos($quote->nick, ' (bot)') > 0) {
+					printf("%s - %d was added using the bot - setting key\n", $quote->permaid, $i);
+					$quote->nick = str_replace(' (bot)', '', $quote->nick);
+					$quote->api = 1;
+					$quote->save(false);
+					printf("Key on %d set\n", $i);
+				}
+			} else {
+				printf("Unreadable %d\n", $i);
+			}
+			unset($quote);
+		}
+		printf("End\n");
+		break;
 	case 'assign':
 		/* assign permaids to all quotes. 
 			useful if you had no permaids... */
