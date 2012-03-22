@@ -17,7 +17,7 @@ send
 	- *nick
 	- *text
 	- comment
-	- hidden: 1 or 0, whether the quote will be hidden.
+	- hidden: 1, 0, true or false, whether the quote will be hidden or not.
 	
 	Returns:
 	- url: URL of the new quote, this is, domain + permaid.
@@ -48,7 +48,7 @@ read
 		- date
 		- ip: may be partially or completely hidden depending on the site configuration.
 		- comment: may be empty.
-		- hidden: whether the quote is hidden or not; 0 or 1.
+		- hidden: whether the quote is hidden or not; true or false.
 		- ts: quote's unix timestamp.
 		- new: whether the quote has been sent to the site in the latest 24 hours; true or false.
 		- timelapse: human readable time lapse.

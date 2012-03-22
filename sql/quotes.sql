@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `downvotes` int(11) NOT NULL DEFAULT '0',
   `reports` int(11) NOT NULL DEFAULT '0',
   `views` int(11) NOT NULL DEFAULT '0',
-  `approved` int(1) NOT NULL DEFAULT '0',
+  `approved` tinyint(1) NOT NULL DEFAULT '0',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;

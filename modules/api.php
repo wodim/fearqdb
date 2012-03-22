@@ -48,6 +48,8 @@ function get_last() {
 }
 
 function hide_sensitive($quote) {
+	global $session;
+
 	unset($quote->read);
 	unset($quote->id);
 	$quote->ip = $quote->semiip;
@@ -61,6 +63,12 @@ function hide_sensitive($quote) {
 	unset($quote->permalink);
 	unset($quote->host);
 	unset($quote->tweet);
+	
+	if ($quote->hidden && $session->level == 'anonymous') {
+		unset($quote->text);
+		unset($quote->comment);
+		unset($quote->ip);
+	}
 
 	return $quote;
 }
@@ -110,7 +118,18 @@ switch ($params[1]) {
 		$quote->ip = $session->ip;
 		$quote->text = $_POST['text'];
 		$quote->comment = $_POST['comment'];
-		$quote->hidden = (isset($_POST['hidden']) && ((int)$_POST['hidden'] == 0 || (int)$_POST['hidden'] == 1)) ? (int)$_POST['hidden'] : '0';
+		if (isset($_POST['hidden'])) {
+			switch ($_POST['hidden']) {
+				case 1:
+				case 'true':
+					$quote->hidden = true;
+					break;
+				case 0:
+				case 'false':
+				default:
+					$quote->hidden = false;
+			}
+		}
 		$quote->approved = ($session->level != 'anonymous') ? '1' : '0';
 		$quote->save();
 		$last = get_last();
@@ -135,11 +154,6 @@ switch ($params[1]) {
 					'error' => 'no_such_quote')));
 		}
 		$quote = hide_sensitive($quote);
-		if ($quote->hidden && $session->level == 'anonymous') {
-			unset($quote->text);
-			unset($quote->comment);
-			unset($quote->ip);
-		}
 		out(array('results' =>
 			array('success' => 1,
 				'data' => $quote)));
@@ -154,18 +168,14 @@ switch ($params[1]) {
 		$results = array();
 		if ($search->count) {
 			foreach ($search->results as $result) {
-				if ($result->hidden) {
-					$result->text = '';
-					$result->comment = '';
-				}
-				$result->semiip = '';
-				$result = hide_sensitive($result);
-				unset($result->ip);
-				$results[] = $result;
+				$quote = new Quote();
+				$quote->read($result);
+				$quotes[] = $quote;
+				hide_sensitive($quote);
 			}
 			out(array('results' =>
 				array('success' => 1,
-					'data' => $results,
+					'data' => $quotes,
 					'count' => $search->count)));
 		} else {
 			out(array('results' =>

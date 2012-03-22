@@ -118,6 +118,8 @@ class Quote {
 		$this->permalink = sprintf('%s%s', $config['core']['domain'], $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
 		$this->timelapse = ($date == -1) ? false : $date;
+		$this->hidden = (bool)$this->hidden;
+		$this->approved = (bool)$this->approved;
 		$this->read = true;
 		return true;
 	}
