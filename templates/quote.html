@@ -10,7 +10,7 @@
 				{% if !c.approved %}
 					({% trans _('Yet to be approved') %})
 				{% endif %}
-				{% if (session.level != 'anonymous') && config.site.ip.show %}
+				{% if (session.level != 'anonymous') && config.site.ip.show && !c.api %}
 					{% if c.host && config.site.ip.host %}
 						{% if config.site.ip.part %}
 							(<span title="{{c.semiip}}">{{c.semihost}}</span>)
