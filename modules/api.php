@@ -130,7 +130,7 @@ switch ($params[1]) {
 					$quote->hidden = false;
 			}
 		}
-		$quote->approved = ($session->level != 'anonymous') ? '1' : '0';
+		$quote->approved = ($session->level != 'anonymous');
 		$quote->save();
 		$last = get_last();
 		out(array('results' =>
