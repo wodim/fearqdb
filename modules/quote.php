@@ -20,7 +20,7 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $params, $config, $q;
+global $params, $config, $q, $session;
 
 $quoteid = $permaid = null;
 
@@ -40,7 +40,7 @@ if ($quoteid) {
 	$quote->permaid = $permaid;
 }
 
-if (!$quote->read() || $quote->approved != 1) {
+if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'approved')) {
 	$html->do_sysmsg(_('No such quote'), null, 404);
 }
 

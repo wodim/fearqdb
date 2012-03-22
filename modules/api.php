@@ -58,7 +58,7 @@ function hide_sensitive($quote) {
 	unset($quote->downvotes);
 	unset($quote->reports);
 	unset($quote->views);
-	unset($quote->approved);
+	unset($quote->status);
 	unset($quote->db);
 	unset($quote->permalink);
 	unset($quote->host);
@@ -128,7 +128,7 @@ switch ($params[1]) {
 			}
 		}
 		$key = check_key();
-		$quote->approved = (bool)$key;
+		$quote->status = ($key != 0) ? 'approved' : 'pending';
 		$quote->api = $key;
 		$quote->save();
 		$last = get_last();

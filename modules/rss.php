@@ -27,7 +27,7 @@ if ($_GET['q'] != '/rss') {
 }
 
 $quotes = $db->get_results(
-	sprintf('SELECT %s FROM quotes, api WHERE approved = 1 AND db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
+	sprintf('SELECT %s FROM quotes, api WHERE status = \'approved\' AND db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
 		Quote::READ, $config['db']['table'], $config['site']['page_size']));
 
 if (!$quotes) {

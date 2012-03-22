@@ -81,8 +81,8 @@ switch ($params[1]) {
 		die('Importing done');
 		$lines = file('quotes.txt');
 		foreach ($lines as $line) {
-			$db->query(sprintf('INSERT INTO quotes (permaid, ip, nick, date, text, db, approved)
-				VALUES (\'%s\', \'kobaz\', \'Import\', NOW(), \'%s\', \'default\', 1)',
+			$db->query(sprintf('INSERT INTO quotes (permaid, ip, nick, date, text, db, status)
+				VALUES (\'%s\', \'kobaz\', \'Import\', NOW(), \'%s\', \'default\', \'approved\')',
 				sprintf('%04x', rand(0, 65535)),
 				escape($line)));
 			printf("Inserted line.\n");

@@ -7,7 +7,7 @@
 				{% if c.api %}
 					{% trans _('via') %} <strong>{{c.name|escape}}</strong>
 				{% endif %}
-				{% if !c.approved %}
+				{% if c.status != 'approved' %}
 					({% trans _('Yet to be approved') %})
 				{% endif %}
 				{% if (session.level != 'anonymous') && config.site.ip.show && !c.api && c.ip != 'kobaz' %}

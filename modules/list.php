@@ -30,7 +30,7 @@ if (isset($params[1]) && is_numeric($params[1])) {
 
 $where = sprintf('WHERE db = \'%s\' %s %s',
 	$config['db']['table'],
-	($session->level != 'anonymous') ? 'AND (quotes.approved = 1 OR quotes.approved = 0)' : 'AND quotes.approved = 1',
+	($session->level != 'anonymous') ? 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' : 'AND quotes.status = \'approved\'',
 	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
 
 $where_api = sprintf('%s AND (api.id = quotes.api OR quotes.api = 0)', $where);

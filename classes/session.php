@@ -26,7 +26,6 @@ class Session {
 	var $ip = '';
 	var $date = '';
 	var $search = '';
-	var $unapproved = 0;
 	var $origin = '';
 	var $expected_cookie = '';
 	var $xsrf = '';
@@ -35,8 +34,6 @@ class Session {
 
 	function init() {
 		global $config, $db, $params;
-
-		// $this->unapproved = $db->get_var('SELECT COUNT(*) FROM quotes WHERE approved = 0');
 		
 		$this->date = strftime('%d/%m');
 		$this->ip = $_SERVER['REMOTE_ADDR'];

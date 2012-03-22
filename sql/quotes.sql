@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `downvotes` int(11) NOT NULL DEFAULT '0',
   `reports` int(11) NOT NULL DEFAULT '0',
   `views` int(11) NOT NULL DEFAULT '0',
-  `approved` tinyint(1) NOT NULL DEFAULT '0',
+  `status` enum('pending','approved','deleted') NOT NULL DEFAULT 'pending',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   `api` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
