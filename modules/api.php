@@ -75,7 +75,11 @@ function hide_sensitive($quote) {
 
 function check_key() {
 	global $config, $db;
-	
+
+	if (!isset($params[2])) {
+		return 0;
+	}
+
 	$result = $db->get_var(
 		sprintf('SELECT id FROM api WHERE key = \'%s\' LIMIT 1',
 			escape($params[2])));
@@ -110,7 +114,7 @@ switch ($params[1]) {
 		$quote->nick = $_POST['nick'];
 		$quote->ip = $session->ip;
 		$quote->text = $_POST['text'];
-		$quote->comment = $_POST['comment'];
+		$quote->comment = isset($_POST['comment']) ? $_POST['comment'] : '';
 		if (isset($_POST['hidden'])) {
 			switch ($_POST['hidden']) {
 				case 1:
