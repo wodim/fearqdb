@@ -33,26 +33,14 @@ a {
 }
 
 .header {
-	height: 34px;
+	height: 41px;
 	display: block;
 	padding: 0 8px;
-	margin: -38px 0 0;
+	margin: -41px 0 0;
 	z-index: 2;
 }
 
-.header .name {
-	font-weight: bold;
-	line-height: 35px;
-	text-shadow: 0 1px 3px #3e5270;
-}
-
-.header .name a {
-	color: white;
-	font-size: 14pt;
-	text-decoration: none;
-}
-
-.header ul {
+.header ul.bar {
 	float: right;
 	line-height: 25px;
 	font-size: 9pt;
@@ -60,7 +48,7 @@ a {
 
 .bar {
 	box-shadow: 0 1px 2px #3e5270;
-	margin-top: 5px;
+	margin-top: 8px;
 	/* compensate -3px left margin for li */
 	padding-left: 3px;
 }
@@ -69,6 +57,10 @@ a {
 	color: black;
 	text-decoration: none;
 	padding: 4px 9px;
+}
+
+.bar li a:hover {
+	background: #fbfbfb;
 }
 
 .bar li a.submit {
@@ -88,13 +80,15 @@ a {
 	-o-transition: all 0.3s ease-in-out 0s;
 	-ms-transition: all 0.3s ease-in-out 0s;
 	height: 17px;
+	background: #fcfcfc;
 	border-radius: 2px 0 0 2px;
+	outline: none;
 }
 
 .bar input:hover,
 .bar input:focus {
 	color: #333;
-	opacity: 1;
+	background: white;
 }
 
 .bar input[type=submit] {
@@ -507,8 +501,28 @@ input[type=text].sep {
 	margin: 0 8px;
 }
 
-	/*
-	-moz-transform: rotate(0.5deg);
-	-webkit-transform: rotate(0.5deg);
-	-o-transform: rotate(0.5deg);
-	*/
+.header .name {
+	display: inline-block;
+	list-style: none;
+}
+
+.header .name a {
+	font-size: 16pt;
+	font-weight: bold;
+	float: left;
+	overflow: hidden;
+	line-height: 41px;
+	text-align: center;
+	padding: 0 12px;
+	color: white;
+	text-shadow: 0 1px 3px #3e5270;
+	text-decoration: none;
+	-moz-transition: all 0.3s ease-in-out 0s;
+	-webkit-transition: all 0.3s ease-in-out 0s;
+	-o-transition: all 0.3s ease-in-out 0s;
+	-ms-transition: all 0.3s ease-in-out 0s;
+}
+
+.header .name a:hover {
+	background: #6d8ab1;
+}

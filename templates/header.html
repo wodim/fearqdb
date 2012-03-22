@@ -16,7 +16,6 @@
 			snowStorm.flakesMax = 100;
 			snowStorm.flakesMaxActive = 100;
 			snowStorm.useTwinkleEffect = true;
-			snowStorm.snowCharacter= "卍";
 		</script>
 {% endif %}
 {% if config.site.analytics.enabled %}
@@ -49,7 +48,7 @@
 					</li>
 					<li><a href="{{config.site.root}}random">{% trans _('Random') %}</a></li>
 {% if session.level == 'reader' %}
-					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} (<em>{{session.level}}</em>, {{session.date}})</a></li>
+					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
 {% endif %}
 {% if (session.level == 'user') || (session.level == 'admin') %}
 					<li><a href="{{config.site.root}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
