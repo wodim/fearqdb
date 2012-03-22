@@ -31,6 +31,7 @@ $params[0] = isset($params[0]) ? $params[0] : 'home';
 switch ($params[0]) {
 	// TODO this should be configurable on config.php, per domain
 	case 'robots.txt':
+		$module = 'robots';
 		header('Content-Type: text/plain');
 		echo("User-agent: *\nDisallow: /");
 		break;
