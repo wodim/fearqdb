@@ -191,7 +191,7 @@ switch ($params[1]) {
 					'error' => 'access_denied')));
 		}
 		$quote = new Quote();
-		$quote->permaid = $_POST['hidden'];
+		$quote->permaid = $_POST['permaid'];
 		if ($quote->read()) {
 			$quote->status = 'deleted';
 			$quote->save(false);
