@@ -183,6 +183,25 @@ switch ($params[1]) {
 					'count' => 0)));
 		}
 		break;
+	case 'delete':
+		required_post(array('permaid'));
+		if (check_key() == 0) {
+			out(array('results' =>
+				array('success' => 0,
+					'error' => 'access_denied')));
+		}
+		$quote = new Quote();
+		$quote->permaid = $_POST['hidden'];
+		if ($quote->read()) {
+			$quote->status = 'deleted';
+			$quote->save(false);
+			out(array('results' =>
+				array('success' => 1)));
+		}
+		out(array('results' =>
+			array('success' => 0,
+				'error' => 'no_such_quote')));
+		break;
 	default:
 		generic_error('method_not_implemented');
 }

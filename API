@@ -52,6 +52,7 @@ read
 		- ts: quote's unix timestamp.
 		- new: whether the quote has been sent to the site in the latest 24 hours; true or false.
 		- timelapse: human readable time lapse.
+		- status: 'pending' or 'approved'.
 		
 search
 ------
@@ -65,3 +66,10 @@ search
 	Returns:
 	- data (array), with the same parameters as in the 'read' method.
 	- count: number of results.
+
+delete
+------
+	Variables:
+	- *permaid
+	
+	Requires a valid API key.
