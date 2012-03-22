@@ -30,11 +30,13 @@ if (isset($params[1]) && is_numeric($params[1])) {
 
 $where = sprintf('WHERE db = \'%s\' %s %s',
 	$config['db']['table'],
-	($session->level != 'anonymous') ? 'AND (approved = 1 OR approved = 0)' : 'AND approved = 1',
-	($params[0] == 'hidden') ? 'AND hidden = 1' : '');
+	($session->level != 'anonymous') ? 'AND (quotes.approved = 1 OR quotes.approved = 0)' : 'AND quotes.approved = 1',
+	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes %s ORDER BY date DESC LIMIT %d,%d',
-	Quote::READ, $where, (--$page_number * $config['site']['page_size']), $config['site']['page_size']));
+$where_api = sprintf('%s AND (api.id = quotes.api OR quotes.api = 0)', $where);
+
+$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY date DESC LIMIT %d,%d',
+	Quote::READ, $where_api, (--$page_number * $config['site']['page_size']), $config['site']['page_size']));
 
 if (!$quotes) { // there are no quotes. but... there are no quotes in this page or no quotes at all?
 	if ($page_number != 1) {

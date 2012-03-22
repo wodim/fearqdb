@@ -4,6 +4,9 @@
 			<a href="{{c.permalink}}" class="id">#{{c.permaid}}</a> -
 			<span class="sent">
 				{% trans _('Sent by') %} <strong>{{c.nick|escape}}</strong>
+				{% if c.api %}
+					{% trans _('via') %} <strong>{{c.name|escape}}</strong>
+				{% endif %}
 				{% if !c.approved %}
 					({% trans _('Yet to be approved') %})
 				{% endif %}

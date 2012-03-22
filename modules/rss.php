@@ -26,8 +26,9 @@ if ($_GET['q'] != '/rss') {
 	redir('/rss');
 }
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes WHERE approved = 1 AND db = \'%s\' AND hidden = 0 ORDER BY date DESC LIMIT %d',
-	Quote::READ, $config['db']['table'], $config['site']['page_size']));
+$quotes = $db->get_results(
+	sprintf('SELECT %s FROM quotes, api WHERE approved = 1 AND db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
+		Quote::READ, $config['db']['table'], $config['site']['page_size']));
 
 if (!$quotes) {
 	header('HTTP/1.1 404');

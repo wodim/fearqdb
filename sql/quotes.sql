@@ -13,6 +13,20 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `api`
+--
+
+CREATE TABLE IF NOT EXISTS `api` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(32) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `approved` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hits`
 --
 
@@ -69,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `views` int(11) NOT NULL DEFAULT '0',
   `approved` tinyint(1) NOT NULL DEFAULT '0',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
+  `api` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

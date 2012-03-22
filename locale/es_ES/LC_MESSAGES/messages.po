@@ -17,6 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "via"
+msgstr "vía"
+
 msgid "You must log in to read any quote."
 msgstr "Debes iniciar sesión para poder leer quotes."
 

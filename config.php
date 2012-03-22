@@ -66,10 +66,6 @@ switch ($_SERVER['HTTP_HOST']) {
 		$config['site']['analytics']['enabled'] = true;
 		$config['site']['analytics']['code'] = 'UA-123123123-9';
 		$config['site']['snowstorm'] = true;
-		
-		$config['site']['api']['keys'][] = 'one_api_key';
-		$config['site']['api']['keys'][] = 'another_api_key';
-
 		break;
 	case 'localhost':
 		$config['db']['table'] = 'test';

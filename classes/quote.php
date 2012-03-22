@@ -21,9 +21,9 @@ require_once('config.php');
 require_once(include_dir.'utils.php');
 
 class Quote {
-	const READ = 'id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) as ts';
-	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE id = %d AND db = \'%s\'';
-	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, approved, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = \'%s\' AND db = \'%s\'';
+	const READ = 'quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.approved, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name';
+	const READ_BY_ID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.approved, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name FROM quotes, api WHERE quotes.id = %d AND db = \'%s\'';
+	const READ_BY_PERMAID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.approved, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name FROM quotes, api WHERE permaid = \'%s\' AND db = \'%s\'';
 
 	var $read = false;
 	var $id = 0;
@@ -40,7 +40,8 @@ class Quote {
 	var $approved = 0;
 	var $hidden = 0;
 	var $ts = 0;
-	var $db = 0;
+	var $db = '';
+	var $key = 0;
 
 	// made out by the script (not stoerd in the db)
 	var $new = false;
@@ -50,6 +51,7 @@ class Quote {
 	var $host = '';
 	var $tweet = '';
 	var $excerpt = '';
+	var $name = '';
 
 	function read($results = null) {
 		global $db, $config, $session;
@@ -269,12 +271,12 @@ class Quote {
 	}
 
 	// unused? hm
-	function save($new = 'true') {
+	function save($new = true) {
 		global $db, $config;
 
 		if ($new) {
-			$result = $db->query(sprintf('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, approved)
-				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%d\')',
+			$result = $db->query(sprintf('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, approved, api)
+				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%d\', \'%d\')',
 				/* no way of forcing a permaid */
 				sprintf('%04x', rand(0, 65535)),
 				clean($this->nick, MAX_NICK_LENGTH, true),
@@ -284,11 +286,12 @@ class Quote {
 				clean($this->comment, MAX_COMMENT_LENGTH, true),
 				$config['db']['table'],
 				(int)$this->hidden,
-				(int)$this->approved));
+				(int)$this->approved,
+				(int)$this->api));
 		} else {
 			$result = $db->query(sprintf('UPDATE quotes SET 
 				nick = \'%s\', permaid = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
-				db = \'%s\', hidden = %d, approved = %d
+				db = \'%s\', hidden = %d, approved = %d, api = %d
 				where id = %d',
 				clean($this->nick, MAX_NICK_LENGTH, true),
 				$this->permaid,
@@ -298,6 +301,7 @@ class Quote {
 				$config['db']['table'],
 				(int)$this->hidden,
 				(int)$this->approved,
+				(int)$this->api,
 				(int)$this->id));
 		}		
 
