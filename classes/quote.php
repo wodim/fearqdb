@@ -49,6 +49,7 @@ class Quote {
 	var $timelapse = '';
 	var $host = '';
 	var $tweet = '';
+	var $excerpt = '';
 
 	function read($results = null) {
 		global $db, $config, $session;
@@ -120,6 +121,7 @@ class Quote {
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
 		$this->approved = (bool)$this->approved;
+		$this->excerpt = $this->text_clean($this->text, 'excerpt');
 		$this->read = true;
 		return true;
 	}
@@ -207,7 +209,7 @@ class Quote {
 		// delete timestamps
 		$text = preg_replace('/^[\(\[]?\d+:\d+(:\d+)?[\)\]]?\s/m', '', $text);
 
-		if ($for == 'www_body' || $for == 'rss_body' || $for == 'rss_title') {
+		if ($for == 'www_body' || $for == 'rss_body' || $for == 'rss_title' || $for == 'excerpt') {
 			// add * to mark actions, joins, parts etc
 			$text = preg_replace('/^([a-z0-9\-\[\]\{\}_])/smi', '* $1', $text); // :D
 		}
@@ -227,6 +229,10 @@ class Quote {
 			$text = str_replace(']]>', ']]]]><![CDATA[>', $text); // http://en.wikipedia.org/wiki/CDATA#Nesting
 			$text = preg_replace('/<[@\+]?([a-z0-9\_\-\[\]\{\}]*)>/msi', '($1)', $text);
 		}
+		
+		if ($for == 'excerpt') {
+			$text = preg_replace('/<[@\+]?([a-z0-9\_\-\[\]\{\}]*)>/msi', '<$1>', $text);
+		}
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'www_comment') {
 			// don't add links to rss titles!
@@ -234,15 +240,15 @@ class Quote {
 			$text = str_replace("\n", '<br />', $text);
 			// hashtags
 			// $text = preg_replace('/#([a-z0-9\-_\?]*\w)/mi', sprintf('<a href="%ssearch/%%23$1" target="_blank">#$1</a>', $config['core']['domain']), $text);
+
+			// respect \s\s to fix asciis
+			$text = str_replace('  ', '&nbsp;&nbsp;', $text);
 		} else {
 			$text = str_replace("\n", ' ', $text);
 		}
 
-		// respect \s\s to fix asciis
-		$text = str_replace('  ', '&nbsp;&nbsp;', $text);
-
 		// cut long title
-		if ($for == 'rss_title' || $for == 'www_tweet') {
+		if ($for == 'rss_title' || $for == 'www_tweet' || $for == 'excerpt') {
 			if (mb_strlen($text) > 110) {
 				$text = sprintf('%s...', mb_substr($text, 0, 110));
 			}
