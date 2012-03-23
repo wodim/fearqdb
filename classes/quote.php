@@ -280,7 +280,7 @@ class Quote {
 				sprintf('%04x', rand(0, 65535)),
 				clean($this->nick, MAX_NICK_LENGTH, true),
 				/* date */
-				$this->ip,
+				clean($this->ip, MAX_IP_LENGTH, true),
 				escape($this->text),
 				clean($this->comment, MAX_COMMENT_LENGTH, true),
 				$config['db']['table'],
@@ -289,12 +289,11 @@ class Quote {
 				(int)$this->api));
 		} else {
 			$result = $db->query(sprintf('UPDATE quotes SET 
-				nick = \'%s\', permaid = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
+				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
 				db = \'%s\', hidden = %d, status = %s, api = %d
 				where id = %d',
 				clean($this->nick, MAX_NICK_LENGTH, true),
-				$this->permaid,
-				$this->ip,
+				clean($this->ip, MAX_IP_LENGTH, true),
 				escape($this->text),
 				clean($this->comment, MAX_COMMENT_LENGTH, true),
 				$config['db']['table'],

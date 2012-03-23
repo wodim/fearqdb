@@ -55,8 +55,6 @@ function hide_sensitive($quote) {
 
 	unset($quote->read);
 	unset($quote->id);
-	$quote->ip = $quote->semiip;
-	unset($quote->semiip);
 	unset($quote->upvotes);
 	unset($quote->downvotes);
 	unset($quote->reports);
@@ -66,11 +64,14 @@ function hide_sensitive($quote) {
 	unset($quote->permalink);
 	unset($quote->host);
 	unset($quote->tweet);
-	
+
+	if (!check_key()) {
+		unset($quote->ip);
+	}
+
 	if ($quote->hidden && !check_key()) {
 		unset($quote->text);
 		unset($quote->comment);
-		unset($quote->ip);
 	}
 
 	return $quote;
@@ -121,7 +122,7 @@ switch ($params[1]) {
 		required_post(array('nick', 'text'));
 		$quote = new Quote();
 		$quote->nick = str_replace(' (bot)', '', $_POST['nick']);
-		$quote->ip = $session->ip;
+		$quote->ip = isset($_POST['ip']) ? $_POST['ip'] : $session->ip;
 		$quote->text = $_POST['text'];
 		$quote->comment = isset($_POST['comment']) ? $_POST['comment'] : '';
 		if (isset($_POST['hidden'])) {
