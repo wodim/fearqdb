@@ -266,7 +266,7 @@ class Quote {
 	private function nick_colour($nick) {
 		$nick = $nick[1];
 		$colour = substr(md5(strtolower($nick)), 0, 1);
-		return(sprintf('<strong>&lt;<em class="colour-%s"><a href="/search/%s">%s</a></em>&gt;</strong>', $colour, $nick, $nick));
+		return(sprintf('<strong>&lt;<em class="colour-%s"><a href="/search/%s">%s</a></em>&gt;</strong>', $colour, urlencode($nick), $nick));
 	}
 
 	// unused? hm
