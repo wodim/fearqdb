@@ -27,6 +27,9 @@ global $params, $config, $session;
 function out($out) {
 	global $session;
 
+	if (isset($out['results']['success']) && $out['results']['success'] != 1) {
+		header('503 Unavailable');
+	}
 	echo(json_encode($out));
 	$session->hit();
 	die();
@@ -77,6 +80,7 @@ function check_key() {
 	global $config, $db;
 
 	if (!isset($params[2])) {
+		$session->log('JSON API access with no key');
 		return 0;
 	}
 
@@ -88,18 +92,21 @@ function check_key() {
 		return $result;
 	}
 	
+	$session->log(sprintf('WARNING: JSON API access with invalid key: %s', $params[2]));
 	return 0;
 }
 
 function required_post($variables) {
 	foreach ($variables as $var) {
 		if (!isset($_POST[$var])) {
+			$session->log(sprintf('JSON API access with missing key: %s', $var));
 			generic_error('not_enough_parameters');
 		}
 	}
 }
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+	$session->log('JSON API access where METHOD != POST');
 	generic_error('post_required');
 }
 
@@ -203,5 +210,6 @@ switch ($params[1]) {
 				'error' => 'no_such_quote')));
 		break;
 	default:
+		$session->log(sprintf('JSON API access with invalid METHOD: %s', $params[1]));
 		generic_error('method_not_implemented');
 }

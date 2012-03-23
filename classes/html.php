@@ -83,7 +83,7 @@ class HTML {
 			$message = _('Are you lost?');
 		}
 		
-		$session->log(clean(sprintf('Soft error: "(%d) %s - %s"', $code, $title, $message), 256, true));
+		$session->log(clean(sprintf('Soft error: (%d) %s - %s', $code, $title, $message), 256, true));
 		
 		$vars = compact('title', 'message');
 		Haanga::Load('sysmsg.html', $vars);
