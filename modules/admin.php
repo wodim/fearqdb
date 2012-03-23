@@ -26,13 +26,44 @@ if (!isset($params[1])) {
 	$params[1] = 'index';
 }
 
+function all_quotes() {
+	global $db;
+
+	$results = $db->get_results('SELECT id FROM quotes');
+	
+	foreach ($results as $result) {
+		$return[] = $result->id;
+	}
+	
+	return $return;
+}
+
 switch ($params[1]) {
 	/* example modules. */
+	case 'utf8fix':
+		/* fix double utf-8'd quotes */
+		header('Content-Type: text/plain');
+		die('Double UTF-8 already fixed');
+		foreach (all_quotes() as $i) {
+			$quote = new Quote();
+			$quote->id = $i;
+			if ($quote->read()) {
+				printf("Read %d!\n", $i);
+				if (strpos($quote->text, 'Ã') > 0 || strpos($quote->text, 'Â') > 0) {
+					printf("Fixing %d\n", $quote->permaid);
+					$quote->text = iconv('utf8', 'cp1252', $quote->text);
+					$quote->save(false);
+				}
+			}
+			unset($quote);
+		}
+		printf("End\n");
+		break;
 	case 'bot':
 		/* delete (bot) and assign an api key */
 		header('Content-Type: text/plain');
 		die('API keys already assigned');
-		for ($i = 2; $i < 650; $i++) {
+		foreach (all_quotes() as $i) {
 			printf("Assigning API key (or not) to %d...\n", $i);
 			$quote = new Quote();
 			$quote->id = $i;
@@ -57,7 +88,7 @@ switch ($params[1]) {
 			useful if you had no permaids... */
 		header('Content-Type: text/plain');
 		die('Permaids already assigned');
-		for ($i = 2; $i < 650; $i++) {
+		foreach (all_quotes() as $i) {
 			printf("Creating permaid for %d...\n", $i);
 			$quote = new Quote();
 			$quote->id = $i;
@@ -88,18 +119,4 @@ switch ($params[1]) {
 			printf("Inserted line.\n");
 		}
 		break;
-/*
-	case 'query':
-		require_once(classes_dir.'admin/query.php');
-		break;
-	case 'dump':
-		require_once(classes_dir.'admin/dump.php');
-		break;
-	case 'edit':
-		require_once(classes_dir.'admin/edit.php');
-		break;
-	case 'index':
-	default:
-		require_once(classes_dir.'admin/index.php');
-*/
 }
