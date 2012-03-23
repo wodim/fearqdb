@@ -19,6 +19,11 @@
 
 $start = microtime(true);
 
+$config['db']['user'] = '';
+$config['db']['pass'] = '';
+$config['db']['name'] = '';
+$config['db']['host'] = '';
+
 $config['site']['include'] = 'include';
 $config['site']['modules'] = 'modules';
 $config['site']['classes'] = 'classes';
