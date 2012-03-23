@@ -294,7 +294,7 @@ class Quote {
 		} else {
 			$result = $db->query(sprintf('UPDATE quotes SET 
 				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
-				db = \'%s\', hidden = %d, status = %s, api = %d
+				db = \'%s\', hidden = %d, status = \'%s\', api = %d
 				where id = %d',
 				clean($this->nick, MAX_NICK_LENGTH, true),
 				clean($this->ip, MAX_IP_LENGTH, true),
