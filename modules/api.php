@@ -85,7 +85,7 @@ function check_key() {
 	}
 
 	$result = $db->get_var(
-		sprintf('SELECT id FROM api WHERE key = \'%s\' AND approved = 1 LIMIT 1',
+		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 LIMIT 1',
 			escape($params[2])));
 	
 	if ($result) {
@@ -120,7 +120,7 @@ switch ($params[1]) {
 	case 'send':
 		required_post(array('nick', 'text'));
 		$quote = new Quote();
-		$quote->nick = $_POST['nick'];
+		$quote->nick = str_replace(' (bot)', '', $_POST['nick']);
 		$quote->ip = $session->ip;
 		$quote->text = $_POST['text'];
 		$quote->comment = isset($_POST['comment']) ? $_POST['comment'] : '';
