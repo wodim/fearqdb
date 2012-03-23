@@ -51,7 +51,7 @@ if (!$search->results) {
 	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
 
 	$pager = $html->do_pages($search->page, ceil($search->count / $search->page_size), 
-		sprintf('/search/%s/%%d', htmlspecialchars(urldecode($params[1]))), 4);
+		sprintf('/search/%s/%%d', str_replace('%', '%%', urlencode($params[1]))), 4);
 
 	$quote = new Quote();
 	$odd = true;
