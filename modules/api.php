@@ -122,7 +122,6 @@ switch ($params[1]) {
 		required_post(array('nick', 'text'));
 		$quote = new Quote();
 		$quote->nick = str_replace(' (bot)', '', $_POST['nick']);
-		$quote->ip = isset($_POST['ip']) ? $_POST['ip'] : $session->ip;
 		$quote->text = $_POST['text'];
 		$quote->comment = isset($_POST['comment']) ? $_POST['comment'] : '';
 		if (isset($_POST['hidden'])) {
@@ -139,6 +138,7 @@ switch ($params[1]) {
 		}
 		$key = check_key();
 		$quote->status = ($key != 0) ? 'approved' : 'pending';
+		$quote->ip = (isset($_POST['ip']) && $key != 0) ? $_POST['ip'] : $session->ip;
 		$quote->api = $key;
 		$quote->save();
 		$last = get_last();
