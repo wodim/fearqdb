@@ -32,3 +32,5 @@ define('MAX_QUOTE_LENGTH', -1);
 define('MAX_NICK_LENGTH', 20);
 define('MAX_COMMENT_LENGTH', 1000);
 define('MAX_IP_LENGTH', 32);
+
+define('MAX_DOMAIN_LENGTH', 32);

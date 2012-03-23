@@ -17,80 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$start = microtime(true);
-
-// used to generate cookies and the site password!
-// change it in case of disclosure
-$config['site']['key'] = 'thisisakey';
-// quotes per page
-$config['site']['page_size'] = 10;
-$config['site']['lang'] = 'es';
-$config['site']['locale'] = 'es_ES.utf8';
-// database collation - depends on the language of the quotes.
-$config['site']['collate'] = 'utf8_spanish_ci';
-
-// show ips?
-$config['site']['ip']['show'] = true;
-// resolve ips? REMEMBER, THIS IS NOT STORED IN THE DB
-// SO A SLOW DNS COULD MAKE THE WHOLE SITE SLOW!
-$config['site']['ip']['host'] = false;
-// hide part of the ip/host
-$config['site']['ip']['part'] = true;
-
-// we do support google analytics.
-$config['site']['analytics']['enabled'] = false;
-// UA-xxxxxxxx-x
-$config['site']['analytics']['code'] = '';
-
-/* it *must* include /, or even a full path including domain */
-$config['site']['statics'] = 'http://localhost/statics/';
-
-$config['db']['user'] = 'qdb';
-$config['db']['pass'] = 'qdb';
-$config['db']['name'] = 'qdb';
-$config['db']['host'] = 'localhost';
-
-$config['site']['snowstorm'] = false;
-
-// per domain config
-switch ($_SERVER['HTTP_HOST']) {
-	case 'productionqdb.example.com':
-		// database "table", IT'S NOT A TABLE BUT A COLUMN!!
-		// you don't need to create new tables.
-		$config['db']['table'] = 'production';
-		$config['site']['irc'] = '#goddammit at EFnet';
-		$config['site']['name'] = '#goddammit fun';
-		$config['site']['nname'] = 'goddammit';
-		$config['site']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
-		$config['site']['analytics']['enabled'] = true;
-		$config['site']['analytics']['code'] = 'UA-123123123-9';
-		$config['site']['snowstorm'] = true;
-		break;
-	case 'localhost':
-		$config['db']['table'] = 'test';
-		$config['site']['irc'] = 'testing';
-		$config['site']['name'] = 'testing';
-		$config['site']['nname'] = 'general';
-		$config['site']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
-		$config['site']['analytics']['enabled'] = false;
-		break;
-}
-
-$config['site']['cookie_name'] = $config['site']['nname'].'_sess';
-
-/* PRIVACY LEVEL
-	controls the privacy level of the site.
-	-1 = all quotes are public even the hidden ones
-	0 = normal (only the hidden quotes are hiddne)
-	1 = all quotes are hidden but the user/date are visible
-	2 = every access ends up redirected to /login (unless the user is logged, ofc) */
-// this setting can be per domain, of course.
-$config['site']['privacy_level'] = 0;
-$config['site']['privacy_level_for_bots'] = 2;
-
-/* you shouldn't need to configure anything above this point */
-
-
 $config['site']['include'] = 'include';
 $config['site']['modules'] = 'modules';
 $config['site']['classes'] = 'classes';
@@ -117,10 +43,6 @@ if (!@$db->quick_connect($config['db']['user'], $config['db']['pass'],
 
 $db->query('SET NAMES `utf8`');
 
-// initialize the session (cookie, ...)
-// require(classes_dir.'session.php');
-// $session = new Session();
-
 // initialize Haanga
 require(include_dir.'Haanga.php');
 Haanga::configure(array(
@@ -137,6 +59,11 @@ Haanga::configure(array(
 // initialize the html engine
 require(classes_dir.'html.php');
 $html = new HTML();
+
+/* this has to be initialized right after HTML and Session,
+	since we need HTML to display errors and Session to store them */
+// !!TODO nvm about session, store them later? We already die inside settings
+require(include_dir.'settings.php');
 
 // initiailze session
 require(classes_dir.'session.php');

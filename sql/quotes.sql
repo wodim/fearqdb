@@ -91,6 +91,38 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sites`
+--
+
+CREATE TABLE IF NOT EXISTS `sites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `domain` varchar(32) NOT NULL,
+  `site_key` varchar(32) NOT NULL,
+  `lang` varchar(5) NOT NULL,
+  `locale` varchar(16) NOT NULL,
+  `collate` varchar(24) NOT NULL,
+  `ip_show` tinyint(1) NOT NULL,
+  `ip_host` tinyint(1) NOT NULL,
+  `ip_part` tinyint(1) NOT NULL,
+  `analytics_enabled` tinyint(1) NOT NULL,
+  `analytics_code` varchar(16) NOT NULL,
+  `url` varchar(32) NOT NULL,
+  `statics_url` varchar(64) NOT NULL,
+  `snowstorm` tinyint(1) NOT NULL,
+  `db` varchar(10) NOT NULL,
+  `irc` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `nname` varchar(10) NOT NULL,
+  `cookie` varchar(16) NOT NULL,
+  `privacy_level` int(11) NOT NULL,
+  `privacy_level_for_bots` int(11) NOT NULL,
+  `page_size` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 

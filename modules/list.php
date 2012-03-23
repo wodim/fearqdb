@@ -28,7 +28,7 @@ if (isset($params[1]) && is_numeric($params[1])) {
 	$page_number = 1;
 }
 
-$where = sprintf('WHERE db = \'%s\' %s %s',
+$where = sprintf('WHERE quotes.db = \'%s\' %s %s',
 	$config['db']['table'],
 	($session->level != 'anonymous') ? 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' : 'AND quotes.status = \'approved\'',
 	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
