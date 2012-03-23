@@ -77,7 +77,7 @@ function hide_sensitive($quote) {
 }
 
 function check_key() {
-	global $config, $db, $session;
+	global $db, $session, $params;
 
 	if (!isset($params[2])) {
 		$session->log('JSON API access with no key');
@@ -101,7 +101,7 @@ function required_post($variables) {
 
 	foreach ($variables as $var) {
 		if (!isset($_POST[$var])) {
-			$session->log(sprintf('JSON API access with missing key: %s', $var));
+			$session->log(sprintf('JSON API POST with missing variable: %s', $var));
 			generic_error('not_enough_parameters');
 		}
 	}
