@@ -97,7 +97,7 @@ class Quote {
 		$valid = preg_match_all('/(\d+)$/', $this->ip, $hide);
 		$hide = $valid ? $hide[1][0] : '';
 
-		if ($this->ip != 'kobaz') {
+		if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $this->ip)) {
 			if ($config['site']['ip']['host']) {
 				$host = gethostbyaddr($this->ip);
 				if (!$host || $host == $this->ip) {

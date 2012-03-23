@@ -17,7 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-define('MAX_IP_LENGTH', 15);
 define('MAX_URL_LENGTH', 256);
 define('MAX_REDIR_LENGTH', MAX_URL_LENGTH);
 define('MAX_MODULE_LENGTH', 8);
