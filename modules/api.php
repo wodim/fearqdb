@@ -50,7 +50,7 @@ function get_last() {
 		$config['db']['table']));
 }
 
-function hide_sensitive($quote) {
+function sanitize($quote) {
 	global $session;
 
 	unset($quote->read);
@@ -162,7 +162,7 @@ switch ($params[1]) {
 				array('success' => 0,
 					'error' => 'no_such_quote')));
 		}
-		$quote = hide_sensitive($quote);
+		$quote = sanitize($quote);
 		out(array('results' =>
 			array('success' => 1,
 				'data' => $quote)));
@@ -180,7 +180,7 @@ switch ($params[1]) {
 				$quote = new Quote();
 				$quote->read($result);
 				$quotes[] = $quote;
-				hide_sensitive($quote);
+				sanitize($quote);
 			}
 			out(array('results' =>
 				array('success' => 1,
@@ -205,6 +205,7 @@ switch ($params[1]) {
 		if ($quote->read()) {
 			$quote->status = 'deleted';
 			$quote->save(false);
+			$session->log(sprintf('JSON API delete successful: %s - %s', $quote->permaid, $params[1]));
 			out(array('results' =>
 				array('success' => 1)));
 		}
