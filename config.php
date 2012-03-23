@@ -26,7 +26,6 @@ $config['site']['classes'] = 'classes';
 define('include_dir', $config['site']['include'].'/');
 define('modules_dir', $config['site']['modules'].'/');
 define('classes_dir', $config['site']['classes'].'/');
-define('statics_dir', $config['site']['statics'].'/');
 
 require(include_dir.'utils.php');
 require(include_dir.'defines.php');
