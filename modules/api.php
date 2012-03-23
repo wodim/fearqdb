@@ -78,7 +78,7 @@ function hide_sensitive($quote) {
 }
 
 function check_key() {
-	global $db, $session, $params;
+	global $db, $session, $params, $config;
 
 	if (!isset($params[2])) {
 		$session->log('JSON API access with no key');
@@ -86,8 +86,8 @@ function check_key() {
 	}
 
 	$result = $db->get_var(
-		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 LIMIT 1',
-			escape($params[2])));
+		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 AND db = \'%s\' LIMIT 1',
+			escape($params[2]), $config['db']['table']));
 	
 	if ($result) {
 		return $result;

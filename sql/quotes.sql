@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `api` (
   `key` varchar(32) NOT NULL,
   `name` varchar(20) NOT NULL,
   `approved` tinyint(1) NOT NULL,
+  `db` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
