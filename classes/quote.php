@@ -255,11 +255,6 @@ class Quote {
 			}
 		}
 
-		// fix double utf8 encoding
-		if (strpos($text, 'Ã') > 0 || strpos($text, 'Â') > 0) {
-			$text = iconv('utf8', 'cp1252', $text);
-		}
-
 		return $text;
 	}
 	

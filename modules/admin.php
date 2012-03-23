@@ -50,7 +50,7 @@ switch ($params[1]) {
 			if ($quote->read()) {
 				printf("Read %d!\n", $i);
 				if (strpos($quote->text, 'Ã') > 0 || strpos($quote->text, 'Â') > 0) {
-					printf("Fixing %d\n", $quote->permaid);
+					printf("Fixing %s\n", $quote->permaid);
 					$quote->text = iconv('utf8', 'cp1252', $quote->text);
 					$quote->save(false);
 				}
