@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `permaid` varchar(4) NOT NULL,
   `nick` varchar(20) NOT NULL,
   `date` datetime NOT NULL,
-  `ip` varchar(32) NOT NULL,
+  `ip` varchar(64) NOT NULL,
   `text` text NOT NULL,
   `comment` varchar(1000) NOT NULL,
   `db` varchar(16) NOT NULL DEFAULT '',
