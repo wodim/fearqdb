@@ -6,10 +6,10 @@
 >
 <channel>
 	<title>{{config.site.name}}</title>
-	<atom:link href="{{config.core.domain}}rss" rel="self" type="application/rss+xml" />
-	<link>{{config.core.domain}}</link>
+	<atom:link href="{{config.site.domain}}rss" rel="self" type="application/rss+xml" />
+	<link>{{config.site.domain}}</link>
 	<description>{% trans _('Quote database') %}</description>
 
 	<pubDate>{{rss.date}}</pubDate>
-	<generator>{{config.core.domain}}</generator>
+	<generator>{{config.site.domain}}</generator>
 	<language>{{config.site.lang}}</language>

@@ -118,7 +118,7 @@ class Quote {
 			$this->semiip = _('Imported from the bot');
 		}
 
-		$this->permalink = sprintf('%s%s', $config['core']['domain'], $this->permaid);
+		$this->permalink = sprintf('%s%s', $config['site']['domain'], $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
@@ -240,7 +240,7 @@ class Quote {
 			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
 			$text = str_replace("\n", '<br />', $text);
 			// hashtags
-			// $text = preg_replace('/#([a-z0-9\-_\?]*\w)/mi', sprintf('<a href="%ssearch/%%23$1" target="_blank">#$1</a>', $config['core']['domain']), $text);
+			// $text = preg_replace('/#([a-z0-9\-_\?]*\w)/mi', sprintf('<a href="%ssearch/%%23$1" target="_blank">#$1</a>', $config['site']['domain']), $text);
 
 			// respect \s\s to fix asciis
 			$text = str_replace('  ', '&nbsp;&nbsp;', $text);

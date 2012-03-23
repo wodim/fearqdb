@@ -19,7 +19,6 @@
 
 $start = microtime(true);
 
-$config['site']['root'] = '/';
 // used to generate cookies and the site password!
 // change it in case of disclosure
 $config['site']['key'] = 'thisisakey';
@@ -44,7 +43,7 @@ $config['site']['analytics']['enabled'] = false;
 $config['site']['analytics']['code'] = '';
 
 /* it *must* include /, or even a full path including domain */
-$config['core']['statics'] = 'http://localhost/statics/';
+$config['site']['statics'] = 'http://localhost/statics/';
 
 $config['db']['user'] = 'qdb';
 $config['db']['pass'] = 'qdb';
@@ -62,7 +61,7 @@ switch ($_SERVER['HTTP_HOST']) {
 		$config['site']['irc'] = '#goddammit at EFnet';
 		$config['site']['name'] = '#goddammit fun';
 		$config['site']['nname'] = 'goddammit';
-		$config['core']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
+		$config['site']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
 		$config['site']['analytics']['enabled'] = true;
 		$config['site']['analytics']['code'] = 'UA-123123123-9';
 		$config['site']['snowstorm'] = true;
@@ -72,7 +71,7 @@ switch ($_SERVER['HTTP_HOST']) {
 		$config['site']['irc'] = 'testing';
 		$config['site']['name'] = 'testing';
 		$config['site']['nname'] = 'general';
-		$config['core']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
+		$config['site']['domain'] = sprintf('http://%s/', $_SERVER['HTTP_HOST']);
 		$config['site']['analytics']['enabled'] = false;
 		break;
 }
@@ -92,14 +91,14 @@ $config['site']['privacy_level_for_bots'] = 2;
 /* you shouldn't need to configure anything above this point */
 
 
-$config['core']['include'] = 'include';
-$config['core']['modules'] = 'modules';
-$config['core']['classes'] = 'classes';
+$config['site']['include'] = 'include';
+$config['site']['modules'] = 'modules';
+$config['site']['classes'] = 'classes';
 
-define('include_dir', $config['core']['include'].'/');
-define('modules_dir', $config['core']['modules'].'/');
-define('classes_dir', $config['core']['classes'].'/');
-define('statics_dir', $config['core']['statics'].'/');
+define('include_dir', $config['site']['include'].'/');
+define('modules_dir', $config['site']['modules'].'/');
+define('classes_dir', $config['site']['classes'].'/');
+define('statics_dir', $config['site']['statics'].'/');
 
 require(include_dir.'utils.php');
 require(include_dir.'defines.php');

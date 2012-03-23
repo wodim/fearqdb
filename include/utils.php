@@ -21,7 +21,7 @@ function redir($location = null) {
 	global $config, $session;
 
 	if (!$location) {
-		$location = $config['site']['root'];
+		$location = '/';
 	}
 
 	$session->hit(true, $location);
