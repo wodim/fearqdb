@@ -59,7 +59,6 @@ function sanitize($quote) {
 	unset($quote->downvotes);
 	unset($quote->reports);
 	unset($quote->views);
-	unset($quote->status);
 	unset($quote->db);
 	unset($quote->permalink);
 	unset($quote->host);
@@ -157,7 +156,8 @@ switch ($params[1]) {
 		required_post(array('permaid'));
 		$quote = new Quote();
 		$quote->permaid = $_POST['permaid'];
-		if (!$quote->read()) {
+		$key = check_key();
+		if (($key == 0 && $quote->status != 'approved') || !$quote->read()) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'no_such_quote')));

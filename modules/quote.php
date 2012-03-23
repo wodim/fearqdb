@@ -40,7 +40,7 @@ if ($quoteid) {
 	$quote->permaid = $permaid;
 }
 
-if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'approved')) {
+if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'approved') || $quote->status == 'deleted') {
 	$html->do_sysmsg(_('No such quote'), null, 404);
 }
 
