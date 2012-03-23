@@ -64,6 +64,7 @@ class Session {
 				return true;
 			}
 			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
+			$this->destroy();
 			return false;
 		} else {
 			$user = new User();
