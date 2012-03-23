@@ -274,10 +274,14 @@ class Quote {
 		global $db, $config;
 
 		if ($new) {
+			do {
+				$quote = new Quote();
+				$permaid = $quote->permaid = sprintf('%04x', rand(0, 65535));
+			} while ($quote->read());
 			$result = $db->query(sprintf('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, status, api)
 				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%d\')',
 				/* no way of forcing a permaid */
-				sprintf('%04x', rand(0, 65535)),
+				$permaid,
 				clean($this->nick, MAX_NICK_LENGTH, true),
 				/* date */
 				clean($this->ip, MAX_IP_LENGTH, true),
