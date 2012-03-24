@@ -179,8 +179,8 @@ switch ($params[1]) {
 			foreach ($search->results as $result) {
 				$quote = new Quote();
 				$quote->read($result);
-				$quotes[] = $quote;
 				sanitize($quote);
+				$quotes[] = $quote;
 			}
 			out(array('results' =>
 				array('success' => 1,
