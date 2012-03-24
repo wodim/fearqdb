@@ -1,0 +1,6 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>{{config.site.name}}</ShortName>
+	<Description>{% trans _('Search the quote database') %}</Description>
+	<Url type="text/html" method="get" template="{{config.site.domain}}search/{searchTerms}" />
+	<Image width="16" height="16">{{config.site.statics}}fearqdb.png</Image>
+</OpenSearchDescription>

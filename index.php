@@ -32,8 +32,11 @@ switch ($params[0]) {
 	// TODO this should be configurable on config.php, per domain
 	case 'robots.txt':
 		$module = 'robots';
-		header('Content-Type: text/plain');
-		echo("User-agent: *\nDisallow: /");
+		require(modules_dir.'leftovers.php');
+		break;
+	case 'opensearch.xml':
+		$module = 'opensearch';
+		require(modules_dir.'leftovers.php');
 		break;
 	case 'admin':
 		require(modules_dir.'admin.php');
