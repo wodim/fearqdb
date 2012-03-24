@@ -188,7 +188,7 @@ switch ($params[1]) {
 					'count' => $search->count)));
 		} else {
 			out(array('results' =>
-				array('success' => 0,
+				array('success' => 1,
 					'error' => 'no_quotes_found',
 					'count' => 0)));
 		}
