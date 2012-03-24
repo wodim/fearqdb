@@ -91,7 +91,7 @@ function check_key() {
 	if ($result) {
 		return $result;
 	}
-	
+
 	$session->log(sprintf('WARNING: JSON API access with invalid key: %s', $params[2]));
 	return 0;
 }
