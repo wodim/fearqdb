@@ -1,21 +1,33 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- fearqdb - quote database system
+-- Copyright (C) 2011-2012 David Martí <neikokz at gmail dot com>
 
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Affero General Public License as
+-- published by the Free Software Foundation, either version 3 of the
+-- License, or (at your option) any later version.
+
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Affero General Public License for more details.
+
+-- You should have received a copy of the GNU Affero General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `quotes`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `api`
---
-
+-- key: the API key. we recommend this to be a md5 or something similar but
+--   nothing stops you from using any other value such a word or a password.
+-- name: the name of the API, eg: 'Mobile', the name of your IRC bot, etc.
+-- approved: if 0, the API key won't work.
+-- db: the name of the db this API key works on, or empty if it will work on
+--   all dbs
+-- "1 - web" comes by default, DO NOT DELETE IT!
 CREATE TABLE IF NOT EXISTS `api` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key` varchar(32) NOT NULL,
@@ -24,12 +36,6 @@ CREATE TABLE IF NOT EXISTS `api` (
   `db` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `hits`
---
 
 CREATE TABLE IF NOT EXISTS `hits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,12 +53,6 @@ CREATE TABLE IF NOT EXISTS `hits` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `logs`
---
-
 CREATE TABLE IF NOT EXISTS `logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(15) NOT NULL,
@@ -62,12 +62,6 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `text` varchar(256) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `quotes`
---
 
 CREATE TABLE IF NOT EXISTS `quotes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -84,15 +78,56 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `views` int(11) NOT NULL DEFAULT '0',
   `status` enum('pending','approved','deleted') NOT NULL DEFAULT 'pending',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
-  `api` int(11) NOT NULL DEFAULT '0',
+  `api` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sites`
---
+-- domain: the domain (and only the domain) of your quote database.
+--   eg: qdb.example.net
+-- site_key: your site key; used to generate passwords, cookies and so on.
+--   in case of disclosure, just change it.
+-- lang: your language, for gettext.
+--   eg: es
+-- locale: your locale, for gettext.
+--   eg: es_ES.UTF-8
+-- collate: database collation for the search module.
+--   eg: utf8_spanish_ci
+--   This way if you do a search with "que", it will find "que" and "qué", which
+--   is useful.
+-- ip_show: whether ip addresses will be shown on the website.
+-- ip_host: whether ip addresses will be resolved before being shown on the
+--   website. Take into account that a slow DNS will slow down page generation
+--   since we don't cache this.
+-- ip_part: whether the last block of ip addresses and hosts will be hidden.
+--   ** authorised API key owners can read all IP addresses, it doesn't matter **
+--   **                 whether you set ip_show or ip_part                     **
+-- analytics_enabled: include Google Analytics javascript code
+-- analytics_code: your GA account
+--   eg: UA-13371488-1
+-- url: your quote database url, WITH the leading /
+--   eg: http://qdb.example.net/
+-- statics_url: the url that includes your static content, WITH the leading /
+--   eg: http://qdb.example.net/statics/
+--   eg: http://qdbstatic.net/
+-- snowstorm: snow storm!
+-- db: matches the 'db' field in all the other tables. allows you to have several
+--   domains running in the same database/tables and using the same code.
+-- irc: a brief description of where your irc channel is.
+--   eg: "#goddammit at EFnet"
+-- name: the name of your site used in the header, in the <title>, etc
+--   eg: "#goddammit quote database"
+-- nname: short name of your site, one word
+--   eg: gddmtqdb
+-- cookie: the name of the cookie your site will use
+--   eg: qdb_session
+-- privacy_level: privacy level for quotes for normal web users.
+--   -1: all quotes are shown, even the hidden ones
+--    0: normal
+--    1: all quotes are hidden, but nick/date are visible
+--    2: you have to be logged in to actually read any quote
+-- privacy_level_for_bots: same but for bots, don't rely on this since a normal
+--   user can change his/her user agent and make him/her look like a bot!
+-- page_size: quotes per page
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -120,12 +155,6 @@ CREATE TABLE IF NOT EXISTS `sites` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nick` varchar(16) NOT NULL,
@@ -134,3 +163,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `db` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `api` (`id`, `key`, `name`, `approved`, `db`) VALUES
+(1, '', 'web', 0, ''),

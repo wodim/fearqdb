@@ -85,7 +85,7 @@ function check_key() {
 	}
 
 	$result = $db->get_var(
-		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 AND db = \'%s\' LIMIT 1',
+		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 AND (db = \'%s\' OR db = \'\') LIMIT 1',
 			escape($params[2]), $config['db']['table']));
 
 	if ($result) {
