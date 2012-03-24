@@ -36,14 +36,14 @@ if (isset($params[1])) {
 	switch ($params[1]) {
 		case 'post':
 			if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-				redir();
+				redir('/submit');
 			}
 			$quote = new Quote();
-			$quote->nick = clean($_POST['nick'], 16);
+			$quote->nick = $_POST['nick'];
 			$quote->ip = $session->ip;
-			$quote->text = clean($_POST['text'], 10000);
-			$quote->comment = clean($_POST['comment'], 1000);
-			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on') ? '1' : '0';
+			$quote->text = $_POST['text'];
+			$quote->comment = $_POST['comment'];
+			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
 			$quote->status = ($session->level == 'user') ? 'approved' : 'pending';
 			$quote->save();
 			if ($quote->status == 'approved') {
