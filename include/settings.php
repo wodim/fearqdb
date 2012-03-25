@@ -30,7 +30,8 @@ $results = $db->get_row(
 		clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH, true)));
 
 if (!$results) {
-	$html->do_sysmsg('e.e', 'e.e', 404);
+	header('HTTP/1.1 404 Not Found');
+	die('Invalid hostname');
 }
 
 $config['site']['key'] = $results->site_key;

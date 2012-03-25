@@ -49,6 +49,18 @@ if (!@$db->quick_connect($config['db']['user'], $config['db']['pass'],
 
 $db->query('SET NAMES `utf8`');
 
+/* !!FIXME include a fallback $session->log() system? we may want to store
+	warnings to review them later, this is WRONG
+	the database is already initialised at this moment but html is not because
+	it needs some values stored in the sites table to work, such as the
+	statics path and it's not a good idea to hardcode it.
+	maybe it's a good idea to do a dry query even though $session already does
+	it later?
+	!!TODO no double query intended!!
+	!!TODO the only fired warning inside this is, at this moment, 'HTTP_HOST not
+	in range', we are not validating anything but it's not needed */
+require(include_dir.'settings.php');
+
 // initialize Haanga
 require(include_dir.'Haanga.php');
 Haanga::configure(array(
@@ -65,11 +77,6 @@ Haanga::configure(array(
 // initialize the html engine
 require(classes_dir.'html.php');
 $html = new HTML();
-
-/* this has to be initialized right after HTML and Session,
-	since we need HTML to display errors and Session to store them */
-// !!TODO nvm about session, store them later? We already die inside settings
-require(include_dir.'settings.php');
 
 // initiailze session
 require(classes_dir.'session.php');
