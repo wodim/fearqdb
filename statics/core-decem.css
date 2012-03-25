@@ -127,6 +127,7 @@ a {
 
 .qc {
 	position: relative;
+	margin-bottom: 25px;
 }
 
 .quote {
@@ -156,11 +157,15 @@ a {
 	word-wrap: break-word;
 	background: #fafafa;
 	line-height: 16px;
+	border-bottom: 1px solid #eee;
 }
 
-.quote .text.hidden {
-	/* color: white; */
-	background: #fafafa bottom right no-repeat url("lock.png");
+.quote.odd .text.hidden {
+	background: #fafafa bottom right no-repeat url("padlock-odd-nūllus.png");
+}
+
+.quote.even .text.hidden {
+	background: #fafafa bottom right no-repeat url("padlock-even-nūllus.png");
 }
 
 .quote .text.hidden span {
@@ -313,7 +318,7 @@ a {
 	color: #666;
 	border: 0 none;
 	border-top: 1px solid #f8f8f8;
-	box-shadow: 0px 10px 10px -15px black inset;
+	box-shadow: none;
 	border-radius: 0;
 }
 

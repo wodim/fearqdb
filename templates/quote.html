@@ -51,11 +51,11 @@
 	{% else %}
 		<div class="text">{{c.text}}</div>
 	{% endif %}
+	{% if c.comment && ((session.level != 'anonymous') || !c.hidden) %}
 		<div class="meta small">
-		{% if c.comment && ((session.level != 'anonymous') || !c.hidden) %}
 			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
-		{% endif %}
 		</div>
+	{% endif %}
 	</div>
 {% if c.new %}
 	<div class="star">*</div>
