@@ -45,6 +45,7 @@ if (isset($params[1])) {
 			$quote->comment = $_POST['comment'];
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
 			$quote->status = ($session->level == 'user') ? 'approved' : 'pending';
+			$quote->api = 1;
 			$quote->save();
 			if ($quote->status == 'approved') {
 				redir('/last');
