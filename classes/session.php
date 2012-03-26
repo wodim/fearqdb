@@ -139,16 +139,17 @@ class Session {
 			have to SELECT all keys. anyway, we don't expect to have a lot of keys
 			so... */
 
-		$results = $db->get_results('SELECT `key` FROM api WHERE approved = 1');
+		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1');
 		
-		foreach ($results as $key) {
-			if ($password == $this->password($key)) {
+		foreach ($results as $result) {
+			if ($password == $this->password($result->key)) {
+				$id = $result->id;
 				break;
 			}
 			return false;
 		}
 
-		$this->log(sprintf('Created session using API key %d', $api));
+		$this->log(sprintf('Created session using API key %d', $id));
 
 		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
 		return true;
