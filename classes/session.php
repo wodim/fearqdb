@@ -40,7 +40,7 @@ class Session {
 		$this->origin = urlencode($_SERVER['REQUEST_URI']);
 
 		/* today's lesson: the more bullshit you get into a cookie, the more secure it is. */
-		$this->expected_cookie = md5(sprintf('ni%sna%snu%sne', $this->password(), $config['site']['key'], date('YdmYdYmdYmdY')));
+		$this->expected_cookie = md5(sprintf('ni%sna%sne', $config['site']['key'], date('YdmYdYmdYmdY')));
 		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $config['site']['key'])), 0, 8);
 
 		if (!isset($_COOKIE[$config['site']['cookie_name']])) {
@@ -132,22 +132,30 @@ class Session {
 			$text));
 	}
 
-	function create($password) {
-		global $config;
+	private function create($password) {
+		global $config, $db;
 
-		if ($password != $this->password()) {
+		/* maybe we could have another parameter in the GET query so we don't
+			have to SELECT all keys. anyway, we don't expect to have a lot of keys
+			so... */
+
+		$results = $db->get_results('SELECT `key` FROM api WHERE approved = 1');
+		
+		foreach ($results as $key) {
+			if ($password == $this->password($key)) {
+				break;
+			}
 			return false;
 		}
 
-		$this->log('Created session');
+		$this->log(sprintf('Created session using API key %d', $api));
 
-		// the password is generated daily soooo exp time = 24 hours
 		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
 		return true;
 	}
 
 	// we DO NOT ESCAPE
-	function create_user($nick, $password) {
+	private function create_user($nick, $password) {
 		global $config;
 
 		$user = new User();
@@ -161,7 +169,7 @@ class Session {
 		return true;
 	}
 
-	function destroy() {
+	private function destroy() {
 		global $config;
 
 		$this->log('Destroyed session');
@@ -170,10 +178,9 @@ class Session {
 		return true;
 	}
 
-	/* current password, it's generated every day. in case of disclosure, change the site key. */
-	function password() {
+	private function password($seed) {
 		global $config;
 
-		return(substr(md5(date('d/m/Y').$config['site']['key']), 0, 8));
+		return(substr(md5(date('d/m/Y').$seed), 0, 8));
 	}
 }
