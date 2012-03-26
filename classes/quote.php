@@ -188,7 +188,7 @@ class Quote {
 				// unfortunately we have to do this each time...
 				$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $text));
 				$offset = mb_strpos($plain, $criteria, $pos);
-				if (!$offset) {
+				if ($offset === false) {
 					break;
 				}
 				$first = '<strong class="criteria">';
