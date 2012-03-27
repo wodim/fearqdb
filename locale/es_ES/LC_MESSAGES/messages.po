@@ -1,3 +1,9 @@
+msgid "Your quote has not been sent. Maybe it was too short?"
+msgstr "No se ha podido enviar el quote. ¿Acaso era muy corto?"
+
+msgid "Oops!"
+msgstr "Vaya..."
+
 msgid "Share it"
 msgstr "Compártelo"
 

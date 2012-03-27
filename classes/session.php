@@ -31,6 +31,7 @@ class Session {
 	var $xsrf = '';
 	var $type = '';
 	var $hit = false;
+	var $sysmsg = false;
 
 	function init() {
 		global $config, $db, $params;

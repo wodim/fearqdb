@@ -271,6 +271,12 @@ class Quote {
 	function save($new = true) {
 		global $db, $config;
 
+		foreach (array($this->nick, $this->text) as $check) {
+			if (mb_strlen($check) < 3) {
+				return false;
+			}
+		}
+
 		if ($new) {
 			do {
 				$quote = new Quote();

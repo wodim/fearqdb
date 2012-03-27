@@ -77,6 +77,8 @@ class HTML {
 	function do_sysmsg($title, $message, $code) {
 		global $session;
 
+		$session->sysmsg = true;
+
 		header('HTTP/1.1 '.$code);
 		$this->do_header($title);
 		if (!$message) {

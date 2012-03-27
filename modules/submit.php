@@ -46,12 +46,17 @@ if (isset($params[1])) {
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
 			$quote->status = ($session->level == 'user') ? 'approved' : 'pending';
 			$quote->api = 1;
-			$quote->save();
+			if (!$quote->save()) {
+				redir('/submit/invalid');
+			}
 			if ($quote->status == 'approved') {
 				redir('/last');
 			} else {
 				redir('/submit/sent');
 			}
+			break;
+		case 'invalid':
+			$html->do_sysmsg(_('Oops!'), _('Your quote has not been sent. Maybe it was too short?'), 200);
 			break;
 		case 'sent':
 			$html->do_sysmsg(_('Quote sent!'), _('Your quote has been submitted and is now pending approval!'), 200);
