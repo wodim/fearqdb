@@ -38,10 +38,13 @@
 			{% if ((session.level != 'anonymous') || !c.hidden && 1 == 0) %}
 				<span class="share">{% trans _('Share it:') %} <a href="{{c.tweet}}" target="_blank">Twitter</a></span>
 			{% endif %}
+			{% if ((session.level != 'anonymous') && c.hidden) %}
+				<span class="share"><a href="/{{c.permaid}}/{{c.password}}" target="_blank">{% trans _('Share it') %}</a></span>
+			{% endif %}
 		</div>
 	{% if c.hidden %}
 		<div class="text hidden">
-		{% if (session.level != 'anonymous') %}
+		{% if (session.level != 'anonymous' || c.forceshow) %}
 			{{c.text}}
 		{% else %}
 			<span>{% trans _('This quote is hidden.') %}<br />
@@ -51,7 +54,7 @@
 	{% else %}
 		<div class="text">{{c.text}}</div>
 	{% endif %}
-	{% if c.comment && ((session.level != 'anonymous') || !c.hidden) %}
+	{% if c.comment && ((session.level != 'anonymous') || !c.hidden || c.forceshow) %}
 		<div class="meta small">
 			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
 		</div>

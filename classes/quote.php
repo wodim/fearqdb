@@ -52,6 +52,8 @@ class Quote {
 	var $tweet = '';
 	var $excerpt = '';
 	var $name = '';
+	var $password = '';
+	var $forceshow = '';
 
 	function read($results = null) {
 		global $db, $config, $session;
@@ -123,6 +125,7 @@ class Quote {
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
+		$this->password = substr(md5(sprintf('a%sb%sc%sd', $config['site']['key'], $this->permaid, date('d/m:H'))), 0, 8);
 		$this->read = true;
 		return true;
 	}

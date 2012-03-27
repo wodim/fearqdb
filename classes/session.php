@@ -156,7 +156,7 @@ class Session {
 	}
 
 	// we DO NOT ESCAPE
-	private function create_user($nick, $password) {
+	function create_user($nick, $password) {
 		global $config;
 
 		$user = new User();
@@ -170,7 +170,7 @@ class Session {
 		return true;
 	}
 
-	private function destroy() {
+	function destroy() {
 		global $config;
 
 		$this->log('Destroyed session');

@@ -49,6 +49,13 @@ if ($quoteid) {
 	die();
 }
 
+if (isset($params[1]) && $params[1] == $quote->password) {
+	$quote->forceshow = true;
+} elseif (isset($params[1]) && $params[1] != $quote->password) {
+	redir(sprintf('/%s', $quote->permaid));
+	die();
+}
+
 $html->do_header(sprintf(_('Quote %s'), $quote->permaid));
 
 $quote->output();
