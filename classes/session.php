@@ -132,7 +132,7 @@ class Session {
 			$text));
 	}
 
-	private function create($password) {
+	function create($password) {
 		global $config, $db;
 
 		/* maybe we could have another parameter in the GET query so we don't
