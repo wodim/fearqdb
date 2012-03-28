@@ -10,7 +10,7 @@
 {% if session.sysmsg %}
 		<meta name="robots" content="noindex" />
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{config.site.statics}}core-ūndecim.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="{{config.site.statics}}core-duodecim.css" />
 		<link rel="shortcut icon" href="{{config.site.statics}}fearqdb.png" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{config.site.domain}}rss" />
 {% if config.site.snowstorm %}
@@ -39,8 +39,7 @@
 		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{config.site.name}}">
 	</head>
 	<body>
-		<div class="title"></div>
-		<div class="page">
+		<div class="title">
 			<div class="header">
 				<span class="name"><a href="/">{{config.site.name}}</a></span>
 				<ul class="bar">
@@ -60,4 +59,6 @@
 					<li><a href="/submit" class="submit">{% trans _('Submit quote') %}</a></li>
 				</ul>
 			</div>
+		</div>
+		<div class="page">
 			<div class="content">

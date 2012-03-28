@@ -26,8 +26,7 @@ a {
 	box-shadow: 0 -6px 3px 5px black;
 	width: 100%;
 	background: black;
-	height: 60px;
-	margin: -19px auto 0;
+	height: 41px;
 	background: #5c7ba7;
 	z-index: 2;
 }
@@ -36,8 +35,9 @@ a {
 	height: 41px;
 	display: block;
 	padding: 0 8px;
-	margin: -41px 0 0;
 	z-index: 2;
+	width: 820px;
+	margin: 0 auto;
 }
 
 .header ul.bar {
@@ -145,7 +145,7 @@ a {
 	word-wrap: break-word;
 	background: #fafafa;
 	line-height: 16px;
-	width: 645px;
+	width: 640px;
 	float: left;
 	min-height: 60px;
 	border-top-right-radius: 1px;
@@ -284,7 +284,7 @@ a {
 .quote .meta.info {
 	float: left;
 	display: inline-block;
-	width: 75px;
+	width: 80px;
 	text-align: right;
 	color: #333;
 }
