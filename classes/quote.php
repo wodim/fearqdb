@@ -168,6 +168,13 @@ class Quote {
 		return true;
 	}
 
+	private function translit_fix($text) {
+		return str_replace(
+			array('«', '»', '€'),
+			array('<', '>', 'e'),
+			$text);
+	}
+
 	private function text_clean($text, $for = 'www_body') {
 		// this is real crap.
 
@@ -185,7 +192,7 @@ class Quote {
 			$criteria = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $session->search));
 			do {
 				// unfortunately we have to do this each time...
-				$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $text));
+				$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $this->translit_fix($text)));
 				$offset = mb_strpos($plain, $criteria, $pos);
 				if ($offset === false) {
 					break;
@@ -211,7 +218,7 @@ class Quote {
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'rss_title' || $for == 'excerpt') {
 			// add * to mark actions, joins, parts etc
-			$text = preg_replace('/^([a-z0-9\-\[\]\{\}_])/smi', '* $1', $text); // :D
+			$text = preg_replace('/^([a-z0-9\[\]\{\}_])/smi', '* $1', $text); // :D
 		}
 
 		// hack for this db. old quotes came this way. so remove this once it's fixed or remove it if you start with a db from scratch.
