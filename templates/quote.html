@@ -24,10 +24,6 @@
 					{% endif %}
 				{% endif %}
 			{% endif %}
-			{% if 1 == 0 %}
-				<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
-				<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.permaid}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.permaid}});">↓</a></span>
-			{% endif %}
 			{% if c.timelapse %}
 				<span class="ts lapse" title="{{c.date}}">{{c.timelapse}}</span>
 			{% else %}

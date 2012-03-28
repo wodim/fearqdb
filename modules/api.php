@@ -55,10 +55,6 @@ function sanitize($quote) {
 
 	unset($quote->read);
 	unset($quote->id);
-	unset($quote->upvotes);
-	unset($quote->downvotes);
-	unset($quote->reports);
-	unset($quote->views);
 	unset($quote->db);
 	unset($quote->permalink);
 	unset($quote->host);

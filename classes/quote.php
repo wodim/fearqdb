@@ -33,10 +33,6 @@ class Quote {
 	var $ip = '';
 	var $text = '';
 	var $comment = '';
-	var $upvotes = 0;
-	var $downvotes = 0;
-	var $reports = 0;
-	var $views = 0;
 	var $status = 'pending';
 	var $hidden = 0;
 	var $ts = 0;
