@@ -127,24 +127,12 @@ a {
 
 .qc {
 	position: relative;
-	margin-bottom: 25px;
 }
 
 .quote {
 	font-family: 'Consolas', 'Lucida Console', monospace;
 	margin-bottom: 20px;
 	overflow: hidden;
-	border-radius: 3px;
-	/* box-shadow: 0 -3px 4px -6px; */
-	/* box-shadow: 0 1px 8px #eee; */
-}
-
-.quote.odd {
-	/* border: 1px solid rgb(184,85,116); */
-}
-
-.quote.even {
-	/* border: 1px solid rgb(219,103,53); */
 }
 
 .quote.unapproved {
@@ -152,12 +140,24 @@ a {
 }
 
 .quote .text {
-	padding: 6px;
+	padding: 12px 7px;
 	font-size: 9pt;
 	word-wrap: break-word;
 	background: #fafafa;
 	line-height: 16px;
-	border-bottom: 1px solid #eee;
+	width: 645px;
+	float: left;
+	min-height: 60px;
+	border-top-right-radius: 1px;
+	border-bottom-right-radius: 1px;
+}
+
+.quote.odd .text {
+	border-left: 5px solid #5ca763;
+}
+
+.quote.even .text {
+	border-left: 5px solid #5c7ba7;
 }
 
 .quote.odd .text.hidden {
@@ -255,7 +255,6 @@ a {
 }
 
 .quote .meta {
-	color: white;
 	font-size: 9pt;
 	padding: 6px 10px 4px;
 	font-family: 'Arial', sans-serif;
@@ -264,46 +263,50 @@ a {
 	border-top-right-radius: 3px;
 }
 
-.quote.odd .meta {
-	background: #5ca763;
-	text-shadow: 0 1px 2px #3d6f42;
-	box-shadow: 0px 0px 1px #3d6f42 inset;
-}
-
-.quote.even .meta {
-	background: #5c7ba7;
-	text-shadow: 0 1px 2px #3e5270;
-	box-shadow: 0px 0px 1px #3e5270 inset;
-}
-
 .quote .meta span.share {
 	display: none;
 }
 
 .quote:hover .meta span.share {
-	display: block;
-	float: right;
 	font-size: 8pt;
+	margin-top: 2px;
+	display: block;
+}
+
+.quote:hover .meta span.share a {
+	color: #666;
 }
 
 .quote .meta a {
-	color: white;
+	color: #333;
+}
+
+.quote .meta.info {
+	float: left;
+	display: inline-block;
+	width: 75px;
+	text-align: right;
+	color: #333;
 }
 
 .quote .meta a.id {
 	font-weight: bold;
 	font-family: 'Consolas', monospace;
+	font-size: 12pt;
+}
+
+.quote .meta .nick {
+	font-weight: bold;
 	font-size: 9pt;
+	display: block;
+	margin-bottom: 2px;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .quote .meta .ts {
-	font-style: italic;
 	font-size: 8pt;
 	margin-left: 1px;
-}
-
-.quote .meta .ts:before {
-	content: "- ";
 }
 
 .quote .meta .ts.lapse {
@@ -313,17 +316,16 @@ a {
 .quote .meta.small {
 	font-size: 8pt;
 	line-height: 15px;
-	background: white;
 	text-shadow: none;
 	color: #666;
-	border: 0 none;
-	border-top: 1px solid #f8f8f8;
 	box-shadow: none;
+	padding: 8px 122px 0;
 	border-radius: 0;
+	display: inline-block;
 }
 
 .pager {
-	margin-bottom: 20px;
+	margin: 35px 132px;
 }
 
 .pager a, .pager span {
@@ -489,6 +491,7 @@ input[type=checkbox] {
 }
 
 .qc .star {
+	display: none;
 	font-weight: bold;
 	position: absolute;
 	top: -13px;

@@ -1,35 +1,33 @@
 <div class="qc">
 	<div class="quote {{c.style}}">
-		<div class="meta">
-			<a href="{{c.permalink}}" class="id">#{{c.permaid}}</a> -
-			<span class="sent">
-				{% trans _('Sent by') %} <strong>{{c.nick|escape}}</strong>
-				{% if c.api %}
-					{% trans _('via') %} <strong>{{c.name|escape}}</strong>
-				{% endif %}
-				{% if c.status == 'pending' %}
-					({% trans _('Yet to be approved') %})
-				{% endif %}
-				{% if (session.level != 'anonymous') && config.site.ip.show && !c.api && c.ip != 'kobaz' %}
-					{% if c.host && config.site.ip.host %}
-						{% if config.site.ip.part %}
-							(<span title="{{c.semiip}}">{{c.semihost}}</span>)
-						{% else %}
-							(<span title="{{c.ip}}">{{c.host}}</span>)
-						{% endif %}
+		<div class="meta info">
+			<a href="{{c.permalink}}" class="id">#{{c.permaid}}</a> 
+			<span class="nick">{{c.nick|escape}}</span>
+			{% if c.api && 1 == 0 %}
+				{% trans _('via') %} <strong>{{c.name|escape}}</strong>
+			{% endif %}
+			{% if c.status == 'pending' && 1 == 0 %}
+				({% trans _('Yet to be approved') %})
+			{% endif %}
+			{% if (session.level != 'anonymous') && config.site.ip.show && !c.api && c.ip != 'kobaz' %}
+				{% if c.host && config.site.ip.host %}
+					{% if config.site.ip.part %}
+						(<span title="{{c.semiip}}">{{c.semihost}}</span>)
 					{% else %}
-						{% if config.site.ip.part %}
-							({{c.semiip}})
-						{% else %}
-							({{c.sip}})
-						{% endif %}
+						(<span title="{{c.ip}}">{{c.host}}</span>)
+					{% endif %}
+				{% else %}
+					{% if config.site.ip.part %}
+						({{c.semiip}})
+					{% else %}
+						({{c.sip}})
 					{% endif %}
 				{% endif %}
-				{% if 1 == 0 %}
-					<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
-					<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.permaid}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.permaid}});">↓</a></span>
-				{% endif %}
-			</span>
+			{% endif %}
+			{% if 1 == 0 %}
+				<span class="votes">{{c.upvotes}}/{{c.downvotes}}</span>
+				<span class="controls"><a href="#" class="upvote" onclick="qdb.upvote({{c.permaid}});">↑</a>/<a href="#" class="downvote" onclick="qdb.downvote({{c.permaid}});">↓</a></span>
+			{% endif %}
 			{% if c.timelapse %}
 				<span class="ts lapse" title="{{c.date}}">{{c.timelapse}}</span>
 			{% else %}
