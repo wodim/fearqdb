@@ -1,7 +1,7 @@
 <div class="qc">
 	<div class="quote {{c.style}}">
 		<div class="meta info">
-			<a href="{{c.permalink}}" class="id">#{{c.permaid}}</a> 
+			<a href="/{{c.permaid}}" class="id">#{{c.permaid}}</a> 
 			<span class="nick">{{c.nick|escape}}</span>
 			{% if c.api && 1 == 0 %}
 				{% trans _('via') %} <strong>{{c.name|escape}}</strong>
