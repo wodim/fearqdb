@@ -21,9 +21,9 @@ require_once('config.php');
 require_once(include_dir.'utils.php');
 
 class Quote {
-	const READ = 'quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name';
-	const READ_BY_ID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name FROM quotes, api WHERE quotes.id = %d AND quotes.db = \'%s\' AND (api.id = quotes.api OR quotes.api = 0)';
-	const READ_BY_PERMAID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, IF(quotes.api > 0, api.name, "") AS name FROM quotes, api WHERE permaid = \'%s\' AND quotes.db = \'%s\' AND (api.id = quotes.api OR quotes.api = 0)';
+	const READ = 'quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name';
+	const READ_BY_ID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name FROM quotes, api WHERE quotes.id = %d AND quotes.db = \'%s\' AND api.id = quotes.api';
+	const READ_BY_PERMAID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name AS name FROM quotes, api WHERE permaid = \'%s\' AND quotes.db = \'%s\' AND api.id = quotes.api';
 
 	var $read = false;
 	var $id = 0;

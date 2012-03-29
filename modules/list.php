@@ -33,7 +33,7 @@ $where = sprintf('WHERE quotes.db = \'%s\' %s %s',
 	($session->level != 'anonymous') ? 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' : 'AND quotes.status = \'approved\'',
 	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
 
-$where_api = sprintf('%s AND (api.id = quotes.api OR quotes.api = 0)', $where);
+$where_api = sprintf('%s AND api.id = quotes.api', $where);
 
 $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY date DESC LIMIT %d,%d',
 	Quote::READ, $where_api, (--$page_number * $config['site']['page_size']), $config['site']['page_size']));
