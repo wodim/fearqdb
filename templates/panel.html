@@ -1,0 +1,88 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+function release() {
+	$('#submit').removeAttr('disabled');
+	$('#submit').val('{% trans _('Perform') %}');
+}
+function panel() {
+	$('#submit').attr('disabled', 'disabled');
+	$('#submit').val('{% trans _('Wait...') %}');
+	$.ajax({
+		type: 'POST',
+		url: '/panel/post',
+		data: $('#panel').serialize(),
+		success: function(response) {
+			release();
+			$('#results').html(response);
+		},
+		error: function(response) {
+		release();
+		alert('Error');
+		}
+	});
+}
+</script>
+
+<div class="sysmsg" style="margin: 0 20px;">
+	<h3>{% trans _('Administration') %}</h3>
+	<form action="/panel/post" id="panel" method="post" onsubmit="panel(); return false;">
+		<p>action</p>
+		<select name="action">
+			<option value="quote">quote</option>
+			<option value="dbq">dbq</option>
+			<option value="misc">misc</option>
+		</select>
+		<dl>
+			<dt></dt>
+			<dd><br /><br />quote</dd>
+			<dt><label for="permaid">permaid</label></dt>
+			<dd><input type="text" name="permaid" maxlength="4" /></dd>
+			<dt><label for="perform_1">perform</label></dt>
+			<dd>
+				<select name="quote_action">
+					<option value="do_pending">do_pending</option>
+					<option value="do_approved">do_approved</option>
+					<option value="do_deleted">do_deleted</option>
+					<option value="--">--</option>
+					<option value="do_show">do_show</option>
+					<option value="do_hide">do_hide</option>
+					<option value="--">--</option>
+					<option value="do_destroy">do_destroy</option>
+				</select>
+			</dd>
+			<dt></dt>
+			<dd><br /><br />dbq</dd>
+			<dt><label for="perform_2">dbq</label></dt>
+			<dd><input type="text" name="query" style="width: 500px;" /></dd>
+			<dt><label for="perform_4">requires_output</label></dt>
+			<dd>
+				<select name="query_type">
+					<option value="query_type_get_results">query_type_get_results</option>
+					<option value="query_type_get_row">query_type_get_row</option>
+					<option value="query_type_get_var">query_type_get_var</option>
+					<option value="query_type_query">query_type_query</option>
+				</select>
+			</dd>
+			<dt></dt>
+			<dd><br /><br />misc</dd>
+			<dt><label for="perform_3">action</label></dt>
+			<dd>
+				<select name="misc_action">
+					<option value="approve_all">approve_all</option>
+					<option value="--">--</option>
+					<option value="privacy_login">privacy_login</option>
+					<option value="privacy_hide_all">privacy_hide_all</option>
+					<option value="privacy_unhide_all">privacy_unhide_all</option>
+					<option value="privacy_show_all">privacy_show_all</option>
+				</select>
+			</dd>
+			<dt></dt>
+			<dd>
+				<br />
+				<input type="submit" id="submit" value="{% trans _('Perform') %}" />
+			</dd>
+		</dl>
+	</form>
+</div>
+
+<div style="font-family: monospace;" id="results">pending_input</div>
