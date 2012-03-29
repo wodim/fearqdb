@@ -78,9 +78,6 @@ function elapsed_time($time) {
 	} elseif ($time > 2419200) {
 		$elapsed /= 2419200;
 		return(($elapsed < 2) ? _('one month ago') : sprintf(_('%d months ago'), $elapsed));
-	} elseif ($time > 345600) {
-		$elapsed /= 345600;
-		return(($elapsed < 2) ? _('one week ago') : sprintf(_('%d weeks ago'), $elapsed));
 	} elseif ($time > 86400) {
 		$elapsed /= 86400;
 		return(($elapsed < 2) ? _('one day ago') : sprintf(_('%d days ago'), $elapsed));

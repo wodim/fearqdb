@@ -37,12 +37,6 @@ msgstr "hace un mes"
 msgid "%d months ago"
 msgstr "hace %d meses"
 
-msgid "one week ago"
-msgstr "hace una semana"
-
-msgid "%d weeks ago"
-msgstr "hace %d semanas"
-
 msgid "one day ago"
 msgstr "hace un día"
 
@@ -59,13 +53,13 @@ msgid "one minute ago"
 msgstr "hace un minuto"
 
 msgid "%d minutes ago"
-msgstr "hace %d minutos"
+msgstr "hace %d mins"
 
 msgid "just now"
 msgstr "ahora mismo"
 
 msgid "%d seconds ago"
-msgstr "hace %d segundos"
+msgstr "hace %d segs"
 
 msgid "Page not found"
 msgstr "Página no encontrada"
