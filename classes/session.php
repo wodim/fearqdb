@@ -32,6 +32,7 @@ class Session {
 	var $type = '';
 	var $hit = false;
 	var $sysmsg = false;
+	var $nick = '';
 
 	function init() {
 		global $config, $db, $params;
@@ -70,10 +71,12 @@ class Session {
 		} else {
 			$user = new User();
 			if ($user->cookie_check((int)$tmp[0], $tmp[1])) {
-				$this->level = $user->level;
 				$this->user = (int)$tmp[0];
+				$this->level = 'admin';
+				$this->nick = $user->nick;
+			} else {
+				$this->destroy();
 			}
-			$this->destroy();
 			return false;
 		}
 

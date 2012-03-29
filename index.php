@@ -65,6 +65,7 @@ switch ($params[0]) {
 	case 'search':
 		require(modules_dir.'search.php');
 		break;
+	case 'userlogin':
 	case 'login':
 	case 'logout':
 		$module = 'session';

@@ -19,7 +19,7 @@
 
 require_once('config.php');
 
-global $params, $config, $session;
+global $params, $config, $session, $html;
 
 function origin_redir($origin) {
 	if (!preg_match('/^\//', $origin)) {
@@ -31,6 +31,31 @@ function origin_redir($origin) {
 $session->origin = '';
 
 switch ($params[0]) {
+	case 'userlogin':
+		$params[1] = isset($params[1]) ? $params[1] : '';
+		switch ($params[1]) {
+			case 'post':
+				if (!isset($_POST['nick']) ||
+					!isset($_POST['password']) ||
+					!isset($_POST['origin'])) {
+					$html->do_sysmsg('e.e', null, 403);
+				}
+				if ($session->create_user($_POST['nick'], $_POST['password'])) {
+					origin_redir($origin);
+				} else {
+					redir('/userlogin/error');
+				}
+				break;
+			case 'error':
+			default:
+				$origin = isset($params[2]) ? urlencode($params[2]) : '/';
+				$message = ($params[1] == 'error') ? _('Invalid password. Try again.') : '';
+				$html->do_header(_('Log in'));
+				$vars = compact('origin', 'message');
+				Haanga::Load('userlogin.html', $vars);
+				$html->do_footer();
+		}
+		break;
 	case 'login':
 		if (isset($params[1]) && !$session->create($params[1])) {
 			$html->do_sysmsg(_('Invalid password'), _('The password that that link provided was not valid. Maybe you clicked an outdated link?'), 403);

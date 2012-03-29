@@ -35,8 +35,8 @@ class User {
 
 		/* prefer id over nick */
 		$query = $this->id ? 
-			sprintf(User::READ_ID, $this->id, $config['db']['table']) :
-			sprintf(User::READ_NICK, $this->nick, $config['db']['table']);
+			sprintf(User::READ_ID, (int)$this->id, $config['db']['table']) :
+			sprintf(User::READ_NICK, clean($this->nick, MAX_USER_LENGTH, true), $config['db']['table']);
 			
 		$results = $db->get_row($query);
 
@@ -61,18 +61,24 @@ class User {
 			return false;
 		}
 
-		$expected = sprintf('p%sh%sp', $this->password, $config['site']['key']);
+		$expected = md5(sprintf('p%sh%sp', $this->password, $config['site']['key']));
 
-		return($expected == $cookie);
+		return($expected == $cookie) ?
+			$this->nick :
+			false;
 	}
 
 	function login_check($nick, $password) {
-		$this->id = $id;
+		global $config;
+
+		$this->nick = $nick;
 
 		if (!$this->read()) {
 			return false;
 		}
 
-		return(md5($password.$this->salt) == $this->password);
+		return(md5($this->salt.$password) == $this->password) ?
+			md5(sprintf('p%sh%sp', $this->password, $config['site']['key'])) :
+			false;
 	}
 }
