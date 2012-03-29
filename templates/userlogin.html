@@ -1,0 +1,28 @@
+<div class="sysmsg">
+	<h3>{% trans _('Log in') %}</h3>
+{% if message %}
+	<h4>{{message}}</h4>
+{% endif %}
+	<form action="/userlogin/post" method="post">
+		<dl>
+			<dt>
+				<label for="nick">{% trans _('Nick:') %}</label>
+			</dt>
+			<dd>
+				<input type="text" name="nick" id="nick" class="sep" />
+			</dd>
+			<dt>
+				<label for="password">{% trans _('Password:') %}</label>
+			</dt>
+			<dd>
+				<input type="text" name="password" id="password" class="sep" />
+			</dd>
+			<dt></dt>
+			<dd>
+				<br />
+				<input type="hidden" name="origin" value="{{origin}}" />
+				<input type="submit" value="{% trans _('Log in') %}" />
+			</dd>
+		</dl>
+	</form>
+</div>
