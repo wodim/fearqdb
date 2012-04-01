@@ -161,4 +161,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `api` (`id`, `key`, `name`, `approved`, `db`) VALUES
-(1, '', 'web', 0, ''),
+(1, '', 'web', 0, '');
