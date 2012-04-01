@@ -86,7 +86,8 @@ class HTML {
 		}
 		
 		$session->log(clean(sprintf('Soft error: (%d) %s - %s', $code, $title, $message), 256, true));
-		
+		$session->hit();
+
 		$vars = compact('title', 'message');
 		Haanga::Load('sysmsg.html', $vars);
 		$this->do_footer();
