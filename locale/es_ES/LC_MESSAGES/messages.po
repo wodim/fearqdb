@@ -1,181 +1,181 @@
 msgid "Your quote has not been sent. Maybe it was too short?"
-msgstr "No se ha podido enviar el quote. ¿Acaso era muy corto?"
+msgstr "‮No se ha podido enviar el quote. ¿Acaso era muy corto?"
 
 msgid "Oops!"
-msgstr "Vaya..."
+msgstr "‮Vaya..."
 
 msgid "Share it"
-msgstr "Compártelo"
+msgstr "‮Compártelo"
 
 msgid "Search the quote database"
-msgstr "Buscar en la base de datos de quotes"
+msgstr "‮Buscar en la base de datos de quotes"
 
 msgid "via"
-msgstr "vía"
+msgstr "‮vía"
 
 msgid "You must log in to read any quote."
-msgstr "Debes iniciar sesión para poder leer quotes."
+msgstr "‮Debes iniciar sesión para poder leer quotes."
 
 msgid "Submit quote"
-msgstr "Enviar quote"
+msgstr "‮Enviar quote"
 
 msgid "Share it:"
-msgstr "Compártelo:"
+msgstr "‮Compártelo:"
 
 msgid "search the database..."
-msgstr "buscar..."
+msgstr "‮buscar..."
 
 msgid "one year ago"
-msgstr "hace un año"
+msgstr "‮hace un año"
 
 msgid "%d years ago"
-msgstr "hace %d años"
+msgstr "‮hace %d años"
 
 msgid "one month ago"
-msgstr "hace un mes"
+msgstr "‮hace un mes"
 
 msgid "%d months ago"
-msgstr "hace %d meses"
+msgstr "‮hace %d meses"
 
 msgid "one day ago"
-msgstr "hace un día"
+msgstr "‮hace un día"
 
 msgid "%d days ago"
-msgstr "hace %d días"
+msgstr "‮hace %d días"
 
 msgid "one hour ago"
-msgstr "hace una hora"
+msgstr "‮hace una hora"
 
 msgid "%d hours ago"
-msgstr "hace %d horas"
+msgstr "‮hace %d horas"
 
 msgid "one minute ago"
-msgstr "hace un minuto"
+msgstr "‮hace un minuto"
 
 msgid "%d minutes ago"
-msgstr "hace %d mins"
+msgstr "‮hace %d mins"
 
 msgid "just now"
-msgstr "ahora mismo"
+msgstr "‮ahora mismo"
 
 msgid "%d seconds ago"
-msgstr "hace %d segs"
+msgstr "‮hace %d segs"
 
 msgid "Page not found"
-msgstr "Página no encontrada"
+msgstr "‮Página no encontrada"
 
 msgid "Latest quotes"
-msgstr "Últimos quotes"
+msgstr "‮Últimos quotes"
 
 msgid "Latest quotes - Page %d"
-msgstr "Últimos quotes - Página %d"
+msgstr "‮Últimos quotes - Página %d"
 
 msgid "No quotes found"
-msgstr "No se han encontrado quotes"
+msgstr "‮No se han encontrado quotes"
 
 msgid "There are no quotes matching your criteria."
-msgstr "No hay quotes que se correspondan con tu criterio de búsqueda."
+msgstr "‮No hay quotes que se correspondan con tu criterio de búsqueda."
 
 msgid "Search results for \"%s\""
-msgstr "Resultados de la búsqueda de «%s»"
+msgstr "‮Resultados de la búsqueda de «%s»"
 
 msgid "Quote sent!"
-msgstr "¡Quote enviado!"
+msgstr "‮¡Quote enviado!"
 
 msgid "Your quote has been submitted and is now pending approval!"
-msgstr "Tu quote ha sido enviado y está esperando ser aprobado."
+msgstr "‮Tu quote ha sido enviado y está esperando ser aprobado."
 
 msgid "Submit new quote"
-msgstr "Enviar nuevo quote"
+msgstr "‮Enviar nuevo quote"
 
 msgid "No such quote"
-msgstr "Quote no encontrado"
+msgstr "‮Quote no encontrado"
 
 msgid "Quote %d"
-msgstr "Quote %d"
+msgstr "‮Quote %d"
 
 msgid "Log in"
-msgstr "Iniciar sesión"
+msgstr "‮Iniciar sesión"
 
 msgid "« prev"
-msgstr "« anterior"
+msgstr "‮« anterior"
 
 msgid "next »"
-msgstr "siguiente »"
+msgstr "‮siguiente »"
 
 msgid "Are you lost?"
-msgstr "¿Te has perdido?"
+msgstr "‮¿Te has perdido?"
 
 msgid "Imported from the bot"
-msgstr "Importado del bot"
+msgstr "‮Importado del bot"
 
 msgid "Random"
-msgstr "Al azar"
+msgstr "‮Al azar"
 
 msgid "Log out"
-msgstr "Cerrar sesión"
+msgstr "‮Cerrar sesión"
 
 msgid "Quote database"
-msgstr "Base de datos de quotes"
+msgstr "‮Base de datos de quotes"
 
 msgid "Log in so you can read all the hidden quotes."
-msgstr "Inicia sesión para poder leer todos los quotes ocultos."
+msgstr "‮Inicia sesión para poder leer todos los quotes ocultos."
 
 msgid "Password:"
-msgstr "Clave:"
+msgstr "‮Clave:"
 
 msgid "Go back"
-msgstr "Volver atrás"
+msgstr "‮Volver atrás"
 
 msgid "Sent by"
-msgstr "Enviado por"
+msgstr "‮Enviado por"
 
 msgid "Yet to be approved"
-msgstr "No aprobado aún"
+msgstr "‮No aprobado aún"
 
 msgid "This quote is hidden."
-msgstr "Este quote está oculto."
+msgstr "‮Este quote está oculto."
 
 msgid "Log in to read it."
-msgstr "Inicia sesión para leerlo."
+msgstr "‮Inicia sesión para leerlo."
 
 msgid "Comment:"
-msgstr "Comentario:"
+msgstr "‮Comentario:"
 
 msgid "Hidden quote"
-msgstr "Quote oculto"
+msgstr "‮Quote oculto"
 
 msgid "Hidden quote. Log into the web site to read it."
-msgstr "Quote oculto. Inicia sesión en la web para leerlo."
+msgstr "‮Quote oculto. Inicia sesión en la web para leerlo."
 
 msgid "Submit"
-msgstr "Enviar"
+msgstr "‮Enviar"
 
 msgid "Remove timestamps"
-msgstr "Quitar timestamps"
+msgstr "‮Quitar timestamps"
 
 msgid "Your nick:"
-msgstr "Tu nick:"
+msgstr "‮Tu nick:"
 
 msgid "Hide quote (padlock)"
-msgstr "Ocultar texto (candado)"
+msgstr "‮Ocultar texto (candado)"
 
 msgid ""
 "Your quote will be pending approval once submitted.<br />To avoid that, log "
 "in before submitting it."
-msgstr ""
+msgstr "‮"
 "Tu quote deberá ser aprobado por un administrador antes de ser visible en el "
 "sitio.<br />Para evitar esto, inicia sesión antes de enviarlo."
 
 msgid "Invalid password"
-msgstr "Clave incorrecta"
+msgstr "‮Clave incorrecta"
 
 msgid ""
 "The password that that link provided was not valid. Maybe you clicked an outdated "
 "link?"
-msgstr ""
+msgstr "‮"
 "La clave dada por el enlace que has seguido no era válida. ¿Quizás has pinchado "
 "en un enlace antiguo?"
 
 msgid "Log in from IRC to read it."
-msgstr "Inicia sesión desde el IRC para leerlo."
+msgstr "‮Inicia sesión desde el IRC para leerlo."
