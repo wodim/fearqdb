@@ -17,7 +17,9 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require('config.php');
+$start = microtime(true);
+
+require('init.php');
 
 $params = explode('/', trim($_SERVER['REQUEST_URI']));
 array_shift($params);
