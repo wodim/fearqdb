@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$config['db']['user'] = '';
-$config['db']['pass'] = '';
-$config['db']['name'] = '';
-$config['db']['host'] = '';
+$config['db']['user'] = 'qdb';
+$config['db']['pass'] = 'qdb';
+$config['db']['name'] = 'qdb';
+$config['db']['host'] = 'localhost';

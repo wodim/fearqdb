@@ -52,7 +52,7 @@ class Quote {
 	var $forceshow = '';
 
 	function read($results = null) {
-		global $db, $config, $session;
+		global $db, $settings, $session;
 
 		/* we may already have results (eg. when called from list.php)
 			but maybe we do not, so fetch from the db */
@@ -63,8 +63,8 @@ class Quote {
 				return false;
 			}
 			$query = $this->id ? 
-				sprintf(Quote::READ_BY_ID, (int)$this->id, $config['db']['table']) :
-				sprintf(Quote::READ_BY_PERMAID, clean($this->permaid, PERMAID_LENGTH, true), $config['db']['table']);
+				sprintf(Quote::READ_BY_ID, (int)$this->id, $settings->db) :
+				sprintf(Quote::READ_BY_PERMAID, clean($this->permaid, PERMAID_LENGTH, true), $settings->db);
 			$results = $db->get_row($query);
 		}
 
@@ -82,7 +82,7 @@ class Quote {
 		}
 
 		// hackish but still right.
-		switch (is_bot() ? $config['site']['privacy_level_for_bots'] : $config['site']['privacy_level']) {
+		switch (is_bot() ? $settings->privacy_level_for_bots : $settings->privacy_level) {
 			case -1:
 				$this->hidden = 0;
 				break;
@@ -96,7 +96,7 @@ class Quote {
 		$hide = $valid ? $hide[1][0] : '';
 
 		if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $this->ip)) {
-			if ($config['site']['ip']['host']) {
+			if ($settings->ip_host) {
 				$host = gethostbyaddr($this->ip);
 				if (!$host || $host == $this->ip) {
 					$this->host = $this->semihost = null;
@@ -105,7 +105,7 @@ class Quote {
 				}
 			}
 
-			if ($config['site']['ip']['part']) {
+			if ($settings->ip_part) {
 				preg_match_all('/^(\d*\.\d*\.\d*)\.(.*)/', $this->ip, $parts);
 				$this->semiip = sprintf('%s.*', $parts[1][0]);
 				if ($this->host) {
@@ -116,12 +116,12 @@ class Quote {
 			$this->semiip = _('Imported from the bot');
 		}
 
-		$this->permalink = sprintf('%s%s', $config['site']['domain'], $this->permaid);
+		$this->permalink = sprintf('%s%s', $settings->url, $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
-		$this->password = substr(md5(sprintf('a%sb%sc%sd', $config['site']['key'], $this->permaid, date('d/m:H'))), 0, 8);
+		$this->password = substr(md5(sprintf('a%sb%sc%sd', $settings->site_key, $this->permaid, date('d/m:H'))), 0, 8);
 		$this->read = true;
 		return true;
 	}
@@ -178,7 +178,7 @@ class Quote {
 	private function text_clean($text, $for = 'www_body') {
 		// this is real crap.
 
-		global $config, $session;
+		global $settings, $session;
 
 		// clean only for www. rss uses the CDATA structure which does not require escaping
 		if ($for == 'www_body' || $for == 'www_comment') {
@@ -245,8 +245,6 @@ class Quote {
 			// don't add links to rss titles!
 			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
 			$text = str_replace("\n", '<br />', $text);
-			// hashtags
-			// $text = preg_replace('/#([a-z0-9\-_\?]*\w)/mi', sprintf('<a href="%ssearch/%%23$1" target="_blank">#$1</a>', $config['site']['domain']), $text);
 
 			// respect \s\s to fix asciis
 			$text = str_replace('  ', '&nbsp;&nbsp;', $text);
@@ -272,7 +270,7 @@ class Quote {
 
 	// unused? hm
 	function save($new = true) {
-		global $db, $config;
+		global $db, $settings;
 
 		foreach (array($this->nick, $this->text) as $check) {
 			if (mb_strlen($check) < 3) {
@@ -294,7 +292,7 @@ class Quote {
 				clean($this->ip, MAX_IP_LENGTH, true),
 				escape($this->text),
 				clean($this->comment, MAX_COMMENT_LENGTH, true),
-				$config['db']['table'],
+				$settings->db,
 				(int)$this->hidden,
 				escape($this->status),
 				(int)$this->api));
@@ -307,7 +305,7 @@ class Quote {
 				clean($this->ip, MAX_IP_LENGTH, true),
 				escape($this->text),
 				clean($this->comment, MAX_COMMENT_LENGTH, true),
-				$config['db']['table'],
+				$settings->db,
 				(int)$this->hidden,
 				escape($this->status),
 				(int)$this->api,

@@ -54,7 +54,9 @@ $db->query('SET NAMES `utf8`');
 	!!TODO no double query intended!!
 	!!TODO the only fired warning inside this is, at this moment, 'HTTP_HOST not
 	in range', we are not validating anything but it's not needed */
-require(include_dir.'settings.php');
+require(classes_dir.'settings.php');
+$settings = new Settings();
+$settings->init();
 
 // initialize Haanga
 require(include_dir.'Haanga.php');
@@ -62,7 +64,7 @@ Haanga::configure(array(
 	'template_dir' => 'templates/',
 	'cache_dir' => 'templates/compiled/',
 	'compiler' => array(
-		'global' => array('config', 'session'),
+		'global' => array('settings', 'session'),
 		'strip_whitespace' => false,
 		'allow_exec' => false,
 		'autoescape' => false
@@ -79,8 +81,8 @@ $session = new Session();
 $session->init();
 
 // configure gettext's locale
-putenv('LC_ALL='.$config['site']['locale']);
-setlocale(LC_ALL, $config['site']['locale']);
+putenv('LC_ALL='.$settings->locale);
+setlocale(LC_ALL, $settings->locale);
 bindtextdomain('messages', './locale');
 textdomain('messages');
 
@@ -90,13 +92,13 @@ if (isset($_SERVER['HTTPS'])) {
 }
 
 // redir to /login if not in ^/login already
-if (!is_bot() && ($config['site']['privacy_level'] == 2
-	&& $session->level == 'anonymous' && !preg_match('/^\/(login|api)/', $_SERVER['REQUEST_URI']))) {
+if (!is_bot() && ($settings->privacy_level == 2
+	&& $session->level == 'anonymous' && !preg_match('/^\/(login|api|userlogin)/', $_SERVER['REQUEST_URI']))) {
 	$html->do_sysmsg(_('Log in'), _('You must log in to read any quote.'), 403);
 	die();
 }
 
-if (is_bot() && $config['site']['privacy_level_for_bots'] == 2) {
+if (is_bot() && $settings->privacy_level_for_bots == 2) {
 	header('HTTP/1.1 403 Forbidden');
 	die('403 Forbidden'); /* so what */
 }

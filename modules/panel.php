@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $config, $html, $session;
+global $settings, $html, $session;
 
 if ($session->level != 'admin') {
 	$html->do_sysmsg('Forbidden', null, 403);
@@ -124,16 +124,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$db->query('UPDATE quotes SET status = \'approved\'');
 					break;
 				case 'privacy_login':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 2 WHERE db = \'%s\'', $config['db']['table']));
+					$db->query(sprintf('UPDATE sites SET privacy_level = 2 WHERE db = \'%s\'', $settings->db));
 					break;
 				case 'privacy_hide_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 1 WHERE db = \'%s\'', $config['db']['table']));
+					$db->query(sprintf('UPDATE sites SET privacy_level = 1 WHERE db = \'%s\'', $settings->db));
 					break;
 				case 'privacy_unhide_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 0 WHERE db = \'%s\'', $config['db']['table']));
+					$db->query(sprintf('UPDATE sites SET privacy_level = 0 WHERE db = \'%s\'', $settings->db));
 					break;
 				case 'privacy_show_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = -1 WHERE db = \'%s\'', $config['db']['table']));
+					$db->query(sprintf('UPDATE sites SET privacy_level = -1 WHERE db = \'%s\'', $settings->db));
 					break;
 			}
 			break;

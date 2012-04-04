@@ -3,45 +3,45 @@
 	<head>
 		<meta charset="utf-8" />
 {% if title %}
-		<title>{{title}} - {{config.site.name}}</title>
+		<title>{{title}} - {{settings.name}}</title>
 {% else %}
-		<title>{{config.site.name}}</title>
+		<title>{{settings.name}}</title>
 {% endif %}
 {% if session.sysmsg %}
-		<meta name="robots" content="noindex" />
+		<meta name="robots" content="noindex,nofollow" />
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{config.site.statics}}core-duodecim.css" />
-		<link rel="shortcut icon" href="{{config.site.statics}}fearqdb.png" type="image/x-png"/>
-		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{config.site.domain}}rss" />
-{% if config.site.snowstorm %}
-		<script src="{{config.site.statics}}snowstorm.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-duodecim.css" />
+		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
+		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.url}}rss" />
+{% if settings.snowstorm %}
+		<script src="{{settings.statics_url}}snowstorm.js"></script>
 		<script>
 			snowStorm.flakesMax = 100;
 			snowStorm.flakesMaxActive = 100;
 			snowStorm.useTwinkleEffect = true;
 		</script>
 {% endif %}
-{% if config.site.analytics.enabled %}
+{% if settings.analytics %}
 		<script>
 			var _gaq = _gaq || [];
-				_gaq.push(['_setAccount', '{{config.site.analytics.code}}']);
+				_gaq.push(['_setAccount', '{{settings.analytics_code}}']);
 				_gaq.push(['_setCustomVar', 1, 'ip', '{{session.ip}}']);
 				_gaq.push(['_setCustomVar', 2, 'level', '{{session.level}}']);
 				_gaq.push(['_trackPageview']);
 
 			(function() {
 				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = '{{config.site.statics}}ga.js';
+				ga.src = '{{settings.statics_url}}ga.js';
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
 {% endif %}
-		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{config.site.name}}">
+		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.name}}">
 	</head>
 	<body>
 		<div class="title">
 			<div class="header">
-				<span class="name"><a href="/">{{config.site.name}}</a></span>
+				<span class="name"><a href="/">{{settings.name}}</a></span>
 				<ul class="bar">
 					<li>
 						<form method="post" action="/search">

@@ -21,7 +21,7 @@ require_once('config.php');
 require_once(classes_dir.'quote.php');
 require_once(classes_dir.'search.php');
 
-global $params, $config, $session;
+global $params, $settings, $session;
 
 /* move json functions to utils.php? */
 function out($out) {
@@ -44,10 +44,10 @@ function generic_error($error = 'unspecified') {
 }
 
 function get_last() {
-	global $db, $config;
+	global $db, $settings;
 
 	return $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
-		$config['db']['table']));
+		$settings->db));
 }
 
 function sanitize($quote) {
@@ -73,7 +73,7 @@ function sanitize($quote) {
 }
 
 function check_key() {
-	global $db, $session, $params, $config;
+	global $db, $session, $params, $settings;
 
 	if (!isset($params[2])) {
 		$session->log('JSON API access with no key');
@@ -82,7 +82,7 @@ function check_key() {
 
 	$result = $db->get_var(
 		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 AND (db = \'%s\' OR db = \'\') LIMIT 1',
-			escape($params[2]), $config['db']['table']));
+			escape($params[2]), $settings->db));
 
 	if ($result) {
 		return $result;
@@ -143,13 +143,13 @@ switch ($params[1]) {
 		$last = get_last();
 		out(array('results' =>
 			array('success' => 1,
-				'url' => sprintf('%s%s', $config['site']['domain'], $last),
+				'url' => sprintf('%s%s', $settings->url, $last),
 				'permaid' => $last)));
 		break;
 	case 'last':
 		$last = get_last();
 		out(array('results' =>
-			array('url' => sprintf('%s%s', $config['site']['domain'], $last),
+			array('url' => sprintf('%s%s', $settings->url, $last),
 				'permaid' => $last)));
 		break;
 	case 'read':

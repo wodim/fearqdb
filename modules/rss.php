@@ -20,7 +20,7 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $params, $config;
+global $params, $settings;
 
 if ($_GET['q'] != '/rss') {
 	redir('/rss');
@@ -28,7 +28,7 @@ if ($_GET['q'] != '/rss') {
 
 $quotes = $db->get_results(
 	sprintf('SELECT %s FROM quotes, api WHERE status = \'approved\' AND quotes.db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
-		Quote::READ, $config['db']['table'], $config['site']['page_size']));
+		Quote::READ, $settings->db, $settings->page_size));
 
 if (!$quotes) {
 	header('HTTP/1.1 404');

@@ -19,7 +19,7 @@
 
 require_once('config.php');
 
-global $params, $config, $session, $html;
+global $params, $session, $html;
 
 function origin_redir($origin) {
 	if (!preg_match('/^\//', $origin)) {

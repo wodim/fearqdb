@@ -20,9 +20,9 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $config;
+global $settings;
 
 $last = $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
-	$config['db']['table']));
+	$settings->db));
 
 redir(sprintf('/%s', $last));

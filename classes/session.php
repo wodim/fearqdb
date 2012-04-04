@@ -35,26 +35,26 @@ class Session {
 	var $nick = '';
 
 	function init() {
-		global $config, $db, $params;
+		global $settings, $db, $params;
 		
 		$this->date = strftime('%d/%m');
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 		$this->origin = urlencode($_SERVER['REQUEST_URI']);
 
 		/* today's lesson: the more bullshit you get into a cookie, the more secure it is. */
-		$this->expected_cookie = md5(sprintf('ni%sna%sne', $config['site']['key'], date('YdmYdYmdYmdY')));
-		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $config['site']['key'])), 0, 8);
+		$this->expected_cookie = md5(sprintf('ni%sna%sne', $settings->site_key, date('YdmYdYmdYmdY')));
+		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $settings->site_key)), 0, 8);
 
-		if (!isset($_COOKIE[$config['site']['cookie_name']])) {
+		if (!isset($_COOKIE[$settings->cookie])) {
 			return false;
 		}
 
-		$tmp = base64_decode($_COOKIE[$config['site']['cookie_name']]);
+		$tmp = base64_decode($_COOKIE[$settings->cookie]);
 		$tmp = explode('!', $tmp);
 
 		if (count($tmp) < 2) {
 			// garbage; destroy
-			$this->log(clean(sprintf('Garbage cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
+			$this->log(clean(sprintf('Garbage cookie: %s', $_COOKIE[$settings->cookie]), 256, true));
 			$this->destroy();
 			return false;
 		}
@@ -65,7 +65,7 @@ class Session {
 				/* return already */
 				return true;
 			}
-			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$config['site']['cookie_name']]), 256, true));
+			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$settings->cookie]), 256, true));
 			$this->destroy();
 			return false;
 		} else {
@@ -90,14 +90,14 @@ class Session {
 			return;
 		}
 
-		global $config, $module, $db;
+		global $settings, $module, $db;
 
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
 		$redir = $is_redir ? clean($location, 256, true) : '';
 		$search = clean($this->search, 256, true);
 		/* $module = $module; */
-		$db_table = $config['db']['table'];
+		$db_table = $settings->db;
 		$level = $this->level;
 		$user = $this->user;
 		$referer = isset($_SERVER['HTTP_REFERER']) ? clean($_SERVER['HTTP_REFERER'], 256, true) : '';
@@ -120,11 +120,11 @@ class Session {
 	}
 	
 	function log($text) {
-		global $config, $db;
+		global $settings, $db;
 	
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
-		$db_table = $config['db']['table'];
+		$db_table = $settings->db;
 		$text = clean($text, 256, true);
 
 		$db->query(sprintf('INSERT INTO logs (ip, time, url, db, text)
@@ -137,7 +137,7 @@ class Session {
 	}
 
 	function create($password) {
-		global $config, $db;
+		global $settings, $db;
 
 		/* maybe we could have another parameter in the GET query so we don't
 			have to SELECT all keys. anyway, we don't expect to have a lot of keys
@@ -155,13 +155,13 @@ class Session {
 
 		$this->log(sprintf('Created session using API key %d', $id));
 
-		setcookie($config['site']['cookie_name'], base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
+		setcookie($settings->cookie, base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
 		return true;
 	}
 
 	// we DO NOT ESCAPE
 	function create_user($nick, $password) {
-		global $config;
+		global $settings;
 
 		$user = new User();
 		$tmp = $user->login_check($nick, $password);
@@ -170,22 +170,20 @@ class Session {
 			return false;
 		}
 
-		setcookie($config['site']['cookie_name'], base64_encode(sprintf('%d!%s', $user->id, $tmp)), time() + 86400, '/');
+		setcookie($settings->cookie, base64_encode(sprintf('%d!%s', $user->id, $tmp)), time() + 86400, '/');
 		return true;
 	}
 
 	function destroy() {
-		global $config;
+		global $settings;
 
 		$this->log('Destroyed session');
 
-		setcookie($config['site']['cookie_name'], '', time() - 3600, '/');
+		setcookie($settings->cookie, '', time() - 3600, '/');
 		return true;
 	}
 
 	private function password($seed) {
-		global $config;
-
 		return(substr(md5(date('d/m/Y').$seed), 0, 8));
 	}
 }

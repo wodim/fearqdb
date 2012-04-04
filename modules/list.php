@@ -20,7 +20,7 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $params, $config;
+global $params, $settings;
 
 if (isset($params[1]) && is_numeric($params[1])) {
 	$page_number = (int)$params[1];
@@ -29,14 +29,14 @@ if (isset($params[1]) && is_numeric($params[1])) {
 }
 
 $where = sprintf('WHERE quotes.db = \'%s\' %s %s',
-	$config['db']['table'],
+	$settings->db,
 	($session->level != 'anonymous') ? 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' : 'AND quotes.status = \'approved\'',
 	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
 
 $where_api = sprintf('%s AND api.id = quotes.api', $where);
 
 $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY date DESC LIMIT %d,%d',
-	Quote::READ, $where_api, (--$page_number * $config['site']['page_size']), $config['site']['page_size']));
+	Quote::READ, $where_api, (--$page_number * $settings->page_size), $settings->page_size));
 
 if (!$quotes) { // there are no quotes. but... there are no quotes in this page or no quotes at all?
 	if ($page_number != 1) {
@@ -53,7 +53,7 @@ $rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes %s',
 	$where));
 
 $mod = sprintf('/%s/', $params[0] != '' ? $params[0] : 'page');
-$pager = $html->do_pages($page_number, ceil($rows / $config['site']['page_size']), $mod.'%d', 4);
+$pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 
 $quote = new Quote();
 $odd = true;

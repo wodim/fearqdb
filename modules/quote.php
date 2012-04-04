@@ -20,7 +20,7 @@
 require_once('config.php');
 require_once(classes_dir.'quote.php');
 
-global $params, $config, $q, $session;
+global $params, $q, $session;
 
 $quoteid = $permaid = null;
 

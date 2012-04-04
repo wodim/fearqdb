@@ -21,7 +21,7 @@ require_once('config.php');
 require_once(classes_dir.'quote.php');
 require_once(classes_dir.'search.php');
 
-global $params, $config, $db, $session;
+global $params, $db, $session;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	isset($_POST['query'])) {

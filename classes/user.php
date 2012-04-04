@@ -31,12 +31,12 @@ class User {
 	var $read = false;
 
 	function read() {
-		global $db, $config;
+		global $db, $settings;
 
 		/* prefer id over nick */
 		$query = $this->id ? 
-			sprintf(User::READ_ID, (int)$this->id, $config['db']['table']) :
-			sprintf(User::READ_NICK, clean($this->nick, MAX_USER_LENGTH, true), $config['db']['table']);
+			sprintf(User::READ_ID, (int)$this->id, $settings->db) :
+			sprintf(User::READ_NICK, clean($this->nick, MAX_USER_LENGTH, true), $settings->db);
 			
 		$results = $db->get_row($query);
 
@@ -53,7 +53,7 @@ class User {
 
 	// $password is NOT plain, is it?
 	function cookie_check($id, $cookie) {
-		global $config;
+		global $settings;
 
 		$this->id = $id;
 
@@ -61,7 +61,7 @@ class User {
 			return false;
 		}
 
-		$expected = md5(sprintf('p%sh%sp', $this->password, $config['site']['key']));
+		$expected = md5(sprintf('p%sh%sp', $this->password, $settings->site_key));
 
 		return($expected == $cookie) ?
 			$this->nick :
@@ -69,7 +69,7 @@ class User {
 	}
 
 	function login_check($nick, $password) {
-		global $config;
+		global $settings;
 
 		$this->nick = $nick;
 
@@ -78,7 +78,7 @@ class User {
 		}
 
 		return(md5($this->salt.$password) == $this->password) ?
-			md5(sprintf('p%sh%sp', $this->password, $config['site']['key'])) :
+			md5(sprintf('p%sh%sp', $this->password, $settings->site_key)) :
 			false;
 	}
 }

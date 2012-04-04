@@ -35,10 +35,10 @@ class Search {
 	var $page_size = 0;
 	
 	function read() {
-		global $config, $db;
+		global $settings, $db;
 
 		if (!$this->page_size || $this->page_size > 50) {
-			$this->page_size = $config['site']['page_size'];
+			$this->page_size = $settings->page_size;
 		}
 
 		/* do not modify $this->criteria, the script that called us may want to access
@@ -49,7 +49,7 @@ class Search {
 			1) we will need to store the number of results anyway;
 			2) we want to know whether $page is out of bounds */
 		$this->count = $db->get_var(sprintf(Search::COUNT,
-			$criteria, $config['site']['collate'], $config['db']['table']));
+			$criteria, $settings->collate, $settings->db));
 
 		if (!$this->count) {
 			return false;
@@ -60,8 +60,8 @@ class Search {
 		$this->results = $db->get_results(sprintf(Search::SEARCH,
 			Quote::READ, 
 			$criteria, 
-			$config['site']['collate'],
-			$config['db']['table'], 
+			$settings->collate,
+			$settings->db,
 			(($this->page - 1) * $this->page_size), 
 			$this->page_size));
 	
