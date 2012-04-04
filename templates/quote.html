@@ -1,60 +1,55 @@
-<div class="qc">
-	<div class="quote {{c.style}}">
-		<div class="meta info">
-			<a href="/{{c.permaid}}" class="id">#{{c.permaid}}</a> 
-			<span class="nick">{{c.nick|escape}}</span>
-			{% if c.api && 1 == 0 %}
-				{% trans _('via') %} <strong>{{c.name|escape}}</strong>
-			{% endif %}
-			{% if c.status == 'pending' && 1 == 0 %}
-				({% trans _('Yet to be approved') %})
-			{% endif %}
-			{% if (session.level != 'anonymous') && settings.ip_show && !c.api && c.ip != 'kobaz' %}
-				{% if c.host && settings.ip_host %}
-					{% if settings.ip_part %}
-						(<span title="{{c.semiip}}">{{c.semihost}}</span>)
-					{% else %}
-						(<span title="{{c.ip}}">{{c.host}}</span>)
-					{% endif %}
+<div class="quote {{c.style}}">
+	<div class="meta info">
+		<a href="/{{c.permaid}}" class="id">#{{c.permaid}}</a> 
+		<span class="nick">{{c.nick|escape}}</span>
+		{% if c.api && 1 == 0 %}
+			{% trans _('via') %} <strong>{{c.name|escape}}</strong>
+		{% endif %}
+		{% if c.status == 'pending' && 1 == 0 %}
+			({% trans _('Yet to be approved') %})
+		{% endif %}
+		{% if (session.level != 'anonymous') && settings.ip_show && !c.api && c.ip != 'kobaz' %}
+			{% if c.host && settings.ip_host %}
+				{% if settings.ip_part %}
+					(<span title="{{c.semiip}}">{{c.semihost}}</span>)
 				{% else %}
-					{% if settings.ip_part %}
-						({{c.semiip}})
-					{% else %}
-						({{c.sip}})
-					{% endif %}
+					(<span title="{{c.ip}}">{{c.host}}</span>)
+				{% endif %}
+			{% else %}
+				{% if settings.ip_part %}
+					({{c.semiip}})
+				{% else %}
+					({{c.sip}})
 				{% endif %}
 			{% endif %}
-			{% if c.timelapse %}
-				<span class="ts lapse" title="{{c.date}}">{{c.timelapse}}</span>
-			{% else %}
-				<span class="ts">{{c.date}}</span>
-			{% endif %}
-			{% if ((session.level != 'anonymous') || !c.hidden && 1 == 0) %}
-				<span class="share">{% trans _('Share it:') %} <a href="{{c.tweet}}" target="_blank">Twitter</a></span>
-			{% endif %}
-			{% if ((session.level != 'anonymous') && c.hidden) %}
-				<span class="share"><a href="/{{c.permaid}}/{{c.password}}" target="_blank">{% trans _('Share it') %}</a></span>
-			{% endif %}
-		</div>
-	{% if c.hidden %}
-		<div class="text hidden">
-		{% if (session.level != 'anonymous' || c.forceshow) %}
-			{{c.text}}
-		{% else %}
-			<span>{% trans _('This quote is hidden.') %}<br />
-			<strong>{% trans _('Log in from IRC to read it.') %}</strong></span>
 		{% endif %}
-		</div>
+		{% if c.timelapse %}
+			<span class="ts lapse" title="{{c.date}}">{{c.timelapse}}</span>
+		{% else %}
+			<span class="ts">{{c.date}}</span>
+		{% endif %}
+		{% if ((session.level != 'anonymous') || !c.hidden && 1 == 0) %}
+			<span class="share">{% trans _('Share it:') %} <a href="{{c.tweet}}" target="_blank">Twitter</a></span>
+		{% endif %}
+		{% if ((session.level != 'anonymous') && c.hidden) %}
+			<span class="share"><a href="/{{c.permaid}}/{{c.password}}" target="_blank">{% trans _('Share it') %}</a></span>
+		{% endif %}
+	</div>
+{% if c.hidden %}
+	<div class="text hidden">
+	{% if (session.level != 'anonymous' || c.forceshow) %}
+		{{c.text}}
 	{% else %}
-		<div class="text">{{c.text}}</div>
-	{% endif %}
-	{% if c.comment && ((session.level != 'anonymous') || !c.hidden || c.forceshow) %}
-		<div class="meta small">
-			<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
-		</div>
+		<span>{% trans _('This quote is hidden.') %}<br />
+		<strong>{% trans _('Log in from IRC to read it.') %}</strong></span>
 	{% endif %}
 	</div>
-{% if c.new %}
-	<div class="star">*</div>
+{% else %}
+	<div class="text">{{c.text}}</div>
+{% endif %}
+{% if c.comment && ((session.level != 'anonymous') || !c.hidden || c.forceshow) %}
+	<div class="meta small">
+		<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
+	</div>
 {% endif %}
 </div>
