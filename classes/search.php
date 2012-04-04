@@ -55,7 +55,10 @@ class Search {
 			return false;
 		}
 
-		/* TODO: detect whether $page is out of bounds and don't actually do the query */
+		/* out of bounds */
+		if ($this->count < ($this->page * $this->page_size)) {
+			return false;
+		}
 
 		$this->results = $db->get_results(sprintf(Search::SEARCH,
 			Quote::READ, 
@@ -64,7 +67,8 @@ class Search {
 			$settings->db,
 			(($this->page - 1) * $this->page_size), 
 			$this->page_size));
-	
+
+		$this->read = true;
 		return true;
 	}
 		
