@@ -24,6 +24,7 @@ if ($session->level != 'admin') {
 }
 
 function result_out($result) {
+	$result = htmlentities($result);
 	$result = str_replace(' ', '&nbsp;', $result);
 	$result = str_replace("\n", '<br />', $result);
 	die($result);
