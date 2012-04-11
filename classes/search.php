@@ -55,6 +55,8 @@ class Search {
 			return false;
 		}
 
+		--$this->page;
+
 		/* out of bounds */
 		if ($this->count < ($this->page * $this->page_size)) {
 			return false;
@@ -65,7 +67,7 @@ class Search {
 			$criteria, 
 			$settings->collate,
 			$settings->db,
-			(($this->page - 1) * $this->page_size), 
+			($this->page * $this->page_size), 
 			$this->page_size));
 
 		$this->read = true;
