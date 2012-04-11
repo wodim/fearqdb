@@ -42,7 +42,7 @@ $search->read();
 $session->search = htmlspecialchars(urldecode($params[1]));
 
 if (!$search->results) {
-	if ($search->page_size * $search->page < $search->count) {
+	if ($search->page_size * ($search->page - 1) < $search->count) {
 		$html->do_sysmsg(_('Page not found'), null, 404);
 	} else {
 		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.'), 404);
@@ -50,7 +50,7 @@ if (!$search->results) {
 } else {
 	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
 
-	$pager = $html->do_pages($search->page, ceil($search->count / $search->page_size), 
+	$pager = $html->do_pages(($search->page + 1), ceil($search->count / $search->page_size), 
 		sprintf('/search/%s/%%d', str_replace('%', '%%', urlencode($params[1]))), 4);
 
 	$quote = new Quote();
