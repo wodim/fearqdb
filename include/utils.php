@@ -91,3 +91,7 @@ function elapsed_time($time) {
 		return(($elapsed < 30) ? _('just now') : sprintf(_('%d seconds ago'), $elapsed));
 	}
 }
+
+function sha512($string) {
+	return hash('sha512', $string);
+}

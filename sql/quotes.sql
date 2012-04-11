@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nick` varchar(16) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(128) NOT NULL,
   `salt` varchar(8) NOT NULL,
   `db` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)

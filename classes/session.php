@@ -42,8 +42,8 @@ class Session {
 		$this->origin = urlencode($_SERVER['REQUEST_URI']);
 
 		/* today's lesson: the more bullshit you get into a cookie, the more secure it is. */
-		$this->expected_cookie = md5(sprintf('ni%sna%sne', $settings->site_key, date('YdmYdYmdYmdY')));
-		$this->xsrf = substr(md5(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $settings->site_key)), 0, 8);
+		$this->expected_cookie = sha512(sprintf('ni%sna%sne', $settings->site_key, date('YdmYdYmdYmdY')));
+		$this->xsrf = substr(sha512(sprintf('el%sek%str%so', $this->expected_cookie, $this->ip, $settings->site_key)), 0, 8);
 
 		if (!isset($_COOKIE[$settings->cookie])) {
 			return false;

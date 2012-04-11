@@ -61,7 +61,7 @@ class User {
 			return false;
 		}
 
-		$expected = md5(sprintf('p%sh%sp', $this->password, $settings->site_key));
+		$expected = sha512(sprintf('p%sh%sp', $this->password, $settings->site_key));
 
 		return($expected == $cookie) ?
 			$this->nick :
@@ -77,8 +77,8 @@ class User {
 			return false;
 		}
 
-		return(md5($this->salt.$password) == $this->password) ?
-			md5(sprintf('p%sh%sp', $this->password, $settings->site_key)) :
+		return(sha512($this->salt.$password) == $this->password) ?
+			sha512(sprintf('p%sh%sp', $this->password, $settings->site_key)) :
 			false;
 	}
 }
