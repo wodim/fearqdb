@@ -46,7 +46,7 @@ switch ($params[0]) {
 		$subpage = 'AND quotes.hidden = 1';
 		break;
 	case 'deleted':
-		if ($session->level = 'admin') {
+		if ($session->level == 'admin') {
 			$subpage = 'AND quotes.status = \'deleted\'';
 		} else {
 			$subpage = 'AND 1 = 0';
