@@ -22,8 +22,8 @@ require_once(include_dir.'utils.php');
 require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
-	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND quotes.text LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\' AND api.id = quotes.api ORDER BY quotes.date DESC LIMIT %d,%d';
-	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND text LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\'';
+	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND quotes.text LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
+	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND text LIKE \'%s\' COLLATE %s %s AND quotes.db = \'%s\'';
 	
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
@@ -35,7 +35,7 @@ class Search {
 	var $page_size = 0;
 	
 	function read() {
-		global $settings, $db;
+		global $settings, $db, $session;
 
 		if (!$this->page_size || $this->page_size > 50) {
 			$this->page_size = $settings->page_size;
@@ -45,11 +45,13 @@ class Search {
 			it later and we don't want to send garbage back */
 		$criteria = $this->clean_criteria($this->criteria);
 
+		$where = ($session->level == 'anonymous') ? 'AND quotes.hidden = 0' : '';
+
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;
 			2) we want to know whether $page is out of bounds */
 		$this->count = $db->get_var(sprintf(Search::COUNT,
-			$criteria, $settings->collate, $settings->db));
+			$criteria, $settings->collate, $where, $settings->db));
 
 		if (!$this->count) {
 			return false;
@@ -64,9 +66,10 @@ class Search {
 
 		$this->results = $db->get_results(sprintf(Search::SEARCH,
 			Quote::READ, 
-			$criteria, 
+			$criteria,
 			$settings->collate,
 			$settings->db,
+			$where,
 			($this->page * $this->page_size), 
 			$this->page_size));
 
