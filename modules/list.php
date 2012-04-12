@@ -28,10 +28,34 @@ if (isset($params[1]) && is_numeric($params[1])) {
 	$page_number = 1;
 }
 
+$status = '';
+
+// i'd like to use a switch for this :(
+if ($session->level == 'anonymous') {		
+	$status = 'AND quotes.status = \'approved\'';
+} elseif ($session->level == 'admin' && $params[0] == 'deleted') {
+	$status = 'AND quotes.status = \'deleted\'';
+} else {
+	$status = 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')';
+}
+
+$subpage = '';
+
+switch ($params[0]) {
+	case 'hidden':
+		$subpage = 'AND quotes.hidden = 1';
+		break;
+	case 'deleted':
+		if ($session->level = 'admin') {
+			$subpage = 'AND quotes.status = \'deleted\'';
+		} else {
+			$subpage = 'AND 1 = 0';
+		}
+		break;
+}
+
 $where = sprintf('WHERE quotes.db = \'%s\' %s %s',
-	$settings->db,
-	($session->level != 'anonymous') ? 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' : 'AND quotes.status = \'approved\'',
-	($params[0] == 'hidden') ? 'AND quotes.hidden = 1' : '');
+	$settings->db,	$status,	$subpage);
 
 $where_api = sprintf('%s AND api.id = quotes.api', $where);
 

@@ -76,9 +76,9 @@ switch ($params[0]) {
 		$module = 'session';
 		require(modules_dir.'login.php');
 		break;
+	case 'deleted':
 	case 'hidden':
 	case 'page':
-	case 'home':
 		$module = 'list';
 		require(modules_dir.'list.php');
 		break;
