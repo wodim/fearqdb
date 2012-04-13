@@ -19,6 +19,7 @@
 
 require_once('config.php');
 
-redir(sprintf('/%s', 
-	$db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY RAND() LIMIT 1',
+redir(sprintf('/%s',
+	$db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\'
+			AND status = \'approved\' ORDER BY RAND() LIMIT 1',
 		$settings->db))));
