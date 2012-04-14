@@ -40,6 +40,10 @@ switch ($params[0]) {
 		$module = 'opensearch';
 		require(modules_dir.'leftovers.php');
 		break;
+	case 'favicon.ico':
+		$module = 'favicon';
+		require(modules_dir.'leftovers.php');
+		break;
 	case 'admin':
 		require(modules_dir.'admin.php');
 		break;

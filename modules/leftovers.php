@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $params;
+global $params, $settings;
 
 switch ($params[0]) {
 	case 'robots.txt':
@@ -27,4 +27,8 @@ switch ($params[0]) {
 	case 'opensearch.xml':
 		header('Content-Type: application/xml');
 		Haanga::Load('opensearch.html');
+		break;
+	case 'favicon.ico':
+		header('HTTP/1.1 301 Moved Permanently');
+		header(sprintf('Location: %sfearqdb.png', $settings->statics_url));
 }
