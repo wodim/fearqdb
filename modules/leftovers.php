@@ -22,7 +22,15 @@ global $params, $settings;
 switch ($params[0]) {
 	case 'robots.txt':
 		header('Content-Type: text/plain');
-		echo("User-agent: *\nDisallow: /");
+		switch ($settings->robots) {
+			case 'disallow':
+				$allow = "User-agent: *\nDisallow: /";
+				break;
+			case 'allow':
+			default:
+				$allow = "User-agent: *\nAllow: /";
+		}
+		echo($allow);
 		break;
 	case 'opensearch.xml':
 		header('Content-Type: application/xml');

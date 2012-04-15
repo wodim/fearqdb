@@ -21,8 +21,9 @@ class Settings {
    const READ = 'SELECT id, domain, site_key, lang, locale, `collate`,
 	ip_show, ip_host, ip_part, analytics_enabled, analytics_code,
 	url, statics_url, snowstorm, db, irc, name, nname, cookie,
-	privacy_level,	privacy_level_for_bots, page_size
+	privacy_level,	privacy_level_for_bots, page_size, robots
 	FROM sites WHERE domain = \'%s\'';
+	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
 	var $domain = '';
 	var $site_key = '';
@@ -45,6 +46,7 @@ class Settings {
 	var $privacy_level = 0;
 	var $privacy_level_for_bots = '';
 	var $page_size = 10;
+	var $robots = 'allow';
 
 	var $read = false;
 

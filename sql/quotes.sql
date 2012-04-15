@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- privacy_level_for_bots: same but for bots, don't rely on this since a normal
 --   user can change his/her user agent and make him/her look like a bot!
 -- page_size: quotes per page
+-- robots: 'disallow' to block robots via robots.txt
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -148,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `privacy_level` int(11) NOT NULL,
   `privacy_level_for_bots` int(11) NOT NULL,
   `page_size` int(11) NOT NULL,
+  `robots` enum('allow','disallow') NOT NULL DEFAULT 'allow',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
