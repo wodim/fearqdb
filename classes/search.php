@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require(classes_dir.'quote.php'); // Quote::READ
+require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
 	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND quotes.text LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
