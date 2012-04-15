@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('config.php');
-
 class User {
 	const READ_NICK = 'SELECT id, nick, password, salt, db FROM users WHERE nick = \'%s\' AND db = \'%s\'';
 	const READ_ID = 'SELECT id, nick, password, salt, db FROM users WHERE id = \'%s\' AND db = \'%s\'';

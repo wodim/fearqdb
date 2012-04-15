@@ -17,8 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('config.php');
-require_once(classes_dir.'user.php');
+require(classes_dir.'user.php');
 
 class Session {
 	var $level = 'anonymous';

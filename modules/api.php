@@ -17,9 +17,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('config.php');
-require_once(classes_dir.'quote.php');
-require_once(classes_dir.'search.php');
+require(classes_dir.'quote.php');
+require(classes_dir.'search.php');
 
 global $params, $settings, $session;
 

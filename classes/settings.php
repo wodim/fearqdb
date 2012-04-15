@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('config.php');
-
 class Settings {
    const READ = 'SELECT id, domain, site_key, lang, locale, `collate`,
 	ip_show, ip_host, ip_part, analytics_enabled, analytics_code,

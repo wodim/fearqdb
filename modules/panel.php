@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					'quote_action'
 				)
 			);
-			require_once(classes_dir.'quote.php');
+			require(classes_dir.'quote.php');
 			$quote = new Quote();
 			$quote->permaid = $_POST['permaid'];
 			if (!$quote->read()) {
