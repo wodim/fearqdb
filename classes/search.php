@@ -33,6 +33,7 @@ class Search {
 	
 	var $page = 1;
 	var $page_size = 0;
+	var $show_hidden = false;
 	
 	function read() {
 		global $settings, $db, $session;
@@ -45,7 +46,7 @@ class Search {
 			it later and we don't want to send garbage back */
 		$criteria = $this->clean_criteria($this->criteria);
 
-		$where = ($session->level == 'anonymous') ? 'AND quotes.hidden = 0' : '';
+		$where = (!$this->show_hidden) ? 'AND quotes.hidden = 0' : '';
 
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;

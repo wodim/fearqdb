@@ -37,6 +37,7 @@ $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]
 $search = new Search();
 $search->criteria = urldecode($params[1]);
 $search->page = $page_number;
+$search->show_hidden = ($session->level != 'anonymous');
 $search->read();
 
 $session->search = htmlspecialchars(urldecode($params[1]));
