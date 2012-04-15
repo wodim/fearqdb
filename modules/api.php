@@ -23,6 +23,8 @@ require_once(classes_dir.'search.php');
 
 global $params, $settings, $session;
 
+$cached_key = null;
+
 /* move json functions to utils.php? */
 function out($out) {
 	global $session;
@@ -73,7 +75,11 @@ function sanitize($quote) {
 }
 
 function check_key() {
-	global $db, $session, $params, $settings;
+	global $db, $session, $params, $settings, $cached_key;
+
+	if ($cached_key) {
+		return $cached_key;
+	}
 
 	if (!isset($params[2])) {
 		$session->log('JSON API access with no key');
@@ -85,6 +91,7 @@ function check_key() {
 			escape($params[2]), $settings->db));
 
 	if ($result) {
+		$cached_key = $result;
 		return $result;
 	}
 
