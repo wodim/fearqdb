@@ -21,7 +21,7 @@
 			snowStorm.useTwinkleEffect = true;
 		</script>
 {% endif %}
-{% if settings.analytics %}
+{% if settings.analytics_enabled %}
 		<script>
 			var _gaq = _gaq || [];
 				_gaq.push(['_setAccount', '{{settings.analytics_code}}']);
