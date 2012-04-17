@@ -54,6 +54,7 @@
 					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
 {% endif %}
 {% if (session.level == 'user') || (session.level == 'admin') %}
+					<li><a href="/panel">{% trans _('Panel	') %}</a></li>
 					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
 {% endif %}
 					<li><a href="/submit" class="submit">{% trans _('Submit quote') %}</a></li>
