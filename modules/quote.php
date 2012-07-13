@@ -55,7 +55,7 @@ if (isset($params[1]) && $params[1] == $quote->password) {
 	die();
 }
 
-$html->do_header(sprintf(_('Quote %s'), $quote->permaid));
+$html->do_header(sprintf(_('Quote #%s'), $quote->permaid));
 
 $quote->output();
 

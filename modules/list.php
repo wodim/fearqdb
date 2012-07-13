@@ -74,7 +74,7 @@ if (!$quotes) { // there are no quotes. but... there are no quotes in this page 
 
 ++$page_number;
 
-$html->do_header(sprintf($page_number == 1 ? _('Latest quotes') : _('Latest quotes - Page %d'), $page_number));
+$html->do_header();
 $rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes %s',
 	$where));
 

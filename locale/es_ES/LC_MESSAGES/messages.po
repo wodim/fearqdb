@@ -64,12 +64,6 @@ msgstr "hace %d segs"
 msgid "Page not found"
 msgstr "Página no encontrada"
 
-msgid "Latest quotes"
-msgstr "Últimos quotes"
-
-msgid "Latest quotes - Page %d"
-msgstr "Últimos quotes - Página %d"
-
 msgid "No quotes found"
 msgstr "No se han encontrado quotes"
 
