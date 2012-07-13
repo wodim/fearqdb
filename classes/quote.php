@@ -89,30 +89,6 @@ class Quote {
 		}
 
 		$this->new = (date('U') - $this->ts < (60 * 60 * 24));
-		$valid = preg_match_all('/(\d+)$/', $this->ip, $hide);
-		$hide = $valid ? $hide[1][0] : '';
-
-		if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $this->ip)) {
-			if ($settings->ip_host) {
-				$host = gethostbyaddr($this->ip);
-				if (!$host || $host == $this->ip) {
-					$this->host = $this->semihost = null;
-				} else {
-					$this->host = $host;
-				}
-			}
-
-			if ($settings->ip_part) {
-				preg_match_all('/^(\d*\.\d*\.\d*)\.(.*)/', $this->ip, $parts);
-				$this->semiip = sprintf('%s.*', $parts[1][0]);
-				if ($this->host) {
-					$this->semihost = str_replace($parts[2][0], '*', $this->host);
-				}
-			}
-		} else {
-			$this->semiip = _('Imported from the bot');
-		}
-
 		$this->permalink = sprintf('%s%s', $settings->url, $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
 		$this->timelapse = ($date == -1) ? false : $date;

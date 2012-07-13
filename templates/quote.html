@@ -37,23 +37,4 @@
 		<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
 	</div>
 {% endif %}
-{% if ((session.level != 'anonymous') && settings.ip_show && !c.api && c.ip != 'kobaz') || session.level == 'admin' %}
-	<div class="meta small">
-		<span class="comment"><strong>IP:</strong>
-	{% if c.host && settings.ip_host %}
-		{% if settings.ip_part && session.level != 'admin' %}
-			{{c.semiip}} ({{c.semihost}})
-		{% else %}
-			{{c.ip}} ({{c.host}})
-		{% endif %}
-	{% else %}
-		{% if settings.ip_part && session.level != 'admin' %}
-			{{c.semiip}}
-		{% else %}
-			{{c.ip}}
-		{% endif %}
-	{% endif %}
-		</span>
-	</div>
-{% endif %}
 </div>
