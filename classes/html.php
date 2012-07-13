@@ -18,7 +18,7 @@
 */
 
 class HTML {
-	function do_header($title) {
+	function do_header($title = null) {
 		global $session;
 
 		header('Content-Type: text/html; charset=UTF-8');
