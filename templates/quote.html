@@ -33,6 +33,7 @@
 	<div class="text">{{c.text}}</div>
 {% endif %}
 {% if c.comment && ((session.level != 'anonymous') || !c.hidden || c.forceshow) %}
+	<div class="meta small">
 		<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
 	</div>
 {% endif %}
