@@ -223,7 +223,7 @@ class Quote {
 
 		if ($for == 'www_body') {
 			// nicks for the website
-			$text = preg_replace_callback('/^&lt;[@+]?([a-z0-9\-\[\]\{\}_]+)&gt;/mi', array($this, 'nick_colour'), $text);
+			$text = preg_replace_callback('/^&lt;[@+\s]?([a-z0-9\-\[\]\{\}_`]+)&gt;/mi', array($this, 'nick_colour'), $text);
 		}
 
 		if ($for == 'rss_body' || $for == 'rss_title') {
