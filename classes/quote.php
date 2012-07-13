@@ -223,19 +223,19 @@ class Quote {
 
 		if ($for == 'www_body') {
 			// nicks for the website
-			$text = preg_replace_callback('/^&lt;[@+\s]?([a-z0-9\-\[\]\{\}_`]+)&gt;/mi', array($this, 'nick_colour'), $text);
+			$text = preg_replace_callback('/^&lt;[@\+\s]?([a-z0-9\-\[\]\{\}_`~]+)&gt;/mi', array($this, 'nick_colour'), $text);
 		}
 
 		if ($for == 'rss_body' || $for == 'rss_title') {
-			// escape the cdata structure (avoid ijnections) + nicks for rss
+			// escape the cdata structure (avoid injections) + nicks for rss
 			// nicks for rss never use < or &lt; because they DON'T WORK for rss readers
 			// < works for some, &lt; for some... so we use ()
 			$text = str_replace(']]>', ']]]]><![CDATA[>', $text); // http://en.wikipedia.org/wiki/CDATA#Nesting
-			$text = preg_replace('/<[@\+]?([a-z0-9\_\-\[\]\{\}]*)>/msi', '($1)', $text);
+			$text = preg_replace('/<[@\+\s]?([a-z0-9\-\[\]\{\}_`~]+)>/msi', '($1)', $text);
 		}
 		
 		if ($for == 'excerpt') {
-			$text = preg_replace('/<[@\+]?([a-z0-9\_\-\[\]\{\}]*)>/msi', '<$1>', $text);
+			$text = preg_replace('/<[@\+\s]?([a-z0-9\-\[\]\{\}_`~]+)>/msi', '<$1>', $text);
 		}
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'www_comment') {
