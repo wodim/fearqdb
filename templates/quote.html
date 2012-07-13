@@ -8,15 +8,15 @@
 		{% if c.status == 'pending' && 1 == 0 %}
 			({% trans _('Yet to be approved') %})
 		{% endif %}
-		{% if (session.level != 'anonymous') && settings.ip_show && !c.api && c.ip != 'kobaz' %}
+		{% if ((session.level != 'anonymous') && settings.ip_show && !c.api && c.ip != 'kobaz') || session.level == 'admin' %}
 			{% if c.host && settings.ip_host %}
-				{% if settings.ip_part %}
+				{% if settings.ip_part && session.level != 'admin' %}
 					(<span title="{{c.semiip}}">{{c.semihost}}</span>)
 				{% else %}
 					(<span title="{{c.ip}}">{{c.host}}</span>)
 				{% endif %}
 			{% else %}
-				{% if settings.ip_part %}
+				{% if settings.ip_part && session.level != 'admin' %}
 					({{c.semiip}})
 				{% else %}
 					({{c.sip}})
