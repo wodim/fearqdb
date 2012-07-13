@@ -21,7 +21,7 @@ require(classes_dir.'quote.php');
 
 global $params, $settings;
 
-if ($_GET['q'] != '/rss') {
+if (isset($params[1])) { // ?
 	redir('/rss');
 }
 
