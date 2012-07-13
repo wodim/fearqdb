@@ -164,7 +164,7 @@ switch ($params[1]) {
 		$quote = new Quote();
 		$quote->permaid = $_POST['permaid'];
 		$key = check_key();
-		if (($key == 0 && $quote->status != 'approved') || !$quote->read()) {
+		if (!$quote->read() || ($key == 0 && $quote->status != 'approved')) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'no_such_quote')));
