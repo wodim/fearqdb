@@ -247,7 +247,7 @@ a {
 }
 
 .quote .text strong.criteria {
-	text-decoration: underline;
+	background: yellow;
 }
 
 .quote .meta {
