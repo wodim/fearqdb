@@ -122,7 +122,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			);
 			switch ($_POST['misc_action']) {
 				case 'approve_all':
-					$db->query('UPDATE quotes SET status = \'approved\'');
+					$quotes = $db->get_results('SELECT permaid FROM quotes WHERE status = \'pending\'');
+					if (!$quotes) {
+						die('no_pending_quotes');
+						break;
+					}
+					echo 'Approving: ';
+					foreach ($quotes as $quote) {
+						printf('%s ', $quote->permaid);
+					}
+					$db->query('UPDATE quotes SET status = \'approved\' WHERE status = \'pending\'');
 					break;
 				case 'privacy_login':
 					$db->query(sprintf('UPDATE sites SET privacy_level = 2 WHERE db = \'%s\'', $settings->db));
