@@ -152,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$db->query(sprintf('UPDATE sites SET robots = \'disallow\' WHERE db = \'%s\'', $settings->db));
 					break;
 			}
+			printf('successful %s', $_POST['misc_action']);
 			break;
 	}
 } else {
