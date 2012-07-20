@@ -138,7 +138,8 @@ switch ($params[1]) {
 			}
 		}
 		$key = check_key();
-		$quote->status = ($key != 0) ? 'approved' : 'pending';
+		/* $quote->status = ($key != 0) ? 'approved' : 'pending'; */
+		$quote->status = 'pending';
 		$quote->ip = (isset($_POST['ip']) && $key != 0) ? $_POST['ip'] : $session->ip;
 		$quote->api = $key;
 		if (!$quote->save()) {
