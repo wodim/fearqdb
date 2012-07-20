@@ -43,8 +43,7 @@ if (isset($params[1])) {
 			$quote->text = $_POST['text'];
 			$quote->comment = $_POST['comment'];
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
-			$quote->status =
-				($session->level == 'user' || $session->level == 'admin') ? 'approved' : 'pending';
+			$quote->status = $session->level == 'admin' ? 'approved' : 'pending';
 			$quote->api = 1;
 			if (!$quote->save()) {
 				redir('/submit/invalid');
