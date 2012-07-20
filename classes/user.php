@@ -61,9 +61,7 @@ class User {
 
 		$expected = sha512(sprintf('p%sh%sp', $this->password, $settings->site_key));
 
-		return($expected == $cookie) ?
-			$this->nick :
-			false;
+		return($expected == $cookie);
 	}
 
 	function login_check($nick, $password) {
