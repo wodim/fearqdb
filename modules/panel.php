@@ -145,6 +145,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				case 'privacy_show_all':
 					$db->query(sprintf('UPDATE sites SET privacy_level = -1 WHERE db = \'%s\'', $settings->db));
 					break;
+				case 'robots_allow':
+					$db->query(sprintf('UPDATE sites SET robots = \'allow\' WHERE db = \'%s\'', $settings->db));
+					break;
+				case 'robots_disallow':
+					$db->query(sprintf('UPDATE sites SET robots = \'disallow\' WHERE db = \'%s\'', $settings->db));
+					break;
 			}
 			break;
 	}
