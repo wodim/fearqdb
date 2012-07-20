@@ -43,6 +43,7 @@ if (!@$db->quick_connect($config['db']['user'], $config['db']['pass'],
 }
 
 $db->query('SET NAMES `utf8`');
+mb_internal_encoding('utf8');
 
 /* !!FIXME include a fallback $session->log() system? we may want to store
 	warnings to review them later, this is WRONG
