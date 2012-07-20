@@ -80,6 +80,7 @@ switch ($params[0]) {
 		$module = 'session';
 		require(modules_dir.'login.php');
 		break;
+	case 'pending':
 	case 'deleted':
 	case 'hidden':
 	case 'page':
