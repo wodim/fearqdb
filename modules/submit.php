@@ -21,8 +21,7 @@ require(classes_dir.'quote.php');
 
 global $params, $session;
 
-// needed
-$nick = '';
+$nick = $session->nick ? $session->nick : '';
 
 if (isset($params[2])) {
 	if ($session->level != 'reader') {
