@@ -13,6 +13,10 @@
 {% if c.hidden %}
 		<description><![CDATA[{% trans _('Hidden quote. Log into the web site to read it.') %}]]></description>
 {% else %}
+	{% if c.comment %}
+		<description><![CDATA[{{c.text}}<br /><br /><strong>{% trans _('Comment:') %}</strong> {{c.comment}}]]></description>
+	{% else %}
 		<description><![CDATA[{{c.text}}]]></description>
+	{% endif %}
 {% endif %}
 	</item>
