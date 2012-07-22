@@ -10,7 +10,9 @@
 				<input type="checkbox" name="hidden" id="hidden" /><label for="hidden">{% trans _('Hide quote (padlock)') %}</label>
 			</dd>
 		</dl>
+{% if session.level != 'admin' %}
 		<br />
 		<p>{% trans _('Your quote will be pending approval once submitted.<br />To avoid that, log in before submitting it.') %}</p>
+{% endif %}
 	</form>
 </div>
