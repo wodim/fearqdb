@@ -315,9 +315,10 @@ a {
 	text-shadow: none;
 	color: #666;
 	box-shadow: none;
-	padding: 8px 122px 0;
+	padding: 8px 0 0 122px;
 	border-radius: 0;
 	display: inline-block;
+	width: 637px;
 }
 
 .pager {

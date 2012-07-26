@@ -37,4 +37,9 @@
 		<span class="comment"><strong>{% trans _('Comment:') %}</strong> {{c.comment}}</span>
 	</div>
 {% endif %}
+{% if c.ip && ((session.level == 'admin') || (settings.ip_show)) %}
+	<div class="meta small">
+		<span class="comment"><strong>IP:</strong> {{c.ip}}</span>
+	</div>
+{% endif %}
 </div>

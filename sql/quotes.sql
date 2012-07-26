@@ -91,12 +91,8 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 --   This way if you do a search with "que", it will find "que" and "qué", which
 --   is useful.
 -- ip_show: whether ip addresses will be shown on the website.
--- ip_host: whether ip addresses will be resolved before being shown on the
---   website. Take into account that a slow DNS will slow down page generation
---   since we don't cache this.
--- ip_part: whether the last block of ip addresses and hosts will be hidden.
 --   ** authorised API key owners can read all IP addresses, it doesn't matter **
---   **                 whether you set ip_show or ip_part                     **
+--   **                   whether you set ip_show on or off                    **
 -- analytics_enabled: include Google Analytics javascript code
 -- analytics_code: your GA account
 --   eg: UA-13371488-1
@@ -134,8 +130,6 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `locale` varchar(16) NOT NULL,
   `collate` varchar(24) NOT NULL,
   `ip_show` tinyint(1) NOT NULL,
-  `ip_host` tinyint(1) NOT NULL,
-  `ip_part` tinyint(1) NOT NULL,
   `analytics_enabled` tinyint(1) NOT NULL,
   `analytics_code` varchar(16) NOT NULL,
   `url` varchar(32) NOT NULL,
