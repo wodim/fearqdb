@@ -17,7 +17,24 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-redir(sprintf('/%s',
-	$db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\'
-			AND status = \'approved\' ORDER BY RAND() LIMIT 1',
-		$settings->db))));
+require(classes_dir.'quote.php');
+
+$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api WHERE quotes.db = \'%s\'
+		AND status = \'approved\' ORDER BY RAND() LIMIT %d',
+		Quote::READ, $settings->db, $settings->page_size));
+
+$html->do_header(_('Random quotes'));
+
+if (!quotes) {
+	$html->do_sysmsg(_('Page not found'), null, 404);
+}
+
+$quote = new Quote();
+$odd = true;
+foreach ($quotes as $this_quote) {
+        $quote->read($this_quote);
+        $quote->output($odd);
+        $odd = !$odd;
+}
+
+$html->do_footer();

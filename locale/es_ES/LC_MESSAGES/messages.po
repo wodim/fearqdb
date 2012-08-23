@@ -173,3 +173,6 @@ msgstr ""
 
 msgid "Log in from IRC to read it."
 msgstr "Inicia sesión desde el IRC para leerlo."
+
+msgid "Random quotes"
+msgstr "Quotes al azar"
