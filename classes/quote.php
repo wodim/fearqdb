@@ -216,7 +216,7 @@ class Quote {
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'www_comment') {
 			// don't add links to rss titles!
-			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
+			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
 			$text = str_replace("\n", '<br />', $text);
 
 			// respect \s\s to fix asciis
