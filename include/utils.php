@@ -99,12 +99,21 @@ function sha512($string) {
 function format_link($string) {
 	global $settings;
 
-	$string = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $string);
+	$string = preg_replace_callback('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', 'format_link_shorten', $string);
 	$string = preg_replace('/#([a-f0-9]{4})/mi', sprintf('<a href="%s$1" rel="nofollow" target="_blank">#$1</a>', $settings->url), $string);
 	return $string;
 }
 
 function format_whitespace($string) {
 	$string = str_replace('  ', '&nbsp;&nbsp;', $string);
+	return $string;
+}
+
+function format_link_shorten($match) {
+	$limit = 15;
+	$array = parse_url($match[1]);
+	$string = $array['path'];
+	$string = (strlen($string) > $limit) ? sprintf('%s...', substr($string, 0, $limit)) : $string;
+	$string = sprintf('<a href="%s" rel="nofollow" target="_blank">%s%s</a>', $match[1], $array['host'], $string);
 	return $string;
 }
