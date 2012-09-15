@@ -96,7 +96,9 @@ if (!is_bot() && ($settings->privacy_level == 2
 	die();
 }
 
-if (is_bot() && $settings->privacy_level_for_bots == 2) {
+if (is_bot()
+	&& $settings->privacy_level_for_bots == 2
+	&& !preg_match(sprintf('/^%s(rss|robots\.txt)/', preg_quote($settings->base_url, '/')), $_SERVER['REQUEST_URI'])) {
 	header('HTTP/1.1 403 Forbidden');
 	die('403 Forbidden'); /* so what */
 }
