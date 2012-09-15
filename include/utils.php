@@ -95,3 +95,16 @@ function elapsed_time($time) {
 function sha512($string) {
 	return hash('sha512', $string);
 }
+
+function format_link($string) {
+	global $settings;
+
+	$string = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $string);
+	$string = preg_replace('/\w#([a-f0-9]{4})\w/mi', sprintf('<a href="%s$1" rel="nofollow" target="_blank">#$1</a>', $settings->url), $string);
+	return $string;
+}
+
+function format_whitespace($string) {
+	$string = str_replace('  ', '&nbsp;&nbsp;', $string);
+	return $string;
+}

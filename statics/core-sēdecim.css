@@ -5,7 +5,7 @@ html * {
 
 body {
 	background: url("shadow.png") repeat-y center, url("bodybg.png");
-	font-family: "Arial", serif;
+	font-family: "Arial", sans-serif;
 }
 
 .clear {
@@ -514,4 +514,19 @@ input[type=text].sep {
 
 .header .name a:hover {
 	background: #6d8ab1;
+}
+
+.topic {
+	background: #fafafa;
+	margin: -30px -25px 20px;
+	padding: 12px 30px;
+	font-size: 9pt;
+	box-shadow: 0 2px 3px -3px black inset;
+	border-bottom: 1px solid #ddd;
+}
+
+.topic span.set {
+	display: block;
+	margin: 2px 0 5px 7px;
+	font-size: 8pt;
 }

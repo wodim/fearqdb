@@ -10,7 +10,7 @@
 {% if session.sysmsg %}
 		<meta name="robots" content="noindex,nofollow" />
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-quīndecim.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-sēdecim.css" />
 		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.url}}rss" />
 {% if settings.snowstorm %}
@@ -62,3 +62,15 @@
 		</div>
 		<div class="page">
 			<div class="content">
+{% if topic.text %}
+				<div class="topic">
+{% if 0 %}
+	{% if topic.nick %}
+					<span class="set">• {% trans _('Channel topic, set by <strong>%s</strong>:') topic.nick %}</span>
+	{% else %}
+					<span class="set">• {% trans _('Channel topic:') %}</span>
+	{% endif %}
+{% endif %}
+					<span class="text">{{topic.text}}</span>
+				</div>
+{% endif %}

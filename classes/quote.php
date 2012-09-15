@@ -216,11 +216,11 @@ class Quote {
 
 		if ($for == 'www_body' || $for == 'rss_body' || $for == 'www_comment') {
 			// don't add links to rss titles!
-			$text = preg_replace('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', '<a href="$1" rel="nofollow" target="_blank">$1</a>', $text);
+			$text = format_link($text);
 			$text = str_replace("\n", '<br />', $text);
 
 			// respect \s\s to fix asciis
-			$text = str_replace('  ', '&nbsp;&nbsp;', $text);
+			$text = format_whitespace($text);
 		} else {
 			$text = str_replace("\n", ' ', $text);
 		}
