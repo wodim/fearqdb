@@ -176,3 +176,6 @@ msgstr "Inicia sesión desde el IRC para leerlo."
 
 msgid "Random quotes"
 msgstr "Quotes al azar"
+
+msgid "Channel topic:"
+msgstr "Tema del canal:"

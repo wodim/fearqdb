@@ -64,13 +64,6 @@
 			<div class="content">
 {% if topic.text %}
 				<div class="topic">
-{% if 0 %}
-	{% if topic.nick %}
-					<span class="set">• {% trans _('Channel topic, set by <strong>%s</strong>:') topic.nick %}</span>
-	{% else %}
-					<span class="set">• {% trans _('Channel topic:') %}</span>
-	{% endif %}
-{% endif %}
-					<span class="text">{{topic.text}}</span>
+					<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text}}</span>
 				</div>
 {% endif %}
