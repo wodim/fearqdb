@@ -55,7 +55,7 @@ class HTML {
 			$memcache->set('footer', $cached);
 			$this->output .= $cached;
 		}
-		$this->output .= sprintf('<!-- %.4f seconds, %d queries -->', ($_SERVER['REQUEST_TIME'] - $start), $db->num_queries);
+		$this->output .= sprintf('<!-- %.4f seconds, %d queries -->', ($_SERVER['REQUEST_TIME_FLOAT'] - $start), $db->num_queries);
 	}
 
 	function do_pages($page = 1, $total_pages, $query, $adjacents = 2) {

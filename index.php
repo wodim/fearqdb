@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$start = $_SERVER['REQUEST_TIME'];
+$start = $_SERVER['REQUEST_TIME_FLOAT'];
 
 require('init.php');
 
