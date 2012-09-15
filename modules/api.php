@@ -221,6 +221,20 @@ switch ($params[1]) {
 			array('success' => 0,
 				'error' => 'no_such_quote')));
 		break;
+	case 'topic':
+		required_post(array('topic'));
+		if (check_key() == 0) {
+			out(array('results' =>
+				array('success' => 0,
+					'error' => 'access_denied')));
+		}
+		$topic = clean($_POST['topic'], MAX_TOPIC_LENGTH, true);
+		$nick = isset($_POST['nick']) ? clean($_POST['nick'], MAX_NICK_LENGTH, true) : '';
+		$db->query(sprintf('UPDATE sites SET topic_text = \'%s\', topic_nick = \'%s\'
+			WHERE db = \'%s\'', $topic, $nick, $settings->db));
+		out(array('results' =>
+			array('success' => 1)));
+		break;
 	default:
 		$session->log(sprintf('JSON API access with invalid METHOD: %s', $params[1]));
 		generic_error('method_not_implemented');

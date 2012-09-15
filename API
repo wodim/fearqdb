@@ -73,3 +73,11 @@ delete
 	- *permaid
 	
 	Requires a valid API key.
+
+topic
+-----
+	Variables:
+	- *topic
+	- nick: nick of the user who set it
+
+	Requires a valid API key. This method may not fail if the API key was correct.

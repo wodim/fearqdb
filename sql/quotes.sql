@@ -121,6 +121,8 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 --   user can change his/her user agent and make him/her look like a bot!
 -- page_size: quotes per page
 -- robots: 'disallow' to block robots via robots.txt
+-- topic_text: content of the last topic that was set. it will be shown in every page.
+-- topic_nick: nick of the person who set that topic.
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -144,6 +146,8 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `privacy_level_for_bots` int(11) NOT NULL,
   `page_size` int(11) NOT NULL,
   `robots` enum('allow','disallow') NOT NULL DEFAULT 'allow',
+  `topic_text` varchar(1000) NOT NULL,
+  `topic_nick` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
