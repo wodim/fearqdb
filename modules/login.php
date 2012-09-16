@@ -26,10 +26,19 @@ function origin_redir($origin) {
 	redir($origin);
 }
 
+function user_redir() {
+	global $session;
+
+	if ($session->level != 'anonymous') { // it's already logged in, it's not logging out... so what the hell
+		redir();
+	}
+}
+
 $session->origin = '';
 
 switch ($params[0]) {
 	case 'userlogin':
+		user_redir();
 		$params[1] = isset($params[1]) ? $params[1] : '';
 		switch ($params[1]) {
 			case 'post':
@@ -55,6 +64,7 @@ switch ($params[0]) {
 		}
 		break;
 	case 'login':
+		user_redir();
 		if (isset($params[1]) && !$session->create($params[1])) {
 			$html->do_sysmsg(_('Invalid password'), _('The password that that link provided was not valid. Maybe you clicked an outdated link?'), 403);
 		}
@@ -69,8 +79,4 @@ switch ($params[0]) {
 		$origin = isset($params[2]) ? $params[2] : '/';
 		origin_redir($origin);
 		break;
-}
-
-if ($session->level != 'anonymous') { // it's already logged in, it's not logging out... so what the hell
-	redir();
 }
