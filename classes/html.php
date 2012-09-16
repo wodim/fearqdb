@@ -22,7 +22,7 @@ class HTML {
 		global $session, $settings;
 
 		header('Content-Type: text/html; charset=UTF-8');
-		$topic->text = format_whitespace(format_link(htmlentities($settings->topic_text)));
+		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
 		$vars = compact('title', 'topic', 'session');
 		Haanga::Load('header.html', $vars);
