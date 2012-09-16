@@ -111,9 +111,11 @@ function format_whitespace($string) {
 
 function format_link_shorten($match) {
 	$limit = 15;
-	$array = parse_url($match[1]);
-	$string = $array['path'];
-	$string = (strlen($string) > $limit) ? sprintf('%s...', substr($string, 0, $limit)) : $string;
-	$string = sprintf('<a href="%s" rel="nofollow" target="_blank">%s%s</a>', $match[1], $array['host'], $string);
+	$string = $match[1];
+	if (($array = parse_url($match[1]))) {
+		$string = $array['path'];
+		$string = (strlen($string) > $limit) ? sprintf('%s...', substr($string, 0, $limit)) : $string;
+		$string = sprintf('<a href="%s" rel="nofollow" target="_blank">%s%s</a>', $match[1], $array['host'], $string);
+	}
 	return $string;
 }
