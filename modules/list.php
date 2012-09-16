@@ -21,7 +21,7 @@ require(classes_dir.'quote.php');
 
 global $params, $settings;
 
-if (isset($params[1]) && is_numeric($params[1])) {
+if (isset($params[1]) && is_numeric($params[1]) && $params[1] > 0) {
 	$page_number = (int)$params[1];
 } else {
 	$page_number = 1;
