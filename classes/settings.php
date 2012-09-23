@@ -22,7 +22,7 @@ class Settings {
 	ip_show, analytics_enabled, analytics_code,
 	url, statics_url, snowstorm, db, irc, name, nname, cookie,
 	privacy_level, privacy_level_for_bots, page_size, robots,
-	topic_text, topic_nick
+	topic_text, topic_nick, push_enabled, push_url, push_params
 	FROM sites WHERE domain = \'%s\'';
 	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
@@ -48,6 +48,9 @@ class Settings {
 	var $robots = 'allow';
 	var $topic_text = '';
 	var $topic_nick = '';
+	var $push_enabled = '';
+	var $push_url = '';
+	var $push_params = '';
 
 	var $read = false;
 

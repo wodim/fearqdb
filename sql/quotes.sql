@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `time` datetime NOT NULL,
   `url` varchar(256) NOT NULL,
   `db` varchar(10) NOT NULL,
-  `text` varchar(256) NOT NULL,
+  `text` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
@@ -123,6 +123,8 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- robots: 'disallow' to block robots via robots.txt
 -- topic_text: content of the last topic that was set. it will be shown in every page.
 -- topic_nick: nick of the person who set that topic.
+-- push_enabled: push notifications enabled. requires curl
+-- push_url: push url
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -148,6 +150,9 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `robots` enum('allow','disallow') NOT NULL DEFAULT 'allow',
   `topic_text` varchar(1000) NOT NULL,
   `topic_nick` varchar(20) NOT NULL,
+  `push_enabled` tinyint(1) NOT NULL,
+  `push_url` varchar(64) NOT NULL,
+  `push_params` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

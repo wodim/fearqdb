@@ -81,6 +81,11 @@ require(classes_dir.'session.php');
 $session = new Session();
 $session->init();
 
+// initialize push engine
+require(classes_dir.'push.php');
+$push = new Push();
+$push->init();
+
 // configure gettext's locale
 putenv('LC_ALL='.$settings->locale);
 setlocale(LC_ALL, $settings->locale);
