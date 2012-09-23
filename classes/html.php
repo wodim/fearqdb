@@ -22,6 +22,7 @@ class HTML {
 		global $session, $settings;
 
 		header('Content-Type: text/html; charset=UTF-8');
+		$topic = new stdClass();
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
 		$vars = compact('title', 'topic', 'session');
