@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			'action'
 		)
 	);
-	
+
 	switch ($_POST['action']) {
 		case 'quote':
 			required_post(
@@ -136,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						$quote->read();
 						printf('%s ', $quote->permaid);
 						$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
+						$quote->status = 'approved';
 						$quote->save(false);
 						unset($quote);
 					}
@@ -167,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			} else {
 				printf('error');
 			}
-			break;			
+			break;
 	}
 } else {
 	$html->do_header(_('Administration'));
