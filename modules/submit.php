@@ -48,6 +48,7 @@ if (isset($params[1])) {
 				redir('/submit/invalid');
 			}
 			if ($quote->status == 'approved') {
+				$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 				redir('/last');
 			} else {
 				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $quote->nick));
