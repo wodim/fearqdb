@@ -142,7 +142,7 @@ switch ($params[1]) {
 		$quote->status = 'pending';
 		$quote->ip = (isset($_POST['ip']) && $key != 0) ? $_POST['ip'] : $session->ip;
 		$quote->api = $key;
-		if (!$quote->save()) {
+		if ($quote->save() === false) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'invalid_quote')));

@@ -44,16 +44,14 @@ if (isset($params[1])) {
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
 			$quote->status = $session->level == 'admin' ? 'approved' : 'pending';
 			$quote->api = 1;
-			if (!$quote->save()) {
+			$permaid = $quote->save();
+			if ($permaid === false) {
 				redir('/submit/invalid');
 			}
 			if ($quote->status == 'approved') {
 				unset($quote);
-				// race condition
-				$last = $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC LIMIT 1',
-					$settings->db));
 				$quote = new Quote();
-				$quote->permaid = $last;
+				$quote->permaid = $permaid;
 				$quote->read();
 				$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 				redir('/last');

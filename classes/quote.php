@@ -269,6 +269,7 @@ class Quote {
 				(int)$this->hidden,
 				escape($this->status),
 				(int)$this->api));
+			return $permaid;
 		} else {
 			$result = $db->query(sprintf('UPDATE quotes SET 
 				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
