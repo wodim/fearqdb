@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $settings, $html, $session;
+global $settings, $html, $session, $push;
 
 if ($session->level != 'admin') {
 	$html->do_sysmsg('Forbidden', null, 403);
@@ -154,6 +154,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 			printf('successful %s', $_POST['misc_action']);
 			break;
+		case 'push':
+			if ($push->hit($_POST['push_text'])) {
+				printf('successful');
+			} else {
+				printf('error');
+			}
+			break;			
 	}
 } else {
 	$html->do_header(_('Administration'));
