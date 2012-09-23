@@ -179,3 +179,9 @@ msgstr "Quotes al azar"
 
 msgid "Channel topic:"
 msgstr "Tema del canal:"
+
+msgid "%s has sent a quote and it is pending approval."
+msgstr "%s ha enviado un quote y está esperando ser aprobado."
+
+msgid "New quote: %s - %s"
+msgstr "Nuevo quote: %s - %s"

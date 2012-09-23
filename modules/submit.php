@@ -50,6 +50,7 @@ if (isset($params[1])) {
 			if ($quote->status == 'approved') {
 				redir('/last');
 			} else {
+				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $quote->nick));
 				redir('/submit/sent');
 			}
 			break;

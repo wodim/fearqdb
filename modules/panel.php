@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 			/* DESTROY DOESN'T WORK ON PURPOSE, this is not the right way of
 				doing it and this isn't the right place to do it */
+			$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 			$quote->save(false);
 			die('done');
 			break;
@@ -127,11 +128,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						die('no_pending_quotes');
 						break;
 					}
+					require(classes_dir.'quote.php');
 					echo 'Approving: ';
-					foreach ($quotes as $quote) {
+					foreach ($quotes as $quoteid) {
+						$quote = new Quote();
+						$quote->permaid = $quoteid->permaid;
+						$quote->read();
 						printf('%s ', $quote->permaid);
+						$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
+						$quote->save(false);
+						unset($quote);
 					}
-					$db->query('UPDATE quotes SET status = \'approved\' WHERE status = \'pending\'');
 					break;
 				case 'privacy_login':
 					$db->query(sprintf('UPDATE sites SET privacy_level = 2 WHERE db = \'%s\'', $settings->db));

@@ -26,8 +26,6 @@ define('MAX_REFERER_LENGTH', MAX_URL_LENGTH);
 define('MAX_UA_LENGTH', MAX_URL_LENGTH);
 define('MAX_USER_LENGTH', 16);
 
-define('MAX_LOG_LENGTH', MAX_URL_LENGTH);
-
 define('PERMAID_LENGTH', 4);
 define('MAX_QUOTE_LENGTH', -1);
 define('MAX_NICK_LENGTH', 20);
