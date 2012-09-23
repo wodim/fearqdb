@@ -40,7 +40,7 @@ class Push {
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS,
 			str_replace('%TEXT%', urlencode($text), $settings->push_params));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 
 		if (curl_exec($curl) === false) {
 			$session->log(clean(sprintf('Failed when reaching the push server "%s" with the following text: "%s"', $settings->push_url, $text), 1024, true));
