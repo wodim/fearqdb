@@ -43,7 +43,7 @@ class Push {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 
 		if (curl_exec($curl) === false) {
-			$session->log(clean(sprintf('Failed when reaching the push server "%s" with the following text: "%s"', $settings->push_url, $text), 1024, true));
+			$session->log(clean(sprintf('Failed when reaching the push server "%s" with the following error: "%s"', $settings->push_url, curl_error($curl)), 1024, true));
 			return false;
 		}
 
