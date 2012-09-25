@@ -56,9 +56,6 @@ switch ($params[0]) {
 	case 'random':
 		require(modules_dir.'random.php');
 		break;
-	case 'last':
-		require(modules_dir.'last.php');
-		break;
 	case 'submit':
 		require(modules_dir.'submit.php');
 		break;

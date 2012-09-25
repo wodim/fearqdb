@@ -54,7 +54,7 @@ if (isset($params[1])) {
 				$quote->permaid = $permaid;
 				$quote->read();
 				$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
-				redir('/last');
+				redir(sprintf('/%s', $permaid));
 			} else {
 				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $quote->nick));
 				redir('/submit/sent');
