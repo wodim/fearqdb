@@ -23,7 +23,7 @@ class Push {
 	function init() {
 		global $settings;
 
-		$this->enabled = $settings->push_url;
+		$this->enabled = $settings->push_enabled;
 		return $this->enabled;
 	}
 
