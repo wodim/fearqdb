@@ -20,8 +20,8 @@
 require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
-	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND quotes.text LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
-	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND text LIKE \'%s\' COLLATE %s %s AND quotes.db = \'%s\'';
+	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND quotes.text LIKE \'%s\' OR quotes.comment LIKE \'%s\' COLLATE %s AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
+	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND text LIKE \'%s\' OR quotes.comment LIKE \'%s\' COLLATE %s %s AND quotes.db = \'%s\'';
 	
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
@@ -50,7 +50,7 @@ class Search {
 			1) we will need to store the number of results anyway;
 			2) we want to know whether $page is out of bounds */
 		$this->count = $db->get_var(sprintf(Search::COUNT,
-			$criteria, $settings->collate, $where, $settings->db));
+			$criteria, $criteria, $settings->collate, $where, $settings->db));
 
 		if (!$this->count) {
 			return false;
@@ -64,7 +64,8 @@ class Search {
 		}
 
 		$this->results = $db->get_results(sprintf(Search::SEARCH,
-			Quote::READ, 
+			Quote::READ,
+			$criteria,
 			$criteria,
 			$settings->collate,
 			$settings->db,

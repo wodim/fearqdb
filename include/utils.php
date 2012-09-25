@@ -112,10 +112,43 @@ function format_whitespace($string) {
 function format_link_shorten($match) {
 	$limit = 15;
 	$string = $match[1];
-	if (($array = @parse_url($match[1]))) {
+	if (($array = @parse_url($match[1])) && isset($array['path'])) {
 		$string = $array['path'];
 		$string = (strlen($string) > $limit) ? sprintf('%s...', substr($string, 0, $limit)) : $string;
 		$string = sprintf('<a href="%s" rel="nofollow" target="_blank">%s%s</a>', $match[1], $array['host'], $string);
 	}
 	return $string;
+}
+
+function highlight($text, $highlight) {
+	$pos = 0;
+	$length = mb_strlen($highlight);
+	$criteria = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $highlight));
+	do {
+		// unfortunately we have to do this each time...
+		$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', translit_fix($text)));
+		$offset = mb_strpos($plain, $criteria, $pos);
+		if ($offset === false) {
+			break;
+		}
+		$first = '<strong class="criteria">';
+		$last = '</strong>';
+
+		$text = sprintf('%s%s%s%s%s',
+			mb_substr($text, 0, ($offset)),
+			$first,
+			mb_substr($text, $offset, $length),
+			$last,
+			mb_substr($text, ($offset + $length)));
+		$pos = $offset + strlen($first) + $length + strlen($last);
+	} while (1);
+
+	return $text;
+}
+
+function translit_fix($text) {
+	return str_replace(
+		array('«', '»', '€'),
+		array('<', '>', 'e'),
+		$text);
 }

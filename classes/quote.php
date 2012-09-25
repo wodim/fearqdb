@@ -147,13 +147,6 @@ class Quote {
 		return true;
 	}
 
-	private function translit_fix($text) {
-		return str_replace(
-			array('«', '»', '€'),
-			array('<', '>', 'e'),
-			$text);
-	}
-
 	private function text_clean($text, $for = 'www_body') {
 		// this is real crap.
 
@@ -165,28 +158,8 @@ class Quote {
 		}
 
 		// mark the search criterium
-		if ($for == 'www_body' && $session->search) {
-			$pos = 0;
-			$length = mb_strlen($session->search);
-			$criteria = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $session->search));
-			do {
-				// unfortunately we have to do this each time...
-				$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', $this->translit_fix($text)));
-				$offset = mb_strpos($plain, $criteria, $pos);
-				if ($offset === false) {
-					break;
-				}
-				$first = '<strong class="criteria">';
-				$last = '</strong>';
-
-				$text = sprintf('%s%s%s%s%s',
-					mb_substr($text, 0, ($offset)),
-					$first,
-					mb_substr($text, $offset, $length),
-					$last,
-					mb_substr($text, ($offset + $length)));
-				$pos = $offset + strlen($first) + $length + strlen($last);
-			} while (1);
+		if ($session->search && ($for == 'www_body' || $for == 'www_comment')) {
+			$text = highlight($text, $session->search);
 		}
 
 		// clean special chars from copypasting from irc
