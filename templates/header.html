@@ -11,6 +11,8 @@
 		<meta name="robots" content="noindex,nofollow" />
 {% endif %}
 		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-sēdecim.css" />
+		<link rel="stylesheet" type="text/css" media="only screen and (max-width: 480px)" href="{{settings.statics_url}}core-mobile-1.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.url}}rss" />
 {% if settings.snowstorm %}
@@ -56,7 +58,7 @@
 					<li><a href="/panel">{% trans _('Panel') %}</a></li>
 					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
 {% endif %}
-					<li><a href="/submit" class="submit">{% trans _('Submit quote') %}</a></li>
+					<li class="nomobile"><a href="/submit" class="submit">{% trans _('Submit quote') %}</a></li>
 				</ul>
 			</div>
 		</div>
