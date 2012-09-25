@@ -25,7 +25,7 @@ $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api WHERE quotes.db =
 
 $html->do_header(_('Random quotes'));
 
-if (!quotes) {
+if (!$quotes) {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
