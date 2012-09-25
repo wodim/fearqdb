@@ -88,6 +88,14 @@ class Quote {
 				break;
 		}
 
+		$this->generate();
+		$this->read = true;
+		return true;
+	}
+
+	function generate() {
+		global $settings;
+
 		$this->new = (date('U') - $this->ts < (60 * 60 * 24));
 		$this->permalink = sprintf('%s%s', $settings->url, $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
@@ -95,8 +103,6 @@ class Quote {
 		$this->hidden = (bool)$this->hidden;
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
 		$this->password = substr(md5(sprintf('a%sb%sc%sd', $settings->site_key, $this->permaid, date('d/m:H'))), 0, 8);
-		$this->read = true;
-		return true;
 	}
 
 	function output($odd = true) {
@@ -269,7 +275,8 @@ class Quote {
 				(int)$this->hidden,
 				escape($this->status),
 				(int)$this->api));
-			return $permaid;
+			$this->permaid = $permaid;
+			return $this->permaid;
 		} else {
 			$result = $db->query(sprintf('UPDATE quotes SET 
 				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 

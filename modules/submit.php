@@ -23,6 +23,7 @@ global $params, $session;
 
 $nick = $session->nick ? $session->nick : '';
 
+/* create a new session using %url%/submit/%nick%/%password%, this is, autologin and then redir to /submit */
 if (isset($params[2])) {
 	if ($session->level != 'reader') {
 		$session->create($params[2]); // if it can't be created, who cares? redir anyway, we don't want the pwd to stay in the url bar...
@@ -42,17 +43,14 @@ if (isset($params[1])) {
 			$quote->text = $_POST['text'];
 			$quote->comment = $_POST['comment'];
 			$quote->hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'on');
-			$quote->status = $session->level == 'admin' ? 'approved' : 'pending';
-			$quote->api = 1;
+			$quote->status = ($session->level == 'admin') ? 'approved' : 'pending';
+			$quote->api = 1; // web
 			$permaid = $quote->save();
 			if ($permaid === false) {
 				redir('/submit/invalid');
 			}
 			if ($quote->status == 'approved') {
-				unset($quote);
-				$quote = new Quote();
-				$quote->permaid = $permaid;
-				$quote->read();
+				$quote->generate();
 				$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 				redir(sprintf('/%s', $permaid));
 			} else {
