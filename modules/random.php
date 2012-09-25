@@ -32,9 +32,9 @@ if (!$quotes) {
 $quote = new Quote();
 $odd = true;
 foreach ($quotes as $this_quote) {
-        $quote->read($this_quote);
-        $quote->output($odd);
-        $odd = !$odd;
+	$quote->read($this_quote);
+	$quote->output($odd);
+	$odd = !$odd;
 }
 
 $html->do_footer();
