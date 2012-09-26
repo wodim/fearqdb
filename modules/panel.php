@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					break;
 				case 'do_approved':
 					$status = 'approved';
+					$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 					break;
 				case 'do_show':
 					$hidden = 0;
@@ -86,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 			/* DESTROY DOESN'T WORK ON PURPOSE, this is not the right way of
 				doing it and this isn't the right place to do it */
-			$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 			$quote->save(false);
 			die('done');
 			break;
