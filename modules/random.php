@@ -20,7 +20,7 @@
 require(classes_dir.'quote.php');
 
 $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api WHERE quotes.db = \'%s\'
-		AND status = \'approved\' ORDER BY RAND() LIMIT %d',
+		AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
 		Quote::READ, $settings->db, $settings->page_size));
 
 $html->do_header(_('Random quotes'));
