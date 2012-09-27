@@ -50,14 +50,14 @@ mb_internal_encoding('utf8');
 	the database is already initialised at this moment but html is not because
 	it needs some values stored in the sites table to work, such as the
 	statics path and it's not a good idea to hardcode it.
-	maybe it's a good idea to do a dry query even though $session already does
-	it later?
-	!!TODO no double query intended!!
 	!!TODO the only fired warning inside this is, at this moment, 'HTTP_HOST not
 	in range', we are not validating anything but it's not needed */
 require(classes_dir.'settings.php');
 $settings = new Settings();
-$settings->init();
+if (!$settings->init()) {
+	header('HTTP/1.1 500 Internal Server Error');
+	die('VHE');
+}
 
 // initialize Haanga
 require(include_dir.'Haanga.php');
