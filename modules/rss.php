@@ -21,23 +21,18 @@ require(classes_dir.'quote.php');
 
 global $params, $settings;
 
-if (isset($params[1])) { // ?
-	redir('/rss');
-}
-
 $quotes = $db->get_results(
 	sprintf('SELECT %s FROM quotes, api WHERE status = \'approved\' AND quotes.db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
 		Quote::READ, $settings->db, $settings->page_size * 5));
 
 if (!$quotes) {
 	header('HTTP/1.1 404');
-	die('No quotes'); // heh
+	die();
 }
 
 $rss['date'] = date('r', $quotes[0]->ts);
 
 $vars = compact('rss');
-
 Haanga::Load('rss-header.html', $vars);
 
 $quote = new Quote();

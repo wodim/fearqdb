@@ -21,31 +21,15 @@ require(classes_dir.'quote.php');
 
 global $params, $q, $session;
 
-$quoteid = $permaid = null;
-
-if (isset($params[0]) && preg_match('/^\d\d\d$/', $params[0])) {
-	$quoteid = $params[0];
-} elseif (isset($params[0])) {
-	$permaid = substr($params[0], 0, PERMAID_LENGTH);
+if (isset($params[0]) && strlen($params[0]) == 4) {
+	$quote = new Quote();
+	$quote->permaid = $params[0];
 } else {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
-$quote = new Quote();
-
-if ($quoteid) {
-	$quote->id = $quoteid;
-} else {
-	$quote->permaid = $permaid;
-}
-
 if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'approved') || $quote->status == 'deleted') {
 	$html->do_sysmsg(_('No such quote'), null, 404);
-}
-
-if ($quoteid) {
-	redir(sprintf('/%s', $quote->permaid));
-	die();
 }
 
 if (isset($params[1]) && $params[1] == $quote->password) {
@@ -56,7 +40,5 @@ if (isset($params[1]) && $params[1] == $quote->password) {
 }
 
 $html->do_header(sprintf(_('Quote #%s'), $quote->permaid));
-
 $quote->output();
-
 $html->do_footer();

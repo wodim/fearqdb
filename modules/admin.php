@@ -29,11 +29,11 @@ function all_quotes() {
 	global $db;
 
 	$results = $db->get_results('SELECT id FROM quotes');
-	
+
 	foreach ($results as $result) {
 		$return[] = $result->id;
 	}
-	
+
 	return $return;
 }
 
@@ -83,7 +83,7 @@ switch ($params[1]) {
 		printf("End\n");
 		break;
 	case 'assign':
-		/* assign permaids to all quotes. 
+		/* assign permaids to all quotes.
 			useful if you had no permaids... */
 		header('Content-Type: text/plain');
 		die('Permaids already assigned');

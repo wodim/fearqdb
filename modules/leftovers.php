@@ -30,7 +30,7 @@ switch ($params[0]) {
 			default:
 				$allow = "User-agent: *\nAllow: /";
 		}
-		echo($allow);
+		echo $allow;
 		break;
 	case 'opensearch.xml':
 		header('Content-Type: application/xml');

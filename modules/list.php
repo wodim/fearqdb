@@ -27,38 +27,25 @@ if (isset($params[1]) && is_numeric($params[1]) && $params[1] > 0) {
 	$page_number = 1;
 }
 
-$status = '';
-
-// i'd like to use a switch for this :(
-if ($session->level == 'anonymous') {
-	$status = 'AND quotes.status = \'approved\'';
-} elseif ($session->level == 'admin' && $params[0] == 'deleted') {
-	$status = 'AND quotes.status = \'deleted\'';
-} else {
-	$status = 'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')';
-}
-
 $subpage = '';
 
 switch ($params[0]) {
 	case 'pending':
-		$subpage = 'AND quotes.status = \'pending\'';
+		$subpage = ($session->level == 'admin') ? 'AND quotes.status = \'pending\'' : 'AND 1 = 0';
 		break;
 	case 'hidden':
 		$subpage = 'AND quotes.hidden = 1';
 		break;
 	case 'deleted':
-		if ($session->level == 'admin') {
-			$subpage = 'AND quotes.status = \'deleted\'';
-		} else {
-			$subpage = 'AND 1 = 0';
-		}
+		$subpage = ($session->level == 'admin') ? 'AND quotes.status = \'deleted\'' : 'AND 1 = 0';
 		break;
+	default:
+		$subpage = ($session->level == 'admin' || $session->level == 'reader') ?
+			'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' :
+			'AND quotes.status = \'approved\'';
 }
 
-$where = sprintf('WHERE quotes.db = \'%s\' %s %s',
-	$settings->db, $status, $subpage);
-
+$where = sprintf('WHERE quotes.db = \'%s\' %s', $settings->db, $subpage);
 $where_api = sprintf('%s AND api.id = quotes.api', $where);
 
 $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY date DESC LIMIT %d,%d',
@@ -75,8 +62,7 @@ if (!$quotes) { // there are no quotes. but... there are no quotes in this page 
 ++$page_number;
 
 $html->do_header();
-$rows = $db->get_var(sprintf('SELECT SQL_CACHE COUNT(*) FROM quotes %s',
-	$where));
+$rows = $db->get_var(sprintf('SELECT COUNT(*) FROM quotes %s', $where));
 
 $mod = sprintf('/%s/', $params[0] != '' ? $params[0] : 'page');
 $pager = $html->do_pages($page_number, floor($rows / $settings->page_size), $mod.'%d', 4);
@@ -89,6 +75,5 @@ foreach ($quotes as $this_quote) {
 	$odd = !$odd;
 }
 
-echo($pager);
-
+echo $pager;
 $html->do_footer();

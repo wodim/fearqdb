@@ -31,7 +31,7 @@ function out($out) {
 	if (isset($out['results']['success']) && $out['results']['success'] != 1) {
 		header('503 Unavailable');
 	}
-	echo(json_encode($out));
+	echo json_encode($out);
 	$session->hit();
 	die();
 }

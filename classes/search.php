@@ -22,17 +22,17 @@ require_once(classes_dir.'quote.php'); // Quote::READ
 class Search {
 	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND (quotes.text LIKE \'%s\' COLLATE %s OR quotes.comment LIKE \'%s\' COLLATE %s) AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
 	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND (text LIKE \'%s\' COLLATE %s OR comment LIKE \'%s\' COLLATE %s) %s AND quotes.db = \'%s\'';
-	
+
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
 	var $criteria = '';
 	var $results = array();
 	var $count = 0;
-	
+
 	var $page = 1;
 	var $page_size = 0;
 	var $show_hidden = false;
-	
+
 	function read() {
 		global $settings, $db, $session;
 
@@ -71,13 +71,13 @@ class Search {
 			$settings->collate,
 			$settings->db,
 			$where,
-			($this->page * $this->page_size), 
+			($this->page * $this->page_size),
 			$this->page_size));
 
 		$this->read = true;
 		return true;
 	}
-		
+
 	function clean_criteria($criteria) {
 		$criteria = escape($criteria);
 		$criteria = preg_replace('/^\*|\*$/', '', $criteria);
@@ -87,7 +87,7 @@ class Search {
 		$criteria = str_replace('*', '%', $criteria);
 		$criteria = str_replace('?', '_', $criteria);
 		$criteria = ($criteria == '') ? '%' : sprintf('%%%s%%', $criteria);
-		
+
 		return $criteria;
 	}
 }

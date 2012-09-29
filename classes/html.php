@@ -34,10 +34,10 @@ class HTML {
 
 		$vars = compact('session');
 		Haanga::Load('footer.html', $vars);
-		printf('<!-- %.4f - %d -->', (microtime(true) - $start), $db->num_queries);
+		printf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
 	}
 
-	function do_pages($page = 1, $total_pages, $query, $adjacents = 3) {
+	function do_pages($page = 1, $total_pages, $query, $adjacents = 2) {
 		if ($total_pages < 2) {
 			return;
 		}
@@ -85,7 +85,7 @@ class HTML {
 		if (!$message) {
 			$message = _('Are you lost?');
 		}
-		
+
 		$session->log(clean(sprintf('Soft error: (%d) %s - %s', $code, $title, $message), 256, true));
 		$session->hit();
 

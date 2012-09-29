@@ -35,7 +35,7 @@ class Session {
 
 	function init() {
 		global $settings, $db, $params;
-		
+
 		$this->date = strftime('%d/%m');
 		$this->ip = $_SERVER['REMOTE_ADDR'];
 		$this->origin = urlencode($_SERVER['REQUEST_URI']);
@@ -57,7 +57,7 @@ class Session {
 			$this->destroy();
 			return false;
 		}
-		
+
 		if ((int)$tmp[0] == 0) {
 			if ($this->expected_cookie == $tmp[1]) {
 				$this->level = 'reader';
@@ -117,10 +117,10 @@ class Session {
 			$user_agent));
 		$this->hit = true;
 	}
-	
+
 	function log($text) {
 		global $settings, $db;
-	
+
 		$ip = $this->ip;
 		$url = clean($_SERVER['REQUEST_URI'], 256, true);
 		$db_table = $settings->db;
@@ -143,7 +143,7 @@ class Session {
 			so... */
 
 		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1');
-		
+
 		foreach ($results as $result) {
 			if ($password == $this->password($result->key)) {
 				$id = $result->id;
@@ -164,7 +164,7 @@ class Session {
 
 		$user = new User();
 		$tmp = $user->login_check($nick, $password);
-		
+
 		if (!$tmp) {
 			return false;
 		}
@@ -183,6 +183,6 @@ class Session {
 	}
 
 	private function password($seed) {
-		return(substr(md5(date('d/m/Y').$seed), 0, 8));
+		return substr(md5(date('d/m/Y').$seed), 0, 8);
 	}
 }

@@ -32,10 +32,10 @@ class User {
 		global $db, $settings;
 
 		/* prefer id over nick */
-		$query = $this->id ? 
+		$query = $this->id ?
 			sprintf(User::READ_ID, (int)$this->id, $settings->db) :
 			sprintf(User::READ_NICK, clean($this->nick, MAX_USER_LENGTH, true), $settings->db);
-			
+
 		$results = $db->get_row($query);
 
 		if ($results) {
@@ -74,7 +74,7 @@ class User {
 		}
 
 		return(sha512($this->salt.$password) == $this->password) ?
-			sha512(sprintf('p%sh%sp', $this->password, $settings->site_key)) :
-			false;
+			sha512(sprintf('p%sh%sp', $this->password, $settings->site_key) :
+			false);
 	}
 }

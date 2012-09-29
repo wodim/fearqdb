@@ -19,13 +19,9 @@
 
 require('config.php');
 
-$config['site']['include'] = 'include';
-$config['site']['modules'] = 'modules';
-$config['site']['classes'] = 'classes';
-
-define('include_dir', $config['site']['include'].'/');
-define('modules_dir', $config['site']['modules'].'/');
-define('classes_dir', $config['site']['classes'].'/');
+define('include_dir', 'include/');
+define('modules_dir', 'modules/');
+define('classes_dir', 'classes/');
 
 require(include_dir.'utils.php');
 require(include_dir.'defines.php');
@@ -91,11 +87,6 @@ putenv('LC_ALL='.$settings->locale);
 setlocale(LC_ALL, $settings->locale);
 bindtextdomain('messages', './locale');
 textdomain('messages');
-
-// force https ?
-if (isset($_SERVER['HTTPS'])) {
-	redir(sprintf('http://%s%s', $_SERVER['HTTP_HOST'], $_GET['q']));
-}
 
 // redir to /login if not in ^/login already
 if (!is_bot() && ($settings->privacy_level == 2

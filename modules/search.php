@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	redir(sprintf('/search/%s', urlencode($_POST['query'])));
 }
 
-if (!isset($params[1]) || (trim($params[1]) == '')) {
+if (!isset($params[1])) {
 	redir();
 }
 
@@ -50,7 +50,7 @@ if (!$search->results) {
 } else {
 	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
 
-	$pager = $html->do_pages(($search->page + 1), ceil($search->count / $search->page_size), 
+	$pager = $html->do_pages(($search->page + 1), ceil($search->count / $search->page_size),
 		sprintf('/search/%s/%%d', str_replace('%', '%%', urlencode($params[1]))), 4);
 
 	$quote = new Quote();
@@ -61,7 +61,7 @@ if (!$search->results) {
 		$odd = !$odd;
 	}
 
-	echo($pager);
+	echo $pager;
 
 	$html->do_footer();
 }
