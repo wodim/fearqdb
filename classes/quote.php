@@ -59,7 +59,7 @@ class Quote {
 				$session->log('Using read() with no id or permaid and with no prebaked results');
 				return false;
 			}
-			$query = $this->id ? 
+			$query = $this->id ?
 				sprintf(Quote::READ_BY_ID, (int)$this->id, $settings->db) :
 				sprintf(Quote::READ_BY_PERMAID, clean($this->permaid, PERMAID_LENGTH, true), $settings->db);
 			$results = $db->get_row($query);
@@ -188,7 +188,7 @@ class Quote {
 			$text = str_replace(']]>', ']]]]><![CDATA[>', $text); // http://en.wikipedia.org/wiki/CDATA#Nesting
 			$text = preg_replace('/<[@\+\s]?([a-z0-9\-\[\]\{\}_`~]+)>/msi', '($1)', $text);
 		}
-		
+
 		if ($for == 'excerpt') {
 			$text = preg_replace('/<[@\+\s]?([a-z0-9\-\[\]\{\}_`~]+)>/msi', '<$1>', $text);
 		}
@@ -213,7 +213,7 @@ class Quote {
 
 		return $text;
 	}
-	
+
 	private function nick_colour($nick) {
 		$nick = $nick[1];
 		$colour = substr(md5(strtolower($nick)), 0, 1);
@@ -222,7 +222,7 @@ class Quote {
 
 	// unused? hm
 	function save($new = true) {
-		global $db, $settings;
+		global $db, $settings, $push;
 
 		foreach (array($this->nick, $this->text) as $check) {
 			if (mb_strlen($check) < 3) {
@@ -249,10 +249,16 @@ class Quote {
 				escape($this->status),
 				(int)$this->api));
 			$this->permaid = $permaid;
+			$this->generate();
+			if ($this->status == 'approved') {
+				$push->hit(sprintf(_('New quote: %s - %s'), $this->permalink, $this->excerpt));
+			} else {
+				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $this->nick));
+			}
 			return $this->permaid;
 		} else {
-			$result = $db->query(sprintf('UPDATE quotes SET 
-				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\', 
+			$result = $db->query(sprintf('UPDATE quotes SET
+				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\',
 				db = \'%s\', hidden = %d, status = \'%s\', api = %d
 				where id = %d',
 				clean($this->nick, MAX_NICK_LENGTH, true),
@@ -264,7 +270,7 @@ class Quote {
 				escape($this->status),
 				(int)$this->api,
 				(int)$this->id));
-		}		
+		}
 
 		return true;
 	}

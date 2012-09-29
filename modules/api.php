@@ -20,7 +20,7 @@
 require(classes_dir.'quote.php');
 require(classes_dir.'search.php');
 
-global $params, $settings, $session, $push;
+global $params, $settings, $session;
 
 $cached_key = null;
 
@@ -148,7 +148,6 @@ switch ($params[1]) {
 					'error' => 'invalid_quote')));
 		}
 		$last = get_last();
-		$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $quote->nick));
 		out(array('results' =>
 			array('success' => 1,
 				'url' => sprintf('%s%s', $settings->url, $last),

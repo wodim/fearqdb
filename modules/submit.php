@@ -50,11 +50,8 @@ if (isset($params[1])) {
 				redir('/submit/invalid');
 			}
 			if ($quote->status == 'approved') {
-				$quote->generate();
-				$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 				redir(sprintf('/%s', $permaid));
 			} else {
-				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $quote->nick));
 				redir('/submit/sent');
 			}
 			break;
