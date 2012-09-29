@@ -70,26 +70,6 @@ class Haanga
         /* The class can't be instanced */
     }
 
-    final public static function AutoLoad($class)
-    {
-        static $loaded = array();
-        static $path;
-
-        if (!isset($loaded[$class]) && substr($class, 0, 6) === 'Haanga' && !class_exists($class, false)) {
-            if ($path === NULL) {
-                $path = dirname(__FILE__);
-            }
-            $file = $path.DIRECTORY_SEPARATOR.str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
-            if (is_file($file)) {
-                require $file;
-            }
-            $loaded[$class] = TRUE;
-            return;
-        }
-
-        return FALSE;
-    }
-
     public static function getTemplateDir()
     {
         return self::$templates_dir; 
@@ -225,7 +205,7 @@ class Haanga
 
             /* load compiler (done just once) */
             if (self::$use_autoload) {
-                spl_autoload_register(array(__CLASS__, 'AutoLoad'));
+                require_once "{$dir}/Haanga/Loader.php";
             }
 
             $compiler = new Haanga_Compiler_Runtime;
@@ -342,7 +322,6 @@ class Haanga
         } 
         
         if (!is_file($php) || ($check && filemtime($tpl) > filemtime($php))) {
-
             if (!is_file($tpl)) {
                 /* There is no template nor compiled file */
                 throw new Exception("View {$file} doesn't exists");
@@ -419,10 +398,21 @@ class Haanga
                 /* 
                    really weird case ($php is empty, another process is compiling
                    the $tpl for the first time), so create a lambda function
-                   for the template
+                   for the template.
+
+                   To be safe we're invalidating its time, because its content 
+                   is no longer valid to us
                  */
-                $lambda= self::compile(file_get_contents($tpl), $vars);
-                return $lambda($vars, $return, $blocks);
+                touch($php, 300, 300);
+                chmod($php, 0777);
+            
+                
+                // compile temporarily
+                $compiler = self::getCompiler();
+                $code = $compiler->compile_file($tpl, FALSE, $vars);
+                eval($code);
+
+                return $callback($vars, $return, $blocks);
             }
         }
 
