@@ -30,6 +30,8 @@ if (!$quotes) {
 	die();
 }
 
+header('Content-Type: application/rss+xml');
+
 $rss['date'] = date('r', $quotes[0]->ts);
 
 $vars = compact('rss');
