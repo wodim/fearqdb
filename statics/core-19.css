@@ -94,7 +94,6 @@ a {
 .bar li {
 	list-style: none;
 	display: inline;
-	
 }
 
 .bar li:first-child {

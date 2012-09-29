@@ -73,8 +73,8 @@ class User {
 			return false;
 		}
 
-		return(sha512($this->salt.$password) == $this->password) ?
-			sha512(sprintf('p%sh%sp', $this->password, $settings->site_key) :
+		return((sha512($this->salt.$password) == $this->password) ?
+			sha512(sprintf('p%sh%sp', $this->password, $settings->site_key)) :
 			false);
 	}
 }
