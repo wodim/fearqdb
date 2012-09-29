@@ -281,12 +281,12 @@ strong.criteria {
 	display: block;
 	width: 60px;
 	margin-left: 43px;
-	padding: 5px 4px 0 0;
 	text-align: center;
 	border-top-left-radius: 2px;
 	border-bottom-left-radius: 2px;
 	color: white;
 	display: block;
+	line-height: 26px;
 }
 
 .quote.odd .meta a.id {
