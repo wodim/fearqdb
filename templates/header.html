@@ -10,7 +10,7 @@
 {% if session.sysmsg %}
 		<meta name="robots" content="noindex,nofollow" />
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-17.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-18.css" />
 		<link rel="stylesheet" type="text/css" media="only screen and (max-width: 820px)" href="{{settings.statics_url}}core-mobile-1.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
@@ -43,13 +43,13 @@
 		<div class="title">
 			<div class="header">
 				<span class="name"><a href="/">{{settings.name}}</a></span>
+				<div class="search">
+					<form method="post" action="/search">
+						<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
+						<input type="submit" />
+					</form>
+				</div>
 				<ul class="bar">
-					<li>
-						<form method="post" action="/search">
-							<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
-							<input type="submit" />
-						</form>
-					</li>
 					<li><a href="/random">{% trans _('Random') %}</a></li>
 {% if session.level == 'reader' %}
 					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
