@@ -21,7 +21,12 @@ $start = microtime(true);
 
 require('init.php');
 
-$params = explode('/', trim($_SERVER['REQUEST_URI']));
+$request = trim($_SERVER['REQUEST_URI']);
+$query = strpos($request, '?');
+if ($query !== false) {
+	$request = substr($request, 0, $query);
+}
+$params = explode('/', $request);
 array_shift($params);
 
 foreach ($params as $k => $v) {
