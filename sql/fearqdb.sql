@@ -153,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `push_enabled` tinyint(1) NOT NULL,
   `push_url` varchar(64) NOT NULL,
   `push_params` varchar(128) NOT NULL,
+  `extra_css` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

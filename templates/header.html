@@ -36,6 +36,11 @@
 			})();
 		</script>
 {% endif %}
+{% if settings.extra_css %}
+		<style type="text/css">
+			{{settings.extra_css}}
+		</style>
+{% endif %}
 		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.name}}">
 	</head>
 	<body>
