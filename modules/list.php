@@ -64,7 +64,7 @@ if (!$quotes) { // there are no quotes. but... there are no quotes in this page 
 $html->do_header();
 $rows = $db->get_var(sprintf('SELECT COUNT(*) FROM quotes %s', $where));
 
-$mod = sprintf('/%s/', $params[0] != '' ? $params[0] : 'page');
+$mod = sprintf('%s%s/', $settings->base_url, $params[0] != '' ? $params[0] : 'page');
 $pager = $html->do_pages($page_number, floor($rows / $settings->page_size), $mod.'%d', 4);
 
 $quote = new Quote();

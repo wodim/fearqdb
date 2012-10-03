@@ -19,7 +19,7 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $q, $session;
+global $params, $session, $settings;
 
 if (isset($params[0]) && strlen($params[0]) == 4) {
 	$quote = new Quote();
@@ -35,7 +35,7 @@ if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'app
 if (isset($params[1]) && $params[1] == $quote->password) {
 	$quote->forceshow = true;
 } elseif (isset($params[1]) && $params[1] != $quote->password) {
-	redir(sprintf('/%s', $quote->permaid));
+	redir(sprintf('%s%s', $settings->base_url, $quote->permaid));
 	die();
 }
 

@@ -17,11 +17,11 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $params, $session, $html;
+global $params, $session, $html, $settings;
 
 function origin_redir($origin) {
-	if (!preg_match('/^\//', $origin)) {
-		$origin = '/';
+	if (strpos($origin, $settings->base_url) !== 0) {
+		$origin = $settings->base_url;
 	}
 	redir($origin);
 }
@@ -50,12 +50,12 @@ switch ($params[0]) {
 				if ($session->create_user($_POST['nick'], $_POST['password'])) {
 					origin_redir($origin);
 				} else {
-					redir('/userlogin/error');
+					redir(sprintf('%suserlogin/error', $settings->base_url));
 				}
 				break;
 			case 'error':
 			default:
-				$origin = isset($params[2]) ? urlencode($params[2]) : '/';
+				$origin = isset($params[2]) ? urlencode($params[2]) : $settings->base_url;
 				$message = ($params[1] == 'error') ? _('Invalid password. Try again.') : '';
 				$html->do_header(_('Log in'));
 				$vars = compact('origin', 'message');
@@ -68,7 +68,7 @@ switch ($params[0]) {
 		if (isset($params[1]) && !$session->create($params[1])) {
 			$html->do_sysmsg(_('Invalid password'), _('The password that that link provided was not valid. Maybe you clicked an outdated link?'), 403);
 		}
-		$origin = isset($params[2]) ? $params[2] : '/';
+		$origin = isset($params[2]) ? $params[2] : $settings->base_url;
 		origin_redir($origin);
 		break;
 	case 'logout':
@@ -76,7 +76,7 @@ switch ($params[0]) {
 			$html->do_sysmsg('e.e', null, 403);
 		}
 		$session->destroy();
-		$origin = isset($params[2]) ? $params[2] : '/';
+		$origin = isset($params[2]) ? $params[2] : $settings->base_url;
 		origin_redir($origin);
 		break;
 }

@@ -97,7 +97,7 @@ class Quote {
 		global $settings;
 
 		$this->new = (date('U') - $this->ts < (60 * 60 * 24));
-		$this->permalink = sprintf('%s%s', $settings->url, $this->permaid);
+		$this->permalink = sprintf('%s%s', $settings->full_url, $this->permaid);
 		$date = elapsed_time(date('U') - $this->ts);
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
@@ -215,9 +215,11 @@ class Quote {
 	}
 
 	private function nick_colour($nick) {
+		global $settings;
+
 		$nick = $nick[1];
 		$colour = substr(md5(strtolower($nick)), 0, 1);
-		return sprintf('<strong>&lt;<em class="colour-%s"><a href="/search/%s">%s</a></em>&gt;</strong>', $colour, urlencode($nick), $nick);
+		return sprintf('<strong>&lt;<em class="colour-%s"><a href="%ssearch/%s">%s</a></em>&gt;</strong>', $colour, $settings->base_url, urlencode($nick), $nick);
 	}
 
 	// unused? hm

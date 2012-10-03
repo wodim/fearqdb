@@ -18,16 +18,17 @@
 */
 
 class Settings {
-	const READ = 'SELECT id, domain, site_key, lang, locale, `collate`,
+	const READ = 'SELECT id, site_key, lang, locale, `collate`,
 		ip_show, analytics_enabled, analytics_code,
-		url, statics_url, snowstorm, db, irc, name, nname, cookie,
+		url, base_url, full_url, statics_url, snowstorm, db, irc, name, nname, cookie,
 		privacy_level, privacy_level_for_bots, page_size, robots,
-		topic_text, topic_nick, push_enabled, push_url, push_params,
-		extra_css
-		FROM sites WHERE domain = \'%s\'';
+		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css
+		FROM sites WHERE url = \'%s%s\'';
 	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
-	var $domain = '';
+	var $url = '';
+	var $base_url = '';
+	var $full_url = '';
 	var $site_key = '';
 	var $lang = '';
 	var $locale = '';
@@ -35,7 +36,6 @@ class Settings {
 	var $ip_show = false;
 	var $analytics_enabled = false;
 	var $analytics_code = '';
-	var $url = '';
 	var $statics_url = '';
 	var $snowstorm = false;
 	var $db = '';
@@ -54,6 +54,7 @@ class Settings {
 	var $push_params = '';
 	var $extra_css = null;
 
+	var $no_rewrite = false;
 	var $read = false;
 
 	function init() {
@@ -61,8 +62,8 @@ class Settings {
 
 		$results = $db->get_row(
 			sprintf(Settings::READ,
-				clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH, true)));
-
+				clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH, true),
+				clean(preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']), MAX_DOMAIN_LENGTH, true)));
 		if (!$results) {
 			return $this->read;
 		}
@@ -71,6 +72,8 @@ class Settings {
 			$this->$variable = $value;
 		}
 
+		/* does the user have mod_rewrite? */
+		$this->no_rewrite = preg_match('/\?m=$/', $this->base_url);
 		$this->read = true;
 		return true;
 	}

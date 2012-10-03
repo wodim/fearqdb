@@ -19,6 +19,12 @@
 
 global $params, $settings;
 
+/* this isn't possible if base_url is not /. the user would have to include these
+	files by hand. */
+if ($settings->base_url != '/') {
+	$html->do_sysmsg(_('Page not found'), null, 404);
+}
+
 switch ($params[0]) {
 	case 'robots.txt':
 		header('Content-Type: text/plain');

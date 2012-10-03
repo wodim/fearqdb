@@ -1,6 +1,6 @@
 <div class="quote {{c.style}}">
 	<div class="meta info">
-		<a href="/{{c.permaid}}" class="id">#{{c.permaid}}</a>
+		<a href="{{settings.base_url}}{{c.permaid}}" class="id">#{{c.permaid}}</a>
 		<div class="rest">
 			<span class="nick">{{c.nick|escape}}</span>
 			{% if c.api && 1 == 0 %}
@@ -18,7 +18,7 @@
 				<span class="share">{% trans _('Share it:') %} <a href="{{c.tweet}}" target="_blank">Twitter</a></span>
 			{% endif %}
 			{% if ((session.level != 'anonymous') && c.hidden) %}
-				<span class="share"><a href="/{{c.permaid}}/{{c.password}}" target="_blank">{% trans _('Share it') %}</a></span>
+				<span class="share"><a href="{{settings.base_url}}{{c.permaid}}/{{c.password}}" target="_blank">{% trans _('Share it') %}</a></span>
 			{% endif %}
 		</div>
 	</div>

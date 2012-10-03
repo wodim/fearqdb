@@ -150,13 +150,13 @@ switch ($params[1]) {
 		$last = get_last();
 		out(array('results' =>
 			array('success' => 1,
-				'url' => sprintf('%s%s', $settings->url, $last),
+				'url' => sprintf('%s%s', $settings->full_url, $last),
 				'permaid' => $last)));
 		break;
 	case 'last':
 		$last = get_last();
 		out(array('results' =>
-			array('url' => sprintf('%s%s', $settings->url, $last),
+			array('url' => sprintf('%s%s', $settings->full_url, $last),
 				'permaid' => $last)));
 		break;
 	case 'read':

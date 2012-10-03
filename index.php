@@ -21,19 +21,27 @@ $start = microtime(true);
 
 require('init.php');
 
-$request = trim($_SERVER['REQUEST_URI']);
-$query = strpos($request, '?');
-if ($query !== false) {
-	$request = substr($request, 0, $query);
+if ($settings->no_rewrite) {
+	$request = isset($_GET['m']) ? $_GET['m'] : 'page';
+} else {
+	$request = $_SERVER['REQUEST_URI'];
+	$query = strpos($request, '?');
+	if ($query !== false) {
+		$request = substr($request, 0, $query);
+	}
 }
+
+$request = preg_replace(sprintf('/^%s/', preg_quote($settings->base_url, '/')), '', $request);
 $params = explode('/', $request);
-array_shift($params);
+if (strpos($request, '/') === 0) {
+	array_shift($params);
+}
 
 foreach ($params as $k => $v) {
 	$params[$k] = urldecode($v);
 }
 
-$params[0] = isset($params[0]) ? $params[0] : 'home';
+$params[0] = isset($params[0]) ? $params[0] : 'page';
 
 switch ($params[0]) {
 	// TODO this should be configurable per domain

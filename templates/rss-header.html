@@ -6,10 +6,10 @@
 >
 <channel>
 	<title>{{settings.name}}</title>
-	<atom:link href="{{settings.url}}rss" rel="self" type="application/rss+xml" />
-	<link>{{settings.url}}</link>
+	<atom:link href="{{settings.full_url}}rss" rel="self" type="application/rss+xml" />
+	<link>{{settings.full_url}}</link>
 	<description>{% trans _('Quote database') %}</description>
 
 	<pubDate>{{rss.date}}</pubDate>
-	<generator>{{settings.url}}</generator>
+	<generator>{{settings.full_url}}</generator>
 	<language>{{settings.lang}}</language>

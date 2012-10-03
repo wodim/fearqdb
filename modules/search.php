@@ -20,11 +20,13 @@
 require(classes_dir.'quote.php');
 require(classes_dir.'search.php');
 
-global $params, $db, $session;
+global $params, $session, $settings;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	isset($_POST['query'])) {
-	redir(sprintf('/search/%s', urlencode($_POST['query'])));
+	redir(sprintf('%ssearch/%s',
+		$settings->base_url,
+		urlencode($_POST['query'])));
 }
 
 if (!isset($params[1])) {
@@ -33,13 +35,14 @@ if (!isset($params[1])) {
 
 $page_number = (isset($params[2]) ? (((int)$params[2] < 1) ? 1 : (int)$params[2]) : 1);
 
+$string = urldecode($params[1]);
 $search = new Search();
-$search->criteria = urldecode($params[1]);
+$search->criteria = $string;
 $search->page = $page_number;
 $search->show_hidden = ($session->level != 'anonymous');
 $search->read();
 
-$session->search = htmlspecialchars(urldecode($params[1]));
+$session->search = htmlspecialchars($string);
 
 if (!$search->results) {
 	if ($search->page_size * ($search->page - 1) < $search->count) {
@@ -48,10 +51,12 @@ if (!$search->results) {
 		$html->do_sysmsg(_('No quotes found'), _('There are no quotes matching your criteria.'), 404);
 	}
 } else {
-	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($params[1])));
+	$html->do_header(sprintf(_('Search results for "%s"'), htmlspecialchars($string)));
 
 	$pager = $html->do_pages(($search->page + 1), ceil($search->count / $search->page_size),
-		sprintf('/search/%s/%%d', str_replace('%', '%%', urlencode($params[1]))), 4);
+		sprintf('%ssearch/%s/%%d',
+			$settings->base_url,
+			str_replace('%', '%%', urlencode($string))), 4);
 
 	$quote = new Quote();
 	$odd = true;

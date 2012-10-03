@@ -18,10 +18,10 @@
 */
 
 function redir($location = null) {
-	global $session;
+	global $session, $settings;
 
 	if (!$location) {
-		$location = '/';
+		$location = $settings->base_url;
 	}
 
 	$session->hit(true, $location);
@@ -80,7 +80,7 @@ function format_link($string) {
 	global $settings;
 
 	$string = preg_replace_callback('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', 'format_link_shorten', $string);
-	$string = preg_replace('/#([a-f0-9]{4})/mi', sprintf('<a href="%s$1">#$1</a>', $settings->url), $string);
+	$string = preg_replace('/#([a-f0-9]{4})/mi', sprintf('<a href="%s$1">#$1</a>', $settings->base_url), $string);
 	return $string;
 }
 

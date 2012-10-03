@@ -78,8 +78,19 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
--- domain: the domain (and only the domain) of your quote database.
---   eg: qdb.example.net
+-- url: the url up to the WITH leading / and WITH NO http://
+--   eg: example.net/qdb/
+-- base_url: the base url for your qdb, this is, / + folder + / and, if you have no
+--   mod_rewrite, index.php (if you want) + ?m=
+--   eg: /
+--   eg: /qdb/
+--   eg: /qdb/index.php?m=
+--   eg: /qdb/?m=
+-- full_url: those two urls, merged.
+--   eg: http://example.net/qdb/?m=
+-- statics_url: the url that includes your static content, WITH the leading /
+--   eg: http://qdb.example.net/statics/
+--   eg: http://qdbstatic.net/
 -- site_key: your site key; used to generate passwords, cookies and so on.
 --   in case of disclosure, just change it.
 -- lang: your language, for gettext.
@@ -96,11 +107,6 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- analytics_enabled: include Google Analytics javascript code
 -- analytics_code: your GA account
 --   eg: UA-13371488-1
--- url: your quote database url, WITH the leading /
---   eg: http://qdb.example.net/
--- statics_url: the url that includes your static content, WITH the leading /
---   eg: http://qdb.example.net/statics/
---   eg: http://qdbstatic.net/
 -- snowstorm: snow storm!
 -- db: matches the 'db' field in all the other tables. allows you to have several
 --   domains running in the same database/tables and using the same code.
@@ -125,10 +131,14 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- topic_nick: nick of the person who set that topic.
 -- push_enabled: push notifications enabled. requires curl
 -- push_url: push url
+-- extra_css: css code that will be included inline, inside <head>
 
 CREATE TABLE IF NOT EXISTS `sites` (
+  `url` varchar(64) NOT NULL,
+  `base_url` varchar(64) NOT NULL,
+  `full_url` varchar(64) NOT NULL,
+  `statics_url` varchar(64) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `domain` varchar(32) NOT NULL,
   `site_key` varchar(32) NOT NULL,
   `lang` varchar(5) NOT NULL,
   `locale` varchar(16) NOT NULL,
@@ -136,8 +146,6 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `ip_show` tinyint(1) NOT NULL,
   `analytics_enabled` tinyint(1) NOT NULL,
   `analytics_code` varchar(16) NOT NULL,
-  `url` varchar(32) NOT NULL,
-  `statics_url` varchar(64) NOT NULL,
   `snowstorm` tinyint(1) NOT NULL,
   `db` varchar(10) NOT NULL,
   `irc` varchar(32) NOT NULL,

@@ -19,7 +19,7 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $session;
+global $params, $session, $settings;
 
 $nick = $session->nick ? $session->nick : '';
 
@@ -28,14 +28,14 @@ if (isset($params[2])) {
 	if ($session->level != 'reader') {
 		$session->create($params[2]); // if it can't be created, who cares? redir anyway, we don't want the pwd to stay in the url bar...
 	}
-	redir(sprintf('/submit/%s', $params[1]));
+	redir(sprintf('%ssubmit/%s', $settings->base_url, $params[1]));
 }
 
 if (isset($params[1])) {
 	switch ($params[1]) {
 		case 'post':
 			if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-				redir('/submit');
+				redir(sprintf('%ssubmit', $settings->base_url));
 			}
 			$quote = new Quote();
 			$quote->nick = $_POST['nick'];
@@ -47,12 +47,12 @@ if (isset($params[1])) {
 			$quote->api = 1; // web
 			$permaid = $quote->save();
 			if ($permaid === false) {
-				redir('/submit/invalid');
+				redir(sprintf('%ssubmit/invalid', $settings->base_url));
 			}
 			if ($quote->status == 'approved') {
-				redir(sprintf('/%s', $permaid));
+				redir(sprintf('%s%s', $settings->base_url, $permaid));
 			} else {
-				redir('/submit/sent');
+				redir(sprintf('%ssubmit/sent', $settings->base_url));
 			}
 			break;
 		case 'invalid':

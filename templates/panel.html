@@ -9,7 +9,7 @@ function panel() {
 	$('#submit').val('{% trans _('Wait...') %}');
 	$.ajax({
 		type: 'POST',
-		url: '/panel/post',
+		url: '{{settings.base_url}}panel/post',
 		data: $('#panel').serialize(),
 		success: function(response) {
 			release();
@@ -25,7 +25,7 @@ function panel() {
 
 <div class="sysmsg" style="margin: 0 20px;">
 	<h3>{% trans _('Administration') %}</h3>
-	<form action="/panel/post" id="panel" method="post" onsubmit="panel(); return false;">
+	<form action="{{settings.base_url}}panel/post" id="panel" method="post" onsubmit="panel(); return false;">
 		<p>action</p>
 		<select name="action">
 			<option value="quote">quote</option>

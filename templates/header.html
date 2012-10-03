@@ -13,7 +13,7 @@
 		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}core-20.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
-		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.url}}rss" />
+		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
 {% if settings.snowstorm %}
 		<script src="{{settings.statics_url}}snowstorm.js"></script>
 		<script>
@@ -41,28 +41,36 @@
 			{{settings.extra_css}}
 		</style>
 {% endif %}
+{% if settings.base_url == '/' %}
 		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.name}}">
+{% endif %}
 	</head>
 	<body>
 		<div class="title">
 			<div class="header">
-				<span class="name"><a href="/">{{settings.name}}</a></span>
+				<span class="name">
+{% if settings.no_rewrite %}
+					<a href="{{settings.full_url}}page">{{settings.name}}</a>
+{% else %}
+					<a href="{{settings.full_url}}">{{settings.name}}</a>
+{% endif %}
+				</span>
 				<div class="search">
-					<form method="post" action="/search">
+					<form method="post" action="{{settings.base_url}}search">
 						<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
 						<input type="submit" />
 					</form>
 				</div>
 				<ul class="bar">
-					<li><a href="/random">{% trans _('Random') %}</a></li>
+					<li><a href="{{settings.base_url}}random">{% trans _('Random') %}</a></li>
 {% if session.level == 'reader' %}
-					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
+					<li><a href="{{settings.base_url}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
 {% endif %}
 {% if (session.level == 'user') || (session.level == 'admin') %}
-					<li><a href="/panel">{% trans _('Panel') %}</a></li>
-					<li><a href="/logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
+					<li><a href="{{settings.base_url}}panel">{% trans _('Panel') %}</a></li>
+					<li><a href="{{settings.base_url}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
 {% endif %}
-					<li class="nomobile"><a href="/submit" class="submit">{% trans _('Submit quote') %}</a></li>
+					<li class="nomobile"><a href="{{settings.base_url}}submit" class="submit">{% trans _('Submit quote') %}</a></li>
 				</ul>
 			</div>
 		</div>

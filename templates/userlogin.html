@@ -3,7 +3,7 @@
 {% if message %}
 	<h4>{{message}}</h4>
 {% endif %}
-	<form action="/userlogin/post" method="post">
+	<form action="{{settings.base_url}}userlogin/post" method="post">
 		<dl>
 			<dt>
 				<label for="nick">{% trans _('Nick:') %}</label>
