@@ -48,7 +48,7 @@ switch ($params[0]) {
 $where = sprintf('WHERE quotes.db = \'%s\' %s', $settings->db, $subpage);
 $where_api = sprintf('%s AND api.id = quotes.api', $where);
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY date DESC LIMIT %d,%d',
+$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY id DESC LIMIT %d,%d',
 	Quote::READ, $where_api, (--$page_number * $settings->page_size), $settings->page_size));
 
 if (!$quotes) { // there are no quotes. but... there are no quotes in this page or no quotes at all?

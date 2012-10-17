@@ -20,7 +20,7 @@
 require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
-	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND (quotes.text LIKE \'%s\' COLLATE %s OR quotes.comment LIKE \'%s\' COLLATE %s) AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.date DESC LIMIT %d,%d';
+	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND (quotes.text LIKE \'%s\' COLLATE %s OR quotes.comment LIKE \'%s\' COLLATE %s) AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.id DESC LIMIT %d,%d';
 	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND (text LIKE \'%s\' COLLATE %s OR comment LIKE \'%s\' COLLATE %s) %s AND quotes.db = \'%s\'';
 
 	/* whether a search has been done with this class; called $read for consistance */

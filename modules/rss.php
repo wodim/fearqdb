@@ -22,7 +22,7 @@ require(classes_dir.'quote.php');
 global $params, $settings;
 
 $quotes = $db->get_results(
-	sprintf('SELECT %s FROM quotes, api WHERE status = \'approved\' AND quotes.db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY date DESC LIMIT %d',
+	sprintf('SELECT %s FROM quotes, api WHERE status = \'approved\' AND quotes.db = \'%s\' AND hidden = 0 AND api.id = quotes.api ORDER BY id DESC LIMIT %d',
 		Quote::READ, $settings->db, $settings->page_size * 5));
 
 if (!$quotes) {

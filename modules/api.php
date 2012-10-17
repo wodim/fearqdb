@@ -47,7 +47,7 @@ function generic_error($error = 'unspecified') {
 function get_last() {
 	global $db, $settings;
 
-	return $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY date DESC',
+	return $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY id DESC',
 		$settings->db));
 }
 
