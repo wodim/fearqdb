@@ -145,12 +145,18 @@ a {
 	border-left: 5px solid #6d8cb7;
 }
 
+.quote.odd .text.hidden,
+.quote.even .text.hidden {
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
 .quote.odd .text.hidden {
-	background-image: bottom right no-repeat url("padlock-odd-nūllus.png");
+	background-image: url("padlock-odd-nūllus.png");
 }
 
 .quote.even .text.hidden {
-	background-image: bottom right no-repeat url("padlock-even-nūllus.png");
+	background-image: url("padlock-even-nūllus.png");
 }
 
 .quote .text.hidden span {
