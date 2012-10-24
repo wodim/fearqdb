@@ -146,11 +146,11 @@ a {
 }
 
 .quote.odd .text.hidden {
-	background: #fafafa bottom right no-repeat url("padlock-odd-nūllus.png");
+	background-image: bottom right no-repeat url("padlock-odd-nūllus.png");
 }
 
 .quote.even .text.hidden {
-	background: #fafafa bottom right no-repeat url("padlock-even-nūllus.png");
+	background-image: bottom right no-repeat url("padlock-even-nūllus.png");
 }
 
 .quote .text.hidden span {
