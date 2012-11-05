@@ -79,13 +79,8 @@ function sha512($string) {
 function format_link($string) {
 	global $settings;
 
-	$string = preg_replace_callback('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]*)/mi', 'format_link_shorten', $string);
+	$string = preg_replace_callback('/(https?:\/\/[a-z0-9\.\-_\?=&,\/;%#:]+)/mi', 'format_link_shorten', $string);
 	$string = preg_replace('/#([a-f0-9]{4})/mi', sprintf('<a href="%s$1">#$1</a>', $settings->base_url), $string);
-	return $string;
-}
-
-function format_whitespace($string) {
-	$string = str_replace('  ', '&nbsp;&nbsp;', $string);
 	return $string;
 }
 
@@ -94,6 +89,11 @@ function format_link_shorten($match) {
 	$text = (strlen($link) > 45) ? sprintf('%s...', substr($link, 0, 45)) : $link;
 	$text = preg_replace('/^https?:\/\//', '', $text);
 	return sprintf('<a href="%s" rel="nofollow" target="_blank">%s</a>', htmlspecialchars($link), htmlspecialchars($text));
+}
+
+function format_whitespace($string) {
+	$string = str_replace('  ', '&nbsp;&nbsp;', $string);
+	return $string;
 }
 
 function highlight($text, $highlight) {

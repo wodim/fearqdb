@@ -82,7 +82,7 @@ function check_key() {
 
 	if (!isset($params[2])) {
 		$session->log('JSON API access with no key');
-		return 0;
+		return null;
 	}
 
 	$result = $db->get_var(
@@ -95,7 +95,7 @@ function check_key() {
 	}
 
 	$session->log(sprintf('WARNING: JSON API access with invalid key: %s', $params[2]));
-	return 0;
+	return null;
 }
 
 function required_post($variables) {
@@ -140,7 +140,7 @@ switch ($params[1]) {
 		$key = check_key();
 		/* $quote->status = ($key != 0) ? 'approved' : 'pending'; */
 		$quote->status = 'pending';
-		$quote->ip = (isset($_POST['ip']) && $key != 0) ? $_POST['ip'] : $session->ip;
+		$quote->ip = (isset($_POST['ip']) && $key !== null) ? $_POST['ip'] : $session->ip;
 		$quote->api = $key;
 		if ($quote->save() === false) {
 			out(array('results' =>
@@ -164,7 +164,7 @@ switch ($params[1]) {
 		$quote = new Quote();
 		$quote->permaid = $_POST['permaid'];
 		$key = check_key();
-		if (!$quote->read() || ($key == 0 && $quote->status != 'approved')) {
+		if (!$quote->read() || ($key === null && $quote->status != 'approved')) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'no_such_quote')));
@@ -203,7 +203,7 @@ switch ($params[1]) {
 		break;
 	case 'delete':
 		required_post(array('permaid'));
-		if (check_key() == 0) {
+		if (check_key() === null) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'access_denied')));
@@ -223,7 +223,7 @@ switch ($params[1]) {
 		break;
 	case 'topic':
 		required_post(array('topic'));
-		if (check_key() == 0) {
+		if (check_key() === null) {
 			out(array('results' =>
 				array('success' => 0,
 					'error' => 'access_denied')));
