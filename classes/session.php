@@ -138,10 +138,7 @@ class Session {
 	function create($password) {
 		global $settings, $db;
 
-		/* maybe we could have another parameter in the GET query so we don't
-			have to SELECT all keys. anyway, we don't expect to have a lot of keys
-			so... */
-
+		$id = null;
 		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1');
 
 		foreach ($results as $result) {
@@ -149,6 +146,9 @@ class Session {
 				$id = $result->id;
 				break;
 			}
+		}
+
+		if (!$id) {
 			return false;
 		}
 
