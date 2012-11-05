@@ -138,24 +138,17 @@ class Session {
 	function create($password) {
 		global $settings, $db;
 
-		$id = null;
 		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1');
 
 		foreach ($results as $result) {
 			if ($password == $this->password($result->key)) {
-				$id = $result->id;
-				break;
+				$this->log(sprintf('Created session using API key %d', $result->id));
+				setcookie($settings->cookie, base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
+				return true;
 			}
 		}
 
-		if (!$id) {
-			return false;
-		}
-
-		$this->log(sprintf('Created session using API key %d', $id));
-
-		setcookie($settings->cookie, base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
-		return true;
+		return false;
 	}
 
 	// we DO NOT ESCAPE
