@@ -65,7 +65,7 @@ $html->do_header();
 $rows = $db->get_var(sprintf('SELECT COUNT(*) FROM quotes %s', $where));
 
 $mod = sprintf('%s%s/', $settings->base_url, $params[0] != '' ? $params[0] : 'page');
-$pager = $html->do_pages($page_number, floor($rows / $settings->page_size), $mod.'%d', 4);
+$pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 
 $quote = new Quote();
 $odd = true;
