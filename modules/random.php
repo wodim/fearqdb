@@ -23,11 +23,11 @@ $quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api WHERE quotes.db =
 		AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
 		Quote::READ, $settings->db, $settings->page_size));
 
-$html->do_header(_('Random quotes'));
-
 if (!$quotes) {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
+
+$html->do_header(_('Random quotes'));
 
 $quote = new Quote();
 $odd = true;
