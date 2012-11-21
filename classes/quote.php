@@ -276,7 +276,6 @@ class Quote {
 				array(':api', $this->api, PDO::PARAM_INT),
 				array(':id', $this->id, PDO::PARAM_INT)
 			));
-			var_dump($result);
 		}
 
 		$settings->recount();
