@@ -86,8 +86,10 @@ function check_key() {
 		return null;
 	}
 
-	$result = $db->get_var('SELECT id FROM api WHERE `key` = :key AND approved = 1 LIMIT 1', array(
-		array(':key', $params[2], PDO::PARAM_STR)
+	$result = $db->get_var('SELECT id FROM api
+		WHERE `key` = :key AND approved = 1 AND (db = :db OR db = \'\') LIMIT 1', array(
+		array(':key', $params[2], PDO::PARAM_STR),
+		array(':db', $settings->db, PDO::PARAM_STR)
 	));
 
 	if ($result) {

@@ -125,7 +125,9 @@ class Session {
 	function create($password) {
 		global $settings, $db;
 
-		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1');
+		$results = $db->get_results('SELECT id, `key` FROM api WHERE approved = 1 AND (db = :db OR db = \'\')', array(
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
 
 		foreach ($results as $result) {
 			if ($password == $this->password($result->key)) {
