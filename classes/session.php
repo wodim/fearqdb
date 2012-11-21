@@ -112,7 +112,7 @@ class Session {
 	function log($text) {
 		global $settings, $db;
 
-		$db->query('INSERT INTO LOGS (ip, time, url, db, text)
+		$db->query('INSERT INTO logs (ip, time, url, db, text)
 			VALUES (:ip, NOW(), :url, :db, :text)', array(
 			array(':ip', $this->ip, PDO::PARAM_STR),
 			/* NOW() */
