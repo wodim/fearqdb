@@ -39,7 +39,8 @@ class DB {
 			$this->dbh = new PDO($dsn, $this->user, $this->pass,
 				array(
 					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-					PDO::ATTR_EMULATE_PREPARES => false
+					PDO::ATTR_EMULATE_PREPARES => false,
+					PDO::ATTR_PERSISTENT => true
 				)
 			);
 		} catch (PDOException $e) {
