@@ -40,10 +40,6 @@ if (!$db->init()) {
 	die('DBE');
 }
 
-/* encoding */
-$db->query('SET NAMES utf8');
-mb_internal_encoding('utf8');
-
 /* read settings, determine virtual host  */
 require(classes_dir.'settings.php');
 $settings = new Settings();
@@ -51,6 +47,10 @@ if (!$settings->init()) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('VHE');
 }
+
+/* encoding */
+$db->query(sprintf('SET NAMES utf8 COLLATE %s', $settings->collate));
+mb_internal_encoding('utf8');
 
 // initialize Haanga
 require(include_dir.'Haanga.php');

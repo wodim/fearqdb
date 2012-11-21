@@ -20,8 +20,10 @@
 require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
-	const SEARCH = 'SELECT %s FROM quotes, api WHERE quotes.status = \'approved\' AND (quotes.text LIKE \'%s\' COLLATE %s OR quotes.comment LIKE \'%s\' COLLATE %s) AND quotes.db = \'%s\' AND api.id = quotes.api %s ORDER BY quotes.id DESC LIMIT %d,%d';
-	const COUNT = 'SELECT SQL_CACHE COUNT(*) FROM quotes WHERE quotes.status = \'approved\' AND (text LIKE \'%s\' COLLATE %s OR comment LIKE \'%s\' COLLATE %s) %s AND quotes.db = \'%s\'';
+	const SEARCH = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db AND quotes.hidden = 0 ORDER BY id DESC';
+	const SEARCH_HIDDEN = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db ORDER BY id DESC';
+	const COUNT = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db AND quotes.hidden = 0';
+	const COUNT_HIDDEN = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db';
 
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
@@ -44,42 +46,44 @@ class Search {
 			it later and we don't want to send garbage back */
 		$criteria = $this->clean_criteria($this->criteria);
 
-		$where = (!$this->show_hidden) ? 'AND quotes.hidden = 0' : '';
+		$query = $this->show_hidden ?
+			sprintf(Search::SEARCH_HIDDEN, Quote::READ) :
+			sprintf(Search::SEARCH, Quote::READ);
+		$query_count = $this->show_hidden ? Search::COUNT_HIDDEN : Search::COUNT;
 
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;
 			2) we want to know whether $page is out of bounds */
-		$this->count = $db->get_var(sprintf(Search::COUNT,
-			$criteria, $settings->collate, $criteria, $settings->collate, $where, $settings->db));
+		$this->count = $db->get_var($query_count, array(
+			array(':text', $criteria, PDO::PARAM_STR),
+			array(':comment', $criteria, PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
 
 		if (!$this->count) {
 			return false;
 		}
 
-		--$this->page;
+		$this->page--;
 
 		/* out of bounds */
 		if ($this->count < ($this->page * $this->page_size)) {
 			return false;
 		}
 
-		$this->results = $db->get_results(sprintf(Search::SEARCH,
-			Quote::READ,
-			$criteria,
-			$settings->collate,
-			$criteria,
-			$settings->collate,
-			$settings->db,
-			$where,
-			($this->page * $this->page_size),
-			$this->page_size));
+		/* unfortunately this becomes tricky */
+		$query = sprintf('%s LIMIT %d, %d', $query, ($this->page * $this->page_size), $this->page_size);
+		$this->results = $db->get_results($query, array(
+			array(':text', $criteria, PDO::PARAM_STR),
+			array(':comment', $criteria, PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
 
 		$this->read = true;
 		return true;
 	}
 
 	function clean_criteria($criteria) {
-		$criteria = escape($criteria);
 		$criteria = preg_replace('/^\*|\*$/', '', $criteria);
 		$criteria = preg_replace('/^\?|\?$/', '', $criteria);
 		$criteria = str_replace('%', '\%', $criteria);
