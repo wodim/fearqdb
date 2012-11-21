@@ -84,7 +84,7 @@ class Settings {
 	function recount() {
 		global $db;
 
-		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND db = :db', array(
+		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND hidden = 0 AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 		$hidden_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND hidden = 1 AND db = :db', array(
