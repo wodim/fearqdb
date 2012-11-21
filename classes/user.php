@@ -18,8 +18,8 @@
 */
 
 class User {
-	const READ_NICK = 'SELECT id, nick, password, salt, db FROM users WHERE nick = \'%s\' AND db = \'%s\'';
-	const READ_ID = 'SELECT id, nick, password, salt, db FROM users WHERE id = \'%s\' AND db = \'%s\'';
+	const READ_ID = 'SELECT id, nick, password, salt, db FROM users WHERE id = :id AND db = :db';
+	const READ_NICK = 'SELECT id, nick, password, salt, db FROM users WHERE nick = :nick AND db = :db';
 	var $id = 0;
 	var $nick = '';
 	var $password = '';
@@ -31,12 +31,17 @@ class User {
 	function read() {
 		global $db, $settings;
 
-		/* prefer id over nick */
-		$query = $this->id ?
-			sprintf(User::READ_ID, (int)$this->id, $settings->db) :
-			sprintf(User::READ_NICK, clean($this->nick, MAX_USER_LENGTH, true), $settings->db);
-
-		$results = $db->get_row($query);
+		if ($this->id) {
+			$results = $db->get_row(User::READ_ID, array(
+				array(':id', $this->id, PDO::PARAM_INT),
+				array(':db', $settings->db, PDO::PARAM_STR)
+			));
+		} elseif ($this->nick) {
+			$results = $db->get_row(User::READ_NICK, array(
+				array(':nick', $this->nick, PDO::PARAM_STR),
+				array(':db', $settings->db, PDO::PARAM_STR)
+			));
+		}
 
 		if ($results) {
 			foreach (get_object_vars($results) as $variable => $value) {
