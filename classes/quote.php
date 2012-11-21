@@ -18,9 +18,9 @@
 */
 
 class Quote {
-	const READ = 'quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name';
-	const READ_BY_ID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name FROM quotes, api WHERE quotes.id = %d AND quotes.db = \'%s\' AND api.id = quotes.api';
-	const READ_BY_PERMAID = 'SELECT quotes.id, quotes.permaid, quotes.nick, quotes.date, quotes.ip, quotes.text, quotes.comment, quotes.status, quotes.hidden, UNIX_TIMESTAMP(quotes.date) AS ts, quotes.db, quotes.api, api.name AS name FROM quotes, api WHERE permaid = \'%s\' AND quotes.db = \'%s\' AND api.id = quotes.api';
+	const READ = 'id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api';
+	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE quotes.id = :id AND quotes.db = :db';
+	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = :permaid AND quotes.db = :db';
 
 	var $read = false;
 	var $id = 0;
@@ -59,10 +59,17 @@ class Quote {
 				$session->log('Using read() with no id or permaid and with no prebaked results');
 				return false;
 			}
-			$query = $this->id ?
-				sprintf(Quote::READ_BY_ID, (int)$this->id, $settings->db) :
-				sprintf(Quote::READ_BY_PERMAID, clean($this->permaid, PERMAID_LENGTH, true), $settings->db);
-			$results = $db->get_row($query);
+			if ($this->id) {
+				$results = $db->get_row(Quote::READ_BY_ID, array(
+					array(':id', $this->id, PDO::PARAM_INT),
+					array(':db', $settings->db, PDO::PARAM_STR)
+				));
+			} else {
+				$results = $db->get_row(Quote::READ_BY_PERMAID, array(
+					array(':permaid', $this->id, PDO::PARAM_STR),
+					array(':db', $settings->db, PDO::PARAM_STR)
+				));
+			}
 		}
 
 		/* still no results? return */

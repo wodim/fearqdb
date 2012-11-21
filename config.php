@@ -17,7 +17,10 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$config['db']['user'] = 'qdb';
-$config['db']['pass'] = 'qdb';
-$config['db']['name'] = 'qdb';
-$config['db']['host'] = 'localhost';
+$config['db']['user'] = null;
+$config['db']['pass'] = null;
+$config['db']['name'] = null;
+
+/* 'file' takes precedence over 'host' */
+$config['db']['file'] = null;
+$config['db']['host'] = null;

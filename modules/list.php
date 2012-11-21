@@ -22,48 +22,40 @@ require(classes_dir.'quote.php');
 global $params, $settings;
 
 if (isset($params[1]) && is_numeric($params[1]) && $params[1] > 0) {
-	$page_number = (int)$params[1];
+	$page_number = $params[1];
 } else {
 	$page_number = 1;
 }
 
 $subpage = '';
 
-switch ($params[0]) {
-	case 'pending':
-		$subpage = ($session->level == 'admin') ? 'AND quotes.status = \'pending\'' : 'AND 1 = 0';
-		break;
-	case 'hidden':
-		$subpage = 'AND quotes.hidden = 1';
-		break;
-	case 'deleted':
-		$subpage = ($session->level == 'admin') ? 'AND quotes.status = \'deleted\'' : 'AND 1 = 0';
-		break;
-	default:
-		$subpage = ($session->level == 'admin' || $session->level == 'reader') ?
-			'AND (quotes.status = \'approved\' OR quotes.status = \'pending\')' :
-			'AND quotes.status = \'approved\'';
+if ($session->level == 'reader' || $session->level == 'admin') {
+	$query = sprintf(
+		'SELECT %s FROM quotes WHERE (quotes.status = \'approved\' OR quotes.status = \'pending\')
+			AND db = :db ORDER BY id DESC LIMIT 0,10', Quote::READ
+	);
+} else {
+	$query = sprintf(
+		'SELECT %s FROM quotes WHERE quotes.status = \'approved\'
+			AND db = :db ORDER BY id DESC LIMIT 0,10', Quote::READ
+	);
 }
 
-$where = sprintf('WHERE quotes.db = \'%s\' %s', $settings->db, $subpage);
-$where_api = sprintf('%s AND api.id = quotes.api', $where);
+$quotes = $db->get_results($query, array(
+	array(':db', $settings->db, PDO::PARAM_STR)
+));
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api %s ORDER BY id DESC LIMIT %d,%d',
-	Quote::READ, $where_api, (--$page_number * $settings->page_size), $settings->page_size));
 
 if (!$quotes) { // there are no quotes. but... there are no quotes in this page or no quotes at all?
-	if ($page_number != 1) {
-		$html->do_sysmsg(_('Page not found'), null, 404);
-	} else {
-		redir();
-	}
+	echo 'No quotes';
 }
 
 ++$page_number;
 
 $html->do_header();
+/*
 $rows = $db->get_var(sprintf('SELECT COUNT(*) FROM quotes %s', $where));
-
+*/
 $mod = sprintf('%s%s/', $settings->base_url, $params[0] != '' ? $params[0] : 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 

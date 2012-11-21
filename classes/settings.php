@@ -23,7 +23,7 @@ class Settings {
 		url, base_url, full_url, statics_url, snowstorm, db, irc, name, nname, cookie,
 		privacy_level, privacy_level_for_bots, page_size, robots,
 		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css
-		FROM sites WHERE url = \'%s%s\'';
+		FROM sites WHERE url = :url';
 	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
 	var $url = '';
@@ -60,10 +60,13 @@ class Settings {
 	function init() {
 		global $db;
 
-		$results = $db->get_row(
-			sprintf(Settings::READ,
-				clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH, true),
-				clean(preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']), MAX_DOMAIN_LENGTH, true)));
+		$url = sprintf('%s%s',
+			clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH),
+			clean(preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']), MAX_DOMAIN_LENGTH)
+		);
+		$results = $db->get_row(Settings::READ, array(
+			array(':url', $url, PDO::PARAM_STR)
+		));
 		if (!$results) {
 			return $this->read;
 		}

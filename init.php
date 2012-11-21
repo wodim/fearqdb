@@ -26,28 +26,24 @@ define('classes_dir', 'classes/');
 require(include_dir.'utils.php');
 require(include_dir.'defines.php');
 
-require(include_dir.'ezsql/shared/ez_sql_core.php');
-require(include_dir.'ezsql/mysql/ez_sql_mysql.php');
-
-$db = new ezSQL_mysql();
-
-if (!@$db->quick_connect($config['db']['user'], $config['db']['pass'],
-	$config['db']['name'], $config['db']['host'])) {
-	// ?
+/* initialise db */
+require(classes_dir.'db.php');
+$db = new DB();
+$db->user = $config['db']['user'];
+$db->pass = $config['db']['pass'];
+$db->name = $config['db']['name'];
+$db->file = $config['db']['file'];
+$db->host = $config['db']['host'];
+if (!$db->init()) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('DBE');
 }
 
-$db->query('SET NAMES `utf8`');
+/* encoding */
+$db->query('SET NAMES utf8');
 mb_internal_encoding('utf8');
 
-/* !!FIXME include a fallback $session->log() system? we may want to store
-	warnings to review them later, this is WRONG
-	the database is already initialised at this moment but html is not because
-	it needs some values stored in the sites table to work, such as the
-	statics path and it's not a good idea to hardcode it.
-	!!TODO the only fired warning inside this is, at this moment, 'HTTP_HOST not
-	in range', we are not validating anything but it's not needed */
+/* read settings, determine virtual host  */
 require(classes_dir.'settings.php');
 $settings = new Settings();
 if (!$settings->init()) {
@@ -96,6 +92,7 @@ if (!is_bot() && ($settings->privacy_level == 2
 	die();
 }
 
+/* make privacy_level_for_bots effective */
 if (is_bot()
 	&& $settings->privacy_level_for_bots == 2
 	&& !preg_match(sprintf('/^%s(rss|robots\.txt)/', preg_quote($settings->base_url, '/')), $_SERVER['REQUEST_URI'])) {

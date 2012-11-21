@@ -32,7 +32,8 @@ function redir($location = null) {
 }
 
 function escape($string) {
-	return mysql_real_escape_string($string);
+	echo '// ALERT: escape '.$string;
+	return ($string);
 }
 
 function clean($string, $maxlen = 0, $escape = false) {
@@ -127,4 +128,12 @@ function translit_fix($text) {
 		array('«', '»', '€'),
 		array('<', '>', 'e'),
 		$text);
+}
+
+function array_to_class($input) {
+	if (is_array($input)) {
+		return (object)array_map(__FUNCTION__, $input);
+	} else {
+		return $input;
+	}
 }
