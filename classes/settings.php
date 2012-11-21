@@ -72,7 +72,7 @@ class Settings {
 		}
 
 		foreach (get_object_vars($results) as $variable => $value) {
-			$this->$variable = $value;
+			$this->$variable = is_numeric($value) ? (int)$value : $value;
 		}
 
 		/* does the user have mod_rewrite? */
