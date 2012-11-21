@@ -22,7 +22,8 @@ class Settings {
 		ip_show, analytics_enabled, analytics_code,
 		url, base_url, full_url, statics_url, snowstorm, db, irc, name, nname, cookie,
 		privacy_level, privacy_level_for_bots, page_size, robots,
-		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css
+		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css,
+		approved_quotes, hidden_quotes
 		FROM sites WHERE url = :url';
 	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
@@ -53,6 +54,8 @@ class Settings {
 	var $push_url = '';
 	var $push_params = '';
 	var $extra_css = null;
+	var $approved_quotes = 0;
+	var $hidden_quotes = 0;
 
 	var $no_rewrite = false;
 	var $read = false;
@@ -69,12 +72,34 @@ class Settings {
 		}
 
 		foreach (get_object_vars($results) as $variable => $value) {
-			$this->$variable = is_numeric($value) ? (int)$value : $value;
+			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
 
 		/* does the user have mod_rewrite? */
 		$this->no_rewrite = preg_match('/\?m=$/', $this->base_url);
 		$this->read = true;
 		return true;
+	}
+
+	function recount($approved, $hidden) {
+		$first = $second = '';
+
+		if ($approved === 1 || $approved === true) {
+			$first = '+ 1';
+		} elseif ($approved === -1 || $approved === 0 || $approved === false) {
+			$first = '- 1';
+		}
+		if ($hidden === 1 || $hidden === true) {
+			$second = '+ 1';
+		} elseif ($hidden === -1 || $hidden === 0 || $hidden === false) {
+			$second = '- 1';
+		}
+
+		$query = sprintf('UPDATE sites
+			SET approved_quotes = approved_quotes %s, hidden_quotes = hidden_quotes %s
+			WHERE db = :db');
+		$db->get_row($query, array(
+			array(':db', $url, PDO::PARAM_STR)
+		));
 	}
 }

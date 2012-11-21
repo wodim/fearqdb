@@ -132,13 +132,15 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- push_enabled: push notifications enabled. requires curl
 -- push_url: push url
 -- extra_css: css code that will be included inline, inside <head>
+-- approved_quotes: approved quotes, used to avoid count(1) on each page
+-- hidden_quotes: hidden AND approved quotes, used to avoid count(1) on each page for admins
 
 CREATE TABLE IF NOT EXISTS `sites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(64) NOT NULL,
   `base_url` varchar(64) NOT NULL,
   `full_url` varchar(64) NOT NULL,
   `statics_url` varchar(64) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_key` varchar(32) NOT NULL,
   `lang` varchar(5) NOT NULL,
   `locale` varchar(16) NOT NULL,
@@ -162,6 +164,8 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `push_url` varchar(64) NOT NULL,
   `push_params` varchar(128) NOT NULL,
   `extra_css` varchar(1024) NOT NULL,
+  `approved_quotes` int(11) NOT NULL,
+  `hidden_quotes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

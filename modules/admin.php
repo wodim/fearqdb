@@ -37,12 +37,14 @@ function all_quotes() {
 	return $return;
 }
 
+header('HTTP/1.1 403 Forbidden');
+header('Content-Type: text/plain');
+die('Access denied');
+
 switch ($params[1]) {
 	/* example modules. */
 	case 'utf8fix':
 		/* fix double utf-8'd quotes */
-		header('Content-Type: text/plain');
-		die('Double UTF-8 already fixed');
 		foreach (all_quotes() as $i) {
 			$quote = new Quote();
 			$quote->id = $i;
@@ -60,8 +62,6 @@ switch ($params[1]) {
 		break;
 	case 'bot':
 		/* delete (bot) and assign an api key */
-		header('Content-Type: text/plain');
-		die('API keys already assigned');
 		foreach (all_quotes() as $i) {
 			printf("Assigning API key (or not) to %d...\n", $i);
 			$quote = new Quote();
@@ -85,8 +85,6 @@ switch ($params[1]) {
 	case 'assign':
 		/* assign permaids to all quotes.
 			useful if you had no permaids... */
-		header('Content-Type: text/plain');
-		die('Permaids already assigned');
 		foreach (all_quotes() as $i) {
 			printf("Creating permaid for %d...\n", $i);
 			$quote = new Quote();
@@ -107,8 +105,6 @@ switch ($params[1]) {
 	case 'massimport':
 		/* import all quotes from a text file.
 			one line per quote. */
-		header('Content-Type: text/plain');
-		die('Importing done');
 		$lines = file('quotes.txt');
 		foreach ($lines as $line) {
 			$db->query('INSERT INTO quotes (permaid, ip, nick, date, text, db, status)
@@ -123,5 +119,60 @@ switch ($params[1]) {
 			));
 			printf("Inserted line.\n");
 		}
+		break;
+	case 'recount':
+		/* recount all quotes,
+			for approved_quotes hidden_quotes */
+		$approved_quotes = $hidden_quotes = 0;
+		foreach (all_quotes() as $i) {
+			printf("Counting %d...\n", $i);
+			$quote = new Quote();
+			$quote->id = $i;
+			if ($quote->read()) {
+				if ($quote->status == 'approved') {
+					$approved_quotes++;
+				}
+				if ($quote->hidden) {
+					$hidden_quotes++;
+				}
+			} else {
+				printf("Unreadable %d\n", $i);
+			}
+			unset($quote);
+		}
+		printf("%d approved quotes, %d hidden and approved quotes\n", $approved_quotes, $hidden_quotes);
+		$db->query('UPDATE sites
+			SET approved_quotes = :approved_quotes, hidden_quotes = :hidden_quotes WHERE db = :db', array(
+			array(':approved_quotes', $approved_quotes, PDO::PARAM_INT),
+			array(':hidden_quotes', $hidden_quotes, PDO::PARAM_INT),
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
+		printf("End\n");
+		break;
+	case 'sort':
+		/* sort all quotes by date, REGARDLESS OF db.
+		this will fuck all ids.
+		it copies them to another table.
+		CREATE TABLE quotes2 LIKE quotes
+		it does not use Quote::new() to make it possible to force a permaid
+		pray */
+		$quotes = $db->get_results('SELECT * FROM quotes ORDER BY date');
+		foreach ($quotes as $quote) {
+			$db->query('INSERT INTO quotes2 (permaid, nick, date, ip, text, comment, db, status, hidden, api)
+				VALUES (:permaid, :nick, :date, :ip, :text, :comment, :db, :status, :hidden, :api)', array(
+				array(':permaid', $quote->permaid, PDO::PARAM_STR),
+				array(':nick', $quote->nick, PDO::PARAM_STR),
+				array(':date', $quote->date, PDO::PARAM_STR),
+				array(':ip', $quote->ip, PDO::PARAM_STR),
+				array(':text', $quote->text, PDO::PARAM_STR),
+				array(':comment', $quote->comment, PDO::PARAM_STR),
+				array(':db', $quote->db, PDO::PARAM_STR),
+				array(':status', $quote->status, PDO::PARAM_STR),
+				array(':hidden', $quote->hidden, PDO::PARAM_INT),
+				array(':api', $quote->api, PDO::PARAM_INT)
+			));
+			printf("Inserted %s\n", $quote->permaid);
+		}
+		printf("End after %d queries\n", $db->num_queries);
 		break;
 }

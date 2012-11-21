@@ -21,23 +21,27 @@ require(classes_dir.'quote.php');
 
 global $params, $settings;
 
-if (isset($params[1]) && is_numeric($params[1]) && $params[1] > 0) {
+if (isset($params[1]) && ctype_digit($params[1]) && $params[1] > 0) {
 	$page_number = $params[1];
-} else {
+} elseif (!isset($params[1])) {
 	$page_number = 1;
+} else {
+	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
-$subpage = '';
+if (isset($params[1]) && $page_number == 1) {
+	redir();
+}
 
 if ($session->level == 'reader' || $session->level == 'admin') {
 	$query = sprintf(
 		'SELECT %s FROM quotes WHERE (quotes.status = \'approved\' OR quotes.status = \'pending\')
-			AND db = :db ORDER BY id DESC LIMIT 0,10', Quote::READ
+			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
 	);
 } else {
 	$query = sprintf(
 		'SELECT %s FROM quotes WHERE quotes.status = \'approved\'
-			AND db = :db ORDER BY id DESC LIMIT 0,10', Quote::READ
+			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1)* $settings->page_size), $settings->page_size
 	);
 }
 
@@ -45,18 +49,14 @@ $quotes = $db->get_results($query, array(
 	array(':db', $settings->db, PDO::PARAM_STR)
 ));
 
-
-if (!$quotes) { // there are no quotes. but... there are no quotes in this page or no quotes at all?
-	echo 'No quotes';
+if (!$quotes) {
+	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
-++$page_number;
-
 $html->do_header();
-/*
-$rows = $db->get_var(sprintf('SELECT COUNT(*) FROM quotes %s', $where));
-*/
-$mod = sprintf('%s%s/', $settings->base_url, $params[0] != '' ? $params[0] : 'page');
+
+$rows = ($session->level == 'anonymous') ? $settings->approved_quotes : $settings->hidden_quotes;
+$mod = sprintf('%s%s/', $settings->base_url, 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 
 $quote = new Quote();

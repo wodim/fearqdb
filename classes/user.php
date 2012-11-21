@@ -45,7 +45,7 @@ class User {
 
 		if ($results) {
 			foreach (get_object_vars($results) as $variable => $value) {
-				$this->$variable = is_numeric($value) ? (int)$value : $value;
+				$this->$variable = ctype_digit($value) ? (int)$value : $value;
 			}
 			$this->read = true;
 			return $this->read;

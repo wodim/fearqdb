@@ -76,8 +76,8 @@ class DB {
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
-		$results = array_to_class($stmt->fetchAll(PDO::FETCH_ASSOC));
-		return $results;
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $results ? array_to_class($results) : null;
 	}
 
 	function get_var($query, $binds = null) {

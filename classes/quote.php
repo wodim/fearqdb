@@ -78,7 +78,7 @@ class Quote {
 		}
 
 		foreach (get_object_vars($results) as $variable => $value) {
-			$this->$variable = is_numeric($value) ? (int)$value : $value;
+			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
 
 		if (preg_match('/^(.*)!/', $this->nick, $matches)) {
@@ -259,6 +259,7 @@ class Quote {
 			$this->permaid = $permaid;
 			$this->generate();
 			if ($this->status == 'approved') {
+				$settings->approve(1, $this->hidden);
 				$push->hit(sprintf(_('New quote: %s - %s'), $this->permalink, $this->excerpt));
 			} else {
 				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $this->nick));
@@ -276,6 +277,7 @@ class Quote {
 				array(':api', $this->api, PDO::PARAM_INT),
 				array(':id', $this->id, PDO::PARAM_INT)
 			));
+			$settings->approve(($this->status == 'approved'), $this->hidden);
 		}
 
 		return (bool)$result;
