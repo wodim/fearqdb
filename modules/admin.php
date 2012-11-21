@@ -111,10 +111,16 @@ switch ($params[1]) {
 		die('Importing done');
 		$lines = file('quotes.txt');
 		foreach ($lines as $line) {
-			$db->query(sprintf('INSERT INTO quotes (permaid, ip, nick, date, text, db, status)
-				VALUES (\'%s\', \'kobaz\', \'Import\', NOW(), \'%s\', \'default\', \'approved\')',
-				sprintf('%04x', rand(0, 65535)),
-				escape($line)));
+			$db->query('INSERT INTO quotes (permaid, ip, nick, date, text, db, status)
+				VALUES (:permaid, :ip, :nick, NOW(), :text, :db, :status)', array(
+				array(':permaid', sprintf('%04x', rand(0, 65535)), PDO::PARAM_STR),
+				array(':ip', 'kobaz', PDO::PARAM_STR),
+				array(':nick', 'Imported', PDO::PARAM_STR),
+				/* NOW() */
+				array(':text', $line, PDO::PARAM_STR),
+				array(':db', 'default', PDO::PARAM_STR),
+				array(':status', 'approved', PDO::PARAM_STR)
+			));
 			printf("Inserted line.\n");
 		}
 		break;
