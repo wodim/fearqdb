@@ -82,8 +82,9 @@ class Settings {
 	}
 
 	function recount($approved, $hidden) {
-		$first = $second = '';
+		global $db;
 
+		$first = $second = '';
 		if ($approved === 1 || $approved === true) {
 			$first = '+ 1';
 		} elseif ($approved === -1 || $approved === 0 || $approved === false) {
@@ -97,7 +98,7 @@ class Settings {
 
 		$query = sprintf('UPDATE sites
 			SET approved_quotes = approved_quotes %s, hidden_quotes = hidden_quotes %s
-			WHERE db = :db');
+			WHERE db = :db', $first, $second);
 		$db->get_row($query, array(
 			array(':db', $url, PDO::PARAM_STR)
 		));
