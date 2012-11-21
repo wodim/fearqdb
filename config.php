@@ -27,3 +27,7 @@ $config['db']['host'] = null;
 
 /* show all queries */
 $config['db']['debug'] = false;
+
+/* use a persistent connection. could not work,
+	but it is preferable. */
+$config['db']['persistent'] = false;
