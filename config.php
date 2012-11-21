@@ -24,3 +24,6 @@ $config['db']['name'] = null;
 /* 'file' takes precedence over 'host' */
 $config['db']['file'] = null;
 $config['db']['host'] = null;
+
+/* show all queries */
+$config['db']['debug'] = false;

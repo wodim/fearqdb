@@ -34,6 +34,7 @@ $db->pass = $config['db']['pass'];
 $db->name = $config['db']['name'];
 $db->file = $config['db']['file'];
 $db->host = $config['db']['host'];
+$db->debug = $config['db']['debug'];
 if (!$db->init()) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('DBE');

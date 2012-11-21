@@ -37,8 +37,15 @@ class DB {
 
 		try {
 			$this->dbh = new PDO($dsn, $this->user, $this->pass,
-				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+				array(
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+					PDO::ATTR_EMULATE_PREPARES => false
+				)
+			);
 		} catch (PDOException $e) {
+			if ($this->debug) {
+				$this->failure($e->getMessage());
+			}
 			return false;
 		}
 
@@ -47,6 +54,7 @@ class DB {
 
 	function query($query, $binds = null) {
 		$stmt = $this->dbh->prepare($query);
+		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
 		return $stmt->rowCount();
@@ -54,6 +62,7 @@ class DB {
 
 	function get_row($query, $binds = null) {
 		$stmt = $this->dbh->prepare($query);
+		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -62,6 +71,7 @@ class DB {
 
 	function get_results($query, $binds = null) {
 		$stmt = $this->dbh->prepare($query);
+		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
 		$results = array_to_class($stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -70,6 +80,7 @@ class DB {
 
 	function get_var($query, $binds = null) {
 		$stmt = $this->dbh->prepare($query);
+		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
 		$results = $stmt->fetch(PDO::FETCH_NUM);
@@ -87,13 +98,24 @@ class DB {
 		try {
 			$stmt->execute();
 		} catch (PDOException $e) {
-			$this->failure();
+			$this->failure($e->getMessage());
+			die;
 		}
 
 		$this->num_queries++;
 	}
 
-	function failure() {
-		die('Oops!');
+	function debug($message) {
+		if ($this->debug) {
+			debug($message);
+		}
+	}
+
+	function failure($message) {
+		if ($this->debug) {
+			debug(sprintf('error(%s)', $message));
+		} else {
+			echo 'An error has occurred.';
+		}
 	}
 }
