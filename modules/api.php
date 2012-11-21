@@ -231,7 +231,7 @@ switch ($params[1]) {
 		}
 		$return = $db->query('UPDATE sites SET topic_text = :topic_text, topic_nick = :topic_nick WHERE db = :db', array(
 			array(':topic_text', $_POST['topic'], PDO::PARAM_STR),
-			array(':topic_nick', isset($_POST['nick']) ? $_POST['nick'] : null, PDO::PARAM_STR),
+			array(':topic_nick', isset($_POST['nick']) ? $_POST['nick'] : '', PDO::PARAM_STR),
 			array(':db', $settings->db, PDO::PARAM_STR)
 		));
 		out(array('results' =>

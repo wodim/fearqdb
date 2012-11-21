@@ -95,14 +95,14 @@ class Session {
 			VALUES (:ip, :url, :redir, :module, :search, :db, :level, :user, :referer, :user_agent, NOW())', array(
 			array(':ip', $this->ip, PDO::PARAM_STR),
 			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
-			array(':redir', $is_redir ? $location : null, PDO::PARAM_STR),
+			array(':redir', $is_redir ? $location : '', PDO::PARAM_STR),
 			array(':search', $this->search, PDO::PARAM_STR),
 			array(':module', $module, PDO::PARAM_STR),
 			array(':db', $settings->db, PDO::PARAM_STR),
 			array(':level', $this->level, PDO::PARAM_STR),
 			array(':user', $this->user, PDO::PARAM_INT),
-			array(':referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null, PDO::PARAM_STR),
-			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null, PDO::PARAM_STR)
+			array(':referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '', PDO::PARAM_STR),
+			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', PDO::PARAM_STR)
 			/* NOW() */
 		));
 
