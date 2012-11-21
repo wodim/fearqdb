@@ -41,7 +41,7 @@ if ($session->level == 'reader' || $session->level == 'admin') {
 } else {
 	$query = sprintf(
 		'SELECT %s FROM quotes WHERE quotes.status = \'approved\'
-			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1)* $settings->page_size), $settings->page_size
+			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
 	);
 }
 
@@ -55,7 +55,7 @@ if (!$quotes) {
 
 $html->do_header();
 
-$rows = ($session->level == 'anonymous') ? $settings->approved_quotes : $settings->hidden_quotes;
+$rows = ($session->level == 'anonymous') ? $settings->approved_quotes : $settings->approved_quotes + $settings->hidden_quotes;
 $mod = sprintf('%s%s/', $settings->base_url, 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 
