@@ -20,7 +20,7 @@
 class Quote {
 	const READ = 'id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api';
 	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE id = :id AND db = :db';
-	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = :permaid AND db = :db';
+	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE permaid = :permaid AND db = :db';
 
 	var $read = false;
 	var $id = 0;
@@ -34,7 +34,7 @@ class Quote {
 	var $hidden = 0;
 	var $ts = 0;
 	var $db = '';
-	var $key = 0;
+	var $api = 0;
 
 	// made out by the script (not stoerd in the db)
 	var $new = false;
@@ -259,7 +259,7 @@ class Quote {
 			$this->permaid = $permaid;
 			$this->generate();
 			if ($this->status == 'approved') {
-				$settings->approve(1, $this->hidden);
+				$settings->recount(1, $this->hidden);
 				$push->hit(sprintf(_('New quote: %s - %s'), $this->permalink, $this->excerpt));
 			} else {
 				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $this->nick));
@@ -277,7 +277,7 @@ class Quote {
 				array(':api', $this->api, PDO::PARAM_INT),
 				array(':id', $this->id, PDO::PARAM_INT)
 			));
-			$settings->approve(($this->status == 'approved'), $this->hidden);
+			$settings->recount(($this->status == 'approved'), $this->hidden);
 		}
 
 		return (bool)$result;
