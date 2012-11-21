@@ -97,7 +97,7 @@ class Session {
 			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
 			array(':redir', $is_redir ? $location : '', PDO::PARAM_STR),
 			array(':search', $this->search, PDO::PARAM_STR),
-			array(':module', $module, PDO::PARAM_STR),
+			array(':module', $module ? $module : '', PDO::PARAM_STR),
 			array(':db', $settings->db, PDO::PARAM_STR),
 			array(':level', $this->level, PDO::PARAM_STR),
 			array(':user', $this->user, PDO::PARAM_INT),
