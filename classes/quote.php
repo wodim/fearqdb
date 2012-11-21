@@ -19,8 +19,8 @@
 
 class Quote {
 	const READ = 'id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api';
-	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE quotes.id = :id AND quotes.db = :db';
-	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = :permaid AND quotes.db = :db';
+	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE id = :id AND db = :db';
+	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db FROM quotes WHERE permaid = :permaid AND db = :db';
 
 	var $read = false;
 	var $id = 0;
@@ -64,9 +64,9 @@ class Quote {
 					array(':id', $this->id, PDO::PARAM_INT),
 					array(':db', $settings->db, PDO::PARAM_STR)
 				));
-			} else {
+			} elseif ($this->permaid) {
 				$results = $db->get_row(Quote::READ_BY_PERMAID, array(
-					array(':permaid', $this->id, PDO::PARAM_STR),
+					array(':permaid', $this->permaid, PDO::PARAM_STR),
 					array(':db', $settings->db, PDO::PARAM_STR)
 				));
 			}
