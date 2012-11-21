@@ -91,48 +91,35 @@ class Session {
 
 		global $settings, $module, $db;
 
-		$ip = $this->ip;
-		$url = clean($_SERVER['REQUEST_URI'], 256, true);
-		$redir = $is_redir ? clean($location, 256, true) : '';
-		$search = clean($this->search, 256, true);
-		/* $module = $module; */
-		$db_table = $settings->db;
-		$level = $this->level;
-		$user = $this->user;
-		$referer = isset($_SERVER['HTTP_REFERER']) ? clean($_SERVER['HTTP_REFERER'], 256, true) : '';
-		$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? clean($_SERVER['HTTP_USER_AGENT'], 256, true) : '';
-		/* $time = NOW(); */
+		$db->query('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, time)
+			VALUES (:ip, :url, :redir, :module, :search, :db, :level, :user, :referer, :user_agent, NOW())', array(
+			array(':ip', $this->ip, PDO::PARAM_STR),
+			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
+			array(':redir', $is_redir ? $location : null, PDO::PARAM_STR),
+			array(':search', $this->search, PDO::PARAM_STR),
+			array(':module', $module, PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR),
+			array(':level', $this->level, PDO::PARAM_STR),
+			array(':user', $this->user, PDO::PARAM_INT),
+			array(':referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null, PDO::PARAM_STR),
+			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null, PDO::PARAM_STR)
+			/* NOW() */
+		));
 
-		$db->query(sprintf('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, time)
-			VALUES(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%s\', NOW())',
-			$ip,
-			$url,
-			$redir,
-			$module,
-			$search,
-			$db_table,
-			$level,
-			$user,
-			$referer,
-			$user_agent));
 		$this->hit = true;
 	}
 
 	function log($text) {
 		global $settings, $db;
 
-		$ip = $this->ip;
-		$url = clean($_SERVER['REQUEST_URI'], 256, true);
-		$db_table = $settings->db;
-		$text = clean($text, 256, true);
-
-		$db->query(sprintf('INSERT INTO logs (ip, time, url, db, text)
-			VALUES(\'%s\', NOW(), \'%s\', \'%s\', \'%s\')',
-			$ip,
+		$db->query('INSERT INTO LOGS (ip, time, url, db, text)
+			VALUES (:ip, NOW(), :url, :db, :text)', array(
+			array(':ip', $this->ip, PDO::PARAM_STR),
 			/* NOW() */
-			$url,
-			$db_table,
-			$text));
+			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR),
+			array(':text', $text, PDO::PARAM_STR)
+		));
 	}
 
 	function create($password) {
