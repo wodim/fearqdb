@@ -53,7 +53,7 @@ class Session {
 
 		if (count($tmp) < 2) {
 			// garbage; destroy
-			$this->log(clean(sprintf('Garbage cookie: %s', $_COOKIE[$settings->cookie]), 256, true));
+			$this->log(sprintf('Garbage cookie: %s', $_COOKIE[$settings->cookie]));
 			$this->destroy();
 			return false;
 		}
@@ -64,7 +64,7 @@ class Session {
 				/* return already */
 				return true;
 			}
-			$this->log(clean(sprintf('Invalid cookie: %s', $_COOKIE[$settings->cookie]), 256, true));
+			$this->log(sprintf('Invalid cookie: %s', $_COOKIE[$settings->cookie]), 256, true);
 			$this->destroy();
 			return false;
 		} else {

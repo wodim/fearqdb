@@ -31,21 +31,6 @@ function redir($location = null) {
 	die();
 }
 
-function escape($string) {
-	debug(sprintf('escape("%s")', $string));
-	return ($string);
-}
-
-function clean($string, $maxlen = 0, $escape = false) {
-	$string = $maxlen ? substr(trim($string), 0, $maxlen) : trim($string);
-
-	if ($escape) {
-		$string = escape($string);
-	}
-
-	return $string;
-}
-
 function is_bot() {
 	return isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|slurp/i', $_SERVER['HTTP_USER_AGENT']);
 }

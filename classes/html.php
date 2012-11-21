@@ -86,7 +86,7 @@ class HTML {
 			$message = _('Are you lost?');
 		}
 
-		$session->log(clean(sprintf('Soft error: (%d) %s - %s', $code, $title, $message), 256, true));
+		$session->log(sprintf('Soft error: (%d) %s - %s', $code, $title, $message));
 		$session->hit();
 
 		$vars = compact('title', 'message');

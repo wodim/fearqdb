@@ -40,7 +40,7 @@ function generic_error($error = 'unspecified') {
 	global $session;
 
 	header('503 Unavailable');
-	$session->log(clean(sprintf('JSON API error: "%s"', print_r($error, true)), 256, true));
+	$session->log(sprintf('JSON API error: "%s"', print_r($error, true)));
 	out(array('error' => $error));
 }
 
@@ -178,7 +178,7 @@ switch ($params[1]) {
 	case 'search':
 		required_post(array('criteria'));
 		$search = new Search();
-		$search->criteria = clean($_POST['criteria']);
+		$search->criteria = $_POST['criteria'];
 		$search->page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
 		$search->page_size = isset($_POST['page_size']) ? (int)$_POST['page_size'] : 0;
 		$search->show_hidden = (bool)check_key();

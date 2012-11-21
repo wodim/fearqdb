@@ -60,10 +60,7 @@ class Settings {
 	function init() {
 		global $db;
 
-		$url = sprintf('%s%s',
-			clean($_SERVER['HTTP_HOST'], MAX_DOMAIN_LENGTH),
-			clean(preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']), MAX_DOMAIN_LENGTH)
-		);
+		$url = sprintf('%s%s', $_SERVER['HTTP_HOST'], preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']));
 		$results = $db->get_row(Settings::READ, array(
 			array(':url', $url, PDO::PARAM_STR)
 		));
