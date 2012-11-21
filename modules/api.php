@@ -47,8 +47,9 @@ function generic_error($error = 'unspecified') {
 function get_last() {
 	global $db, $settings;
 
-	return $db->get_var(sprintf('SELECT permaid FROM quotes WHERE db = \'%s\' ORDER BY id DESC',
-		$settings->db));
+	return $db->get_var('SELECT permaid FROM quotes WHERE db = :db ORDER BY id DESC', array(
+		array(':db', $settings->db, PDO::PARAM_STR)
+	));
 }
 
 function sanitize($quote) {
@@ -85,9 +86,9 @@ function check_key() {
 		return null;
 	}
 
-	$result = $db->get_var(
-		sprintf('SELECT id FROM api WHERE `key` = \'%s\' AND approved = 1 AND (db = \'%s\' OR db = \'\') LIMIT 1',
-			escape($params[2]), $settings->db));
+	$result = $db->get_var('SELECT id FROM api WHERE `key` = :key AND approved = 1 LIMIT 1', array(
+		array(':key', $params[2], PDO::PARAM_STR)
+	));
 
 	if ($result) {
 		$cached_key = $result;
@@ -228,12 +229,13 @@ switch ($params[1]) {
 				array('success' => 0,
 					'error' => 'access_denied')));
 		}
-		$topic = clean($_POST['topic'], MAX_TOPIC_LENGTH, true);
-		$nick = isset($_POST['nick']) ? clean($_POST['nick'], MAX_NICK_LENGTH, true) : '';
-		$db->query(sprintf('UPDATE sites SET topic_text = \'%s\', topic_nick = \'%s\'
-			WHERE db = \'%s\'', $topic, $nick, $settings->db));
+		$return = $db->query('UPDATE sites SET topic_text = :topic_text, topic_nick = :topic_nick WHERE db = :db', array(
+			array(':topic_text', $_POST['topic'], PDO::PARAM_STR),
+			array(':topic_nick', isset($_POST['nick']) ? $_POST['nick'] : null, PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
 		out(array('results' =>
-			array('success' => 1)));
+			array('success' => (bool)$return ? 1 : 0)));
 		break;
 	default:
 		$session->log(sprintf('JSON API access with invalid METHOD: %s', $params[1]));
