@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			);
 			switch ($_POST['misc_action']) {
 				case 'approve_all':
-					$quotes = $db->get_results('SELECT permaid FROM quotes WHERE status = \'pending\'');
+					$quotes = $db->get_results(sprintf('SELECT permaid FROM quotes WHERE status = \'pending\' AND db = \'%s\'', $settings->db));
 					if (!$quotes) {
 						die('no_pending_quotes');
 						break;
