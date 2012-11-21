@@ -100,7 +100,7 @@ class Settings {
 			SET approved_quotes = approved_quotes %s, hidden_quotes = hidden_quotes %s
 			WHERE db = :db', $first, $second);
 		$db->get_row($query, array(
-			array(':db', $url, PDO::PARAM_STR)
+			array(':db', $this->db, PDO::PARAM_STR)
 		));
 	}
 }
