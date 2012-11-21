@@ -129,7 +129,7 @@ switch ($params[1]) {
 	case 'recount':
 		/* recount all quotes,
 			for approved_quotes hidden_quotes */
-		$settings->recount()
+		$settings->recount();
 		printf("End\n");
 		break;
 	case 'sort':
