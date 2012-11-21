@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- push_enabled: push notifications enabled. requires curl
 -- push_url: push url
 -- extra_css: css code that will be included inline, inside <head>
--- approved_quotes: approved quotes, used to avoid count(1) on each page
--- hidden_quotes: hidden AND approved quotes, used to avoid count(1) on each page for admins
+-- approved_quotes: no. of approved quotes, used to avoid count(1) on each page
+-- pending_quotes: no. of pending quotes, used to avoid count(1) on each page for admins
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `sites` (
   `push_params` varchar(128) NOT NULL,
   `extra_css` varchar(1024) NOT NULL,
   `approved_quotes` int(11) NOT NULL,
-  `hidden_quotes` int(11) NOT NULL,
+  `pending_quotes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 

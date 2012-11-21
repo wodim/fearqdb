@@ -128,7 +128,7 @@ switch ($params[1]) {
 		break;
 	case 'recount':
 		/* recount all quotes,
-			for approved_quotes hidden_quotes */
+			for approved_quotes pending_quotes */
 		$settings->recount();
 		printf("End\n");
 		break;

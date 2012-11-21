@@ -23,7 +23,7 @@ class Settings {
 		url, base_url, full_url, statics_url, snowstorm, db, irc, name, nname, cookie,
 		privacy_level, privacy_level_for_bots, page_size, robots,
 		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css,
-		approved_quotes, hidden_quotes
+		approved_quotes, pending_quotes
 		FROM sites WHERE url = :url';
 	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
@@ -55,7 +55,7 @@ class Settings {
 	var $push_params = '';
 	var $extra_css = null;
 	var $approved_quotes = 0;
-	var $hidden_quotes = 0;
+	var $pending_quotes = 0;
 
 	var $no_rewrite = false;
 	var $read = false;
@@ -84,16 +84,16 @@ class Settings {
 	function recount() {
 		global $db;
 
-		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND hidden = 0 AND db = :db', array(
+		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
-		$hidden_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND hidden = 1 AND db = :db', array(
+		$pending_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'pending\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 		$db->query('UPDATE sites
-			SET approved_quotes = :approved_quotes, hidden_quotes = :hidden_quotes WHERE db = :db', array(
+			SET approved_quotes = :approved_quotes, pending_quotes = :pending_quotes WHERE db = :db', array(
 			array(':approved_quotes', $approved_quotes, PDO::PARAM_INT),
-			array(':hidden_quotes', $hidden_quotes, PDO::PARAM_INT),
+			array(':pending_quotes', $pending_quotes, PDO::PARAM_INT),
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 	}

@@ -55,7 +55,7 @@ if (!$quotes) {
 
 $html->do_header();
 
-$rows = ($session->level == 'anonymous') ? $settings->approved_quotes : $settings->approved_quotes + $settings->hidden_quotes;
+$rows = ($session->level == 'anonymous') ? $settings->approved_quotes : $settings->approved_quotes + $settings->pending_quotes;
 $mod = sprintf('%s%s/', $settings->base_url, 'page');
 $pager = $html->do_pages($page_number, ceil($rows / $settings->page_size), $mod.'%d', 4);
 
