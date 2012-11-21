@@ -252,14 +252,13 @@ class Quote {
 				array(':text', $this->text, PDO::PARAM_STR),
 				array(':comment', $this->comment, PDO::PARAM_STR),
 				array(':db', $settings->db, PDO::PARAM_STR),
-				array(':hidden', $this->hidden, PDO::PARAM_BOOL),
+				array(':hidden', $this->hidden, PDO::PARAM_INT),
 				array(':status', $this->status, PDO::PARAM_STR),
 				array(':api', $this->api, PDO::PARAM_INT)
 			));
 			$this->permaid = $permaid;
 			$this->generate();
 			if ($this->status == 'approved') {
-				$settings->recount(1, $this->hidden);
 				$push->hit(sprintf(_('New quote: %s - %s'), $this->permalink, $this->excerpt));
 			} else {
 				$push->hit(sprintf(_('%s has sent a quote and it is pending approval.'), $this->nick));
@@ -272,14 +271,15 @@ class Quote {
 				array(':ip', $this->ip, PDO::PARAM_STR),
 				array(':text', $this->text, PDO::PARAM_STR),
 				array(':comment', $this->comment, PDO::PARAM_STR),
-				array(':hidden', $this->hidden, PDO::PARAM_BOOL),
+				array(':hidden', $this->hidden, PDO::PARAM_INT),
 				array(':status', $this->status, PDO::PARAM_STR),
 				array(':api', $this->api, PDO::PARAM_INT),
 				array(':id', $this->id, PDO::PARAM_INT)
 			));
-			$settings->recount(($this->status == 'approved'), $this->hidden);
+			var_dump($result);
 		}
 
+		$settings->recount();
 		return (bool)$result;
 	}
 }

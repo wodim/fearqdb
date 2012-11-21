@@ -87,8 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 			/* DESTROY DOESN'T WORK ON PURPOSE, this is not the right way of
 				doing it and this isn't the right place to do it */
-			$quote->save(false);
-			die('done');
+			if ($quote->save(false)) {
+				die('done');
+			} else {
+				die('error');
+			}
 			break;
 		case 'dbq':
 			required_post(

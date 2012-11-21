@@ -81,25 +81,19 @@ class Settings {
 		return true;
 	}
 
-	function recount($approved, $hidden) {
+	function recount() {
 		global $db;
 
-		$first = $second = '';
-		if ($approved === 1 || $approved === true) {
-			$first = '+ 1';
-		} elseif ($approved === -1 || $approved === 0 || $approved === false) {
-			$first = '- 1';
-		}
-		if ($hidden === 1 || $hidden === true) {
-			$second = '+ 1';
-		} elseif ($hidden === -1 || $hidden === 0 || $hidden === false) {
-			$second = '- 1';
-		}
-
-		$query = sprintf('UPDATE sites
-			SET approved_quotes = approved_quotes %s, hidden_quotes = hidden_quotes %s
-			WHERE db = :db', $first, $second);
-		$db->get_row($query, array(
+		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND db = :db', array(
+			array(':db', $this->db, PDO::PARAM_STR)
+		));
+		$hidden_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND hidden = 1 AND db = :db', array(
+			array(':db', $this->db, PDO::PARAM_STR)
+		));
+		$db->query('UPDATE sites
+			SET approved_quotes = :approved_quotes, hidden_quotes = :hidden_quotes WHERE db = :db', array(
+			array(':approved_quotes', $approved_quotes, PDO::PARAM_INT),
+			array(':hidden_quotes', $hidden_quotes, PDO::PARAM_INT),
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 	}

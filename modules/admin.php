@@ -25,10 +25,16 @@ if (!isset($params[1])) {
 	$params[1] = 'index';
 }
 
-function all_quotes() {
-	global $db;
+function all_quotes($all_dbs = true) {
+	global $db, $settings;
 
-	$results = $db->get_results('SELECT id FROM quotes');
+	if ($all_dbs) {
+		$results = $db->get_results('SELECT id FROM quotes');
+	} else {
+		$results = $db->get_results('SELECT id FROM quotes WHERE db = :db', array(
+			array(':db', $settings->db, PDO::PARAM_STR)
+		));
+	}
 
 	foreach ($results as $result) {
 		$return[] = $result->id;
@@ -123,30 +129,7 @@ switch ($params[1]) {
 	case 'recount':
 		/* recount all quotes,
 			for approved_quotes hidden_quotes */
-		$approved_quotes = $hidden_quotes = 0;
-		foreach (all_quotes() as $i) {
-			printf("Counting %d...\n", $i);
-			$quote = new Quote();
-			$quote->id = $i;
-			if ($quote->read()) {
-				if ($quote->status == 'approved') {
-					$approved_quotes++;
-				}
-				if ($quote->hidden) {
-					$hidden_quotes++;
-				}
-			} else {
-				printf("Unreadable %d\n", $i);
-			}
-			unset($quote);
-		}
-		printf("%d approved quotes, %d hidden and approved quotes\n", $approved_quotes, $hidden_quotes);
-		$db->query('UPDATE sites
-			SET approved_quotes = :approved_quotes, hidden_quotes = :hidden_quotes WHERE db = :db', array(
-			array(':approved_quotes', $approved_quotes, PDO::PARAM_INT),
-			array(':hidden_quotes', $hidden_quotes, PDO::PARAM_INT),
-			array(':db', $settings->db, PDO::PARAM_STR)
-		));
+		$settings->recount()
 		printf("End\n");
 		break;
 	case 'sort':
