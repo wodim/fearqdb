@@ -19,9 +19,13 @@
 
 require(classes_dir.'quote.php');
 
-$quotes = $db->get_results(sprintf('SELECT %s FROM quotes, api WHERE quotes.db = \'%s\'
-		AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
-		Quote::READ, $settings->db, $settings->page_size));
+/* !!TODO */
+$query = sprintf('SELECT %s FROM quotes WHERE quotes.db = :db
+	AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
+	Quote::READ, $settings->page_size);
+$quotes = $db->get_results($query, array(
+	array(':db', $settings->db, PDO::PARAM_STR)
+));
 
 if (!$quotes) {
 	$html->do_sysmsg(_('Page not found'), null, 404);
