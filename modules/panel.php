@@ -123,7 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			);
 			switch ($_POST['misc_action']) {
 				case 'approve_all':
-					$quotes = $db->get_results(sprintf('SELECT permaid FROM quotes WHERE status = \'pending\' AND db = \'%s\'', $settings->db));
+					$quotes = $db->get_results('SELECT permaid FROM quotes WHERE status = \'pending\' AND db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					if (!$quotes) {
 						die('no_pending_quotes');
 						break;
@@ -142,22 +144,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					}
 					break;
 				case 'privacy_login':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 2 WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET privacy_level = 2 WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 				case 'privacy_hide_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 1 WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET privacy_level = 1 WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 				case 'privacy_unhide_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = 0 WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET privacy_level = 0 WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 				case 'privacy_show_all':
-					$db->query(sprintf('UPDATE sites SET privacy_level = -1 WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET privacy_level = -1 WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 				case 'robots_allow':
-					$db->query(sprintf('UPDATE sites SET robots = \'allow\' WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET robots = \'allow\' WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 				case 'robots_disallow':
-					$db->query(sprintf('UPDATE sites SET robots = \'disallow\' WHERE db = \'%s\'', $settings->db));
+					$db->query('UPDATE sites SET robots = \'disallow\' WHERE db = :db', array(
+						array(':db', $settings->db, PDO::PARAM_STR)
+					));
 					break;
 			}
 			printf('successful %s', $_POST['misc_action']);
