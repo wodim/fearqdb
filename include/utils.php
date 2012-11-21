@@ -32,7 +32,7 @@ function redir($location = null) {
 }
 
 function escape($string) {
-	echo '// ALERT: escape '.$string;
+	debug(sprintf('escape("%s")', $string));
 	return ($string);
 }
 
@@ -136,4 +136,8 @@ function array_to_class($input) {
 	} else {
 		return $input;
 	}
+}
+
+function debug($message) {
+	printf('<span style="border: 1px solid white; background: red; font-weight: bold; font-size: 9pt; color: white; padding: 3px 5px; display: inline-block;">%s</span>%s', $message, "\n");
 }
