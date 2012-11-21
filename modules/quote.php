@@ -28,7 +28,9 @@ if (isset($params[0]) && strlen($params[0]) == 4) {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 
-if (!$quote->read() || ($session->level == 'anonymous' && $quote->status != 'approved') || $quote->status == 'deleted') {
+if (!$quote->read() ||
+	($session->level == 'anonymous' && $quote->status != 'approved') ||
+	$quote->status == 'deleted') {
 	$html->do_sysmsg(_('Page not found'), null, 404);
 }
 

@@ -3,9 +3,6 @@
 		<a href="{{settings.base_url}}{{c.permaid}}" class="id">#{{c.permaid}}</a>
 		<div class="rest">
 			<span class="nick">{{c.nick|escape}}</span>
-			{% if c.api && 1 == 0 %}
-				{% trans _('via') %} <strong>{{c.name|escape}}</strong>
-			{% endif %}
 			{% if c.status == 'pending' && 1 == 0 %}
 				({% trans _('Yet to be approved') %})
 			{% endif %}

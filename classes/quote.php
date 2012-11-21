@@ -229,7 +229,6 @@ class Quote {
 		return sprintf('<strong>&lt;<em class="colour-%s"><a href="%ssearch/%s">%s</a></em>&gt;</strong>', $colour, $settings->base_url, urlencode($nick), $nick);
 	}
 
-	// unused? hm
 	function save($new = true) {
 		global $db, $settings, $push;
 
@@ -244,19 +243,19 @@ class Quote {
 				$quote = new Quote();
 				$permaid = $quote->permaid = sprintf('%04x', rand(0, 65535));
 			} while ($quote->read());
-			$result = $db->query(sprintf('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, status, api)
-				VALUES (\'%s\', \'%s\', NOW(), \'%s\', \'%s\', \'%s\', \'%s\', \'%d\', \'%s\', \'%d\')',
-				/* no way of forcing a permaid */
-				$permaid,
-				clean($this->nick, MAX_NICK_LENGTH, true),
-				/* date */
-				clean($this->ip, MAX_IP_LENGTH, true),
-				escape($this->text),
-				clean($this->comment, MAX_COMMENT_LENGTH, true),
-				$settings->db,
-				(int)$this->hidden,
-				escape($this->status),
-				(int)$this->api));
+			$result = $db->query('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, status, api)
+				VALUES (:permaid, :nick, NOW(), :ip, :text, :comment, :db, :hidden, :status, :api)', array(
+				array(':permaid', $permaid, PDO::PARAM_STR),
+				array(':nick', $this->nick, PDO::PARAM_STR),
+				/* NOW() */
+				array(':ip', $this->ip, PDO::PARAM_STR),
+				array(':text', $this->text, PDO::PARAM_STR),
+				array(':comment', $this->comment, PDO::PARAM_STR),
+				array(':db', $settings->db, PDO::PARAM_STR),
+				array(':hidden', $this->hidden, PDO::PARAM_BOOL),
+				array(':status', $this->status, PDO::PARAM_STR),
+				array(':api', $this->api, PDO::PARAM_INT)
+			));
 			$this->permaid = $permaid;
 			$this->generate();
 			if ($this->status == 'approved') {
@@ -266,21 +265,19 @@ class Quote {
 			}
 			return $this->permaid;
 		} else {
-			$result = $db->query(sprintf('UPDATE quotes SET
-				nick = \'%s\', ip = \'%s\', text = \'%s\', comment = \'%s\',
-				db = \'%s\', hidden = %d, status = \'%s\', api = %d
-				where id = %d',
-				clean($this->nick, MAX_NICK_LENGTH, true),
-				clean($this->ip, MAX_IP_LENGTH, true),
-				escape($this->text),
-				clean($this->comment, MAX_COMMENT_LENGTH, true),
-				$settings->db,
-				(int)$this->hidden,
-				escape($this->status),
-				(int)$this->api,
-				(int)$this->id));
+			$result = $db->query('UPDATE quotes SET nick = :nick, ip = :ip, text = :text,
+				comment = :comment, hidden = :hidden, status = :status, api = :api where id = :id', array(
+				array(':nick', $this->nick, PDO::PARAM_STR),
+				array(':ip', $this->ip, PDO::PARAM_STR),
+				array(':text', $this->text, PDO::PARAM_STR),
+				array(':comment', $this->comment, PDO::PARAM_STR),
+				array(':hidden', $this->hidden, PDO::PARAM_BOOL),
+				array(':status', $this->status, PDO::PARAM_STR),
+				array(':api', $this->api, PDO::PARAM_INT),
+				array(':id', $this->id, PDO::PARAM_INT)
+			));
 		}
 
-		return true;
+		return (bool)$result;
 	}
 }
