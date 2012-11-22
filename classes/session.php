@@ -130,8 +130,8 @@ class Session {
 		));
 
 		foreach ($results as $result) {
-			if ($password == $this->password($result->key)) {
-				$this->log(sprintf('Created session using API key %d', $result->id));
+			if ($password == $this->password($result['key'])) {
+				$this->log(sprintf('Created session using API key %d', $result['id']));
 				setcookie($settings->cookie, base64_encode(sprintf('0!%s', $this->expected_cookie)), time() + 86400, '/');
 				return true;
 			}

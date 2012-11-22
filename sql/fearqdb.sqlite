@@ -1,5 +1,5 @@
 -- fearqdb - quote database system
--- Copyright (C) 2011-2012 David Martí <neikokz at gmail dot com>
+-- Copyright (C) 2012 David Martí <neikokz at gmail dot com>
 
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU Affero General Public License as
@@ -14,13 +14,6 @@
 -- You should have received a copy of the GNU Affero General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 -- key: the API key. we recommend this to be a md5 or something similar but
 --   nothing stops you from using any other value such a word or a password.
 -- name: the name of the API, eg: 'Mobile', the name of your IRC bot, etc.
@@ -29,54 +22,54 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --   all dbs
 -- "1 - web" comes by default, DO NOT DELETE IT!
 CREATE TABLE IF NOT EXISTS `api` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(32) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `approved` tinyint(1) NOT NULL,
-  `db` varchar(10) NOT NULL,
+  `id` INTEGER,
+  `key` TEXT,
+  `name` TEXT,
+  `approved` INTEGER,
+  `db` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE IF NOT EXISTS `hits` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(15) NOT NULL,
-  `url` varchar(256) NOT NULL,
-  `redir` varchar(256) NOT NULL,
-  `module` varchar(8) NOT NULL,
-  `search` varchar(256) NOT NULL,
-  `db` varchar(16) NOT NULL,
-  `level` enum('anonymous','reader','user') NOT NULL,
-  `user` int(11) NOT NULL DEFAULT '0',
-  `referer` varchar(256) NOT NULL,
-  `user_agent` varchar(256) NOT NULL,
-  `time` datetime NOT NULL,
+  `id` INTEGER,
+  `ip` TEXT,
+  `url` TEXT,
+  `redir` TEXT,
+  `module` TEXT,
+  `search` TEXT,
+  `db` TEXT,
+  `level` TEXT,
+  `user` INTEGER,
+  `referer` TEXT,
+  `user_agent` TEXT,
+  `time` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+);
 
 CREATE TABLE IF NOT EXISTS `logs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(15) NOT NULL,
-  `time` datetime NOT NULL,
-  `url` varchar(256) NOT NULL,
-  `db` varchar(10) NOT NULL,
-  `text` varchar(1000) NOT NULL,
+  `id` INTEGER,
+  `ip` TEXT,
+  `time` TEXT,
+  `url` TEXT,
+  `db` TEXT,
+  `text` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+);
 
 CREATE TABLE IF NOT EXISTS `quotes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `permaid` varchar(4) NOT NULL,
-  `nick` varchar(20) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  `ip` varchar(64) NOT NULL,
-  `text` text NOT NULL,
-  `comment` varchar(1000) NOT NULL,
-  `db` varchar(16) NOT NULL DEFAULT '',
-  `status` enum('pending','approved','deleted') NOT NULL DEFAULT 'pending',
-  `hidden` tinyint(1) NOT NULL DEFAULT '0',
-  `api` int(11) NOT NULL DEFAULT '1',
+  `id` INTEGER,
+  `permaid` TEXT,
+  `nick` TEXT,
+  `timestamp` INTEGER,
+  `ip` TEXT,
+  `text` TEXT,
+  `comment` TEXT,
+  `db` TEXT,
+  `status` TEXT,
+  `hidden` INTEGER,
+  `api` INTEGER DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+);
 
 -- url: the url up to the WITH leading / and WITH NO http://
 --   eg: example.net/qdb/
@@ -136,47 +129,47 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 -- pending_quotes: no. of pending quotes, used to avoid count(1) on each page for admins
 
 CREATE TABLE IF NOT EXISTS `sites` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `url` varchar(64) NOT NULL,
-  `base_url` varchar(64) NOT NULL,
-  `full_url` varchar(64) NOT NULL,
-  `statics_url` varchar(64) NOT NULL,
-  `site_key` varchar(32) NOT NULL,
-  `lang` varchar(5) NOT NULL,
-  `locale` varchar(16) NOT NULL,
-  `collate` varchar(24) NOT NULL,
-  `ip_show` tinyint(1) NOT NULL,
-  `analytics_enabled` tinyint(1) NOT NULL,
-  `analytics_code` varchar(16) NOT NULL,
-  `snowstorm` tinyint(1) NOT NULL,
-  `db` varchar(10) NOT NULL,
-  `irc` varchar(32) NOT NULL,
-  `name` varchar(32) NOT NULL,
-  `nname` varchar(10) NOT NULL,
-  `cookie` varchar(16) NOT NULL,
-  `privacy_level` int(11) NOT NULL,
-  `privacy_level_for_bots` int(11) NOT NULL,
-  `page_size` int(11) NOT NULL,
-  `robots` enum('allow','disallow') NOT NULL DEFAULT 'allow',
-  `topic_text` varchar(1000) NOT NULL,
-  `topic_nick` varchar(20) NOT NULL,
-  `push_enabled` tinyint(1) NOT NULL,
-  `push_url` varchar(64) NOT NULL,
-  `push_params` varchar(128) NOT NULL,
-  `extra_css` varchar(1024) NOT NULL,
-  `approved_quotes` int(11) NOT NULL,
-  `pending_quotes` int(11) NOT NULL,
+  `id` INTEGER,
+  `url` TEXT,
+  `base_url` TEXT,
+  `full_url` TEXT,
+  `statics_url` TEXT,
+  `site_key` TEXT,
+  `lang` TEXT,
+  `locale` TEXT,
+  `collate` TEXT,
+  `ip_show` INTEGER,
+  `analytics_enabled` INTEGER,
+  `analytics_code` TEXT,
+  `snowstorm` INTEGER,
+  `db` TEXT,
+  `irc` TEXT,
+  `name` TEXT,
+  `nname` TEXT,
+  `cookie` TEXT,
+  `privacy_level` INTEGER,
+  `privacy_level_for_bots` INTEGER,
+  `page_size` INTEGER,
+  `robots` TEXT,
+  `topic_text` TEXT,
+  `topic_nick` TEXT,
+  `push_enabled` INTEGER,
+  `push_url` TEXT,
+  `push_params` TEXT,
+  `extra_css` TEXT,
+  `approved_quotes` INTEGER,
+  `pending_quotes` INTEGER,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+);
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nick` varchar(16) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `salt` varchar(8) NOT NULL,
-  `db` varchar(10) NOT NULL,
+  `id` INTEGER,
+  `nick` TEXT,
+  `password` TEXT,
+  `salt` TEXT,
+  `db` TEXT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+);
 
 INSERT INTO `api` (`id`, `key`, `name`, `approved`, `db`) VALUES
 (1, '', 'web', 0, '');

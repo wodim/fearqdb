@@ -18,9 +18,9 @@
 */
 
 class Quote {
-	const READ = 'id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api';
-	const READ_BY_ID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE id = :id AND db = :db';
-	const READ_BY_PERMAID = 'SELECT id, permaid, nick, date, ip, text, comment, status, hidden, UNIX_TIMESTAMP(date) AS ts, db, api FROM quotes WHERE permaid = :permaid AND db = :db';
+	const READ = 'id, permaid, nick, timestamp, ip, text, comment, status, hidden AS ts, db, api';
+	const READ_BY_ID = 'SELECT id, permaid, nick, timestamp, ip, text, comment, status, hidden, db, api FROM quotes WHERE id = :id AND db = :db';
+	const READ_BY_PERMAID = 'SELECT id, permaid, nick, timestamp, ip, text, comment, status, hidden, db, api FROM quotes WHERE permaid = :permaid AND db = :db';
 
 	var $read = false;
 	var $id = 0;
@@ -77,7 +77,7 @@ class Quote {
 			return false;
 		}
 
-		foreach (get_object_vars($results) as $variable => $value) {
+		foreach ($results as $variable => $value) {
 			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
 
@@ -103,9 +103,9 @@ class Quote {
 	function generate() {
 		global $settings;
 
-		$this->new = (date('U') - $this->ts < (60 * 60 * 24));
+		$this->new = (date('U') - $this->timestamp < (60 * 60 * 24));
 		$this->permalink = sprintf('%s%s', $settings->full_url, $this->permaid);
-		$date = elapsed_time(date('U') - $this->ts);
+		$date = elapsed_time(date('U') - $this->timestamp);
 		$this->timelapse = ($date == -1) ? false : $date;
 		$this->hidden = (bool)$this->hidden;
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
@@ -121,7 +121,7 @@ class Quote {
 
 		$c = $this;
 		$c->style = sprintf('%s%s', $odd ? 'odd' : 'even', ($c->status == 'approved') ? '' : ' unapproved');
-		$c->date = date('d/m/Y H:i:s', $c->ts);
+		$c->date = date('d/m/Y H:i:s', $c->timestamp);
 		$c->tweet = $this->text_clean($c->text, 'www_tweet');
 		$c->tweet = urlencode(sprintf('%s - %s', $c->tweet, $c->permalink));
 		$c->tweet = sprintf('https://twitter.com/intent/tweet?text=%s', $c->tweet);
@@ -146,7 +146,7 @@ class Quote {
 		$c->title = $this->text_clean($c->text, 'rss_title');
 		$c->text = $this->text_clean($c->text, 'rss_body');
 
-		$c->ts = date('r', $c->ts);
+		$c->ts = date('r', $c->timestamp);
 
 		$vars = compact('c');
 		Haanga::Load('rss-quote.html', $vars);

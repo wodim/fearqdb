@@ -71,7 +71,7 @@ class Settings {
 			return $this->read;
 		}
 
-		foreach (get_object_vars($results) as $variable => $value) {
+		foreach ($results as $variable => $value) {
 			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
 

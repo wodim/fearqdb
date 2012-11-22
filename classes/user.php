@@ -44,7 +44,7 @@ class User {
 		}
 
 		if ($results) {
-			foreach (get_object_vars($results) as $variable => $value) {
+			foreach ($results as $variable => $value) {
 				$this->$variable = ctype_digit($value) ? (int)$value : $value;
 			}
 			$this->read = true;
