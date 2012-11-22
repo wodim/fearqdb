@@ -21,8 +21,8 @@ $config['db']['user'] = null;
 $config['db']['pass'] = null;
 $config['db']['name'] = null;
 
-/* 'file' takes precedence over 'host' */
-$config['db']['file'] = null;
+/* 'socket' takes precedence over 'host' */
+$config['db']['socket'] = null;
 $config['db']['host'] = null;
 
 /* show all queries */
