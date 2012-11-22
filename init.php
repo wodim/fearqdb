@@ -32,7 +32,7 @@ $db = new DB();
 $db->user = $config['db']['user'];
 $db->pass = $config['db']['pass'];
 $db->name = $config['db']['name'];
-$db->file = $config['db']['file'];
+$db->socket = $config['db']['socket'];
 $db->host = $config['db']['host'];
 $db->debug = $config['db']['debug'];
 if (!$db->init()) {

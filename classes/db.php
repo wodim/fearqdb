@@ -21,7 +21,7 @@ class DB {
 	var $user = null;
 	var $pass = null;
 	var $name = null;
-	var $file = null;
+	var $socket = null;
 	var $host = null;
 	var $debug = false;
 	var $persistent = false;
@@ -30,8 +30,8 @@ class DB {
 	var $num_queries = 0;
 
 	function init() {
-		$location = ($this->file != null) ?
-			sprintf('unix-socket=%s', $this->file) :
+		$location = ($this->socket != null) ?
+			sprintf('unix-socket=%s', $this->socket) :
 			sprintf('host=%s', $this->host);
 		$dsn = sprintf('mysql:dbname=%s;%s;charset=utf8',
 			$this->name, $location);

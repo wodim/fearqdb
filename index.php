@@ -19,6 +19,9 @@
 
 $start = microtime(true);
 
+if (file_exists('local.php')) {
+	require('local.php');
+}
 require('init.php');
 
 if ($settings->no_rewrite) {
