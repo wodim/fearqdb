@@ -47,7 +47,6 @@ foreach ($params as $k => $v) {
 $params[0] = isset($params[0]) ? $params[0] : 'page';
 
 switch ($params[0]) {
-	// TODO this should be configurable per domain
 	case 'robots.txt':
 		$module = 'robots';
 		require(modules_dir.'leftovers.php');

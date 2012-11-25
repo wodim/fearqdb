@@ -30,12 +30,14 @@ require(include_dir.'defines.php');
 require(classes_dir.'db.php');
 $db = new DB();
 $db->type = $config['db']['type'];
+$db->debug = $config['db']['debug'];
+$db->persistent = $config['db']['persistent'];
+$db->file = $config['db']['file'];
 $db->user = $config['db']['user'];
 $db->pass = $config['db']['pass'];
 $db->name = $config['db']['name'];
 $db->socket = $config['db']['socket'];
 $db->host = $config['db']['host'];
-$db->debug = $config['db']['debug'];
 if (!$db->init()) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('DBE');

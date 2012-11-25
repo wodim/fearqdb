@@ -20,9 +20,15 @@
 require(classes_dir.'quote.php');
 
 /* !!TODO */
-$query = sprintf('SELECT %s FROM quotes WHERE quotes.db = :db
-	AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
-	Quote::READ, $settings->page_size);
+if ($db->type == 'mysql') {
+	$query = sprintf('SELECT %s FROM quotes WHERE quotes.db = :db
+		AND status = \'approved\' AND hidden = 0 ORDER BY RAND() LIMIT %d',
+		Quote::READ, $settings->page_size);
+} elseif ($db->type == 'sqlite') {
+	$query = sprintf('SELECT %s FROM quotes WHERE quotes.db = :db
+		AND status = \'approved\' AND hidden = 0 ORDER BY RANDOM() LIMIT %d',
+		Quote::READ, $settings->page_size);
+}
 $quotes = $db->get_results($query, array(
 	array(':db', $settings->db, PDO::PARAM_STR)
 ));

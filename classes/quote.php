@@ -242,11 +242,11 @@ class Quote {
 				$quote = new Quote();
 				$permaid = $quote->permaid = sprintf('%04x', rand(0, 65535));
 			} while ($quote->read());
-			$result = $db->query('INSERT INTO quotes (permaid, nick, date, ip, text, comment, db, hidden, status, api)
-				VALUES (:permaid, :nick, NOW(), :ip, :text, :comment, :db, :hidden, :status, :api)', array(
+			$result = $db->query('INSERT INTO quotes (permaid, nick, timestamp, ip, text, comment, db, hidden, status, api)
+				VALUES (:permaid, :nick, :timestamp, :ip, :text, :comment, :db, :hidden, :status, :api)', array(
 				array(':permaid', $permaid, PDO::PARAM_STR),
 				array(':nick', $this->nick, PDO::PARAM_STR),
-				/* NOW() */
+				array(':timestamp', time(), PDO::PARAM_INT),
 				array(':ip', $this->ip, PDO::PARAM_STR),
 				array(':text', $this->text, PDO::PARAM_STR),
 				array(':comment', $this->comment, PDO::PARAM_STR),

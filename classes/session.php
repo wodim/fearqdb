@@ -91,8 +91,8 @@ class Session {
 
 		global $settings, $module, $db;
 
-		$db->query('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, time)
-			VALUES (:ip, :url, :redir, :module, :search, :db, :level, :user, :referer, :user_agent, NOW())', array(
+		$db->query('INSERT INTO hits (ip, url, redir, module, search, db, level, user, referer, user_agent, timestamp)
+			VALUES (:ip, :url, :redir, :module, :search, :db, :level, :user, :referer, :user_agent, :timestamp)', array(
 			array(':ip', $this->ip, PDO::PARAM_STR),
 			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
 			array(':redir', $is_redir ? $location : '', PDO::PARAM_STR),
@@ -102,8 +102,8 @@ class Session {
 			array(':level', $this->level, PDO::PARAM_STR),
 			array(':user', $this->user, PDO::PARAM_INT),
 			array(':referer', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '', PDO::PARAM_STR),
-			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', PDO::PARAM_STR)
-			/* NOW() */
+			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', PDO::PARAM_STR),
+			array(':timestamp', time(), PDO::PARAM_INT)
 		));
 
 		$this->hit = true;
@@ -112,10 +112,10 @@ class Session {
 	function log($text) {
 		global $settings, $db;
 
-		$db->query('INSERT INTO logs (ip, time, url, db, text)
-			VALUES (:ip, NOW(), :url, :db, :text)', array(
+		$db->query('INSERT INTO logs (ip, timestamp, url, db, text)
+			VALUES (:ip, :timestamp, :url, :db, :text)', array(
 			array(':ip', $this->ip, PDO::PARAM_STR),
-			/* NOW() */
+			array(':timestamp', time(), PDO::PARAM_INT),
 			array(':url', $_SERVER['REQUEST_URI'], PDO::PARAM_STR),
 			array(':db', $settings->db, PDO::PARAM_STR),
 			array(':text', $text, PDO::PARAM_STR)

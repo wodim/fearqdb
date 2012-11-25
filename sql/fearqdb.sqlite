@@ -42,14 +42,14 @@ CREATE TABLE IF NOT EXISTS `hits` (
   `user` INTEGER,
   `referer` TEXT,
   `user_agent` TEXT,
-  `time` TEXT,
+  `timestamp` INTEGER,
   PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `logs` (
   `id` INTEGER,
   `ip` TEXT,
-  `time` TEXT,
+  `timestamp` INTEGER,
   `url` TEXT,
   `db` TEXT,
   `text` TEXT,
