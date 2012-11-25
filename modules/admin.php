@@ -183,13 +183,15 @@ switch ($params[1]) {
 			}
 			$structure = implode(', ', $structure);
 			$rows = $db->get_results(sprintf('SELECT * FROM %s', $table));
-			foreach ($rows as $row) {
-				$values = array();
-				foreach ($row as $value) {
-					$values[] = ctype_digit($value) ? (int)$value : sprintf('\'%s\'', str_replace('\'', '\'\'', $value));
+			if (count($rows) > 0) {
+				foreach ($rows as $row) {
+					$values = array();
+					foreach ($row as $value) {
+						$values[] = ctype_digit($value) ? (int)$value : sprintf('\'%s\'', str_replace('\'', '\'\'', $value));
+					}
+					$values = implode(', ', $values);
+					printf("INSERT INTO %s (%s) VALUES (%s);\n", $table, $structure, $values);
 				}
-				$values = implode(', ', $values);
-				printf("INSERT INTO %s (%s) VALUES (%s);\n", $table, $structure, $values);
 			}
 			printf("\n");
 		}
