@@ -45,7 +45,7 @@ function all_quotes($all_dbs = true) {
 
 header('HTTP/1.1 403 Forbidden');
 header('Content-Type: text/plain; charset=utf8');
-//die('Access denied');
+die('Access denied');
 
 switch ($params[1]) {
 	/* example modules. */
