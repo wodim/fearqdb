@@ -35,7 +35,7 @@ if (!$quotes) {
 
 header('Content-Type: application/rss+xml');
 
-$rss['date'] = date('r', $quotes[0]['ts']);
+$rss['date'] = date('r', $quotes[0]['timestamp']);
 
 $vars = compact('rss');
 Haanga::Load('rss-header.html', $vars);
