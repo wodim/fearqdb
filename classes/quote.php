@@ -46,6 +46,7 @@ class Quote {
 	var $name = '';
 	var $password = '';
 	var $forceshow = '';
+	var $date = '';
 
 	function read($results = null) {
 		global $db, $settings, $session;
@@ -109,6 +110,7 @@ class Quote {
 		$this->hidden = (bool)$this->hidden;
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
 		$this->password = substr(md5(sprintf('a%sb%sc%sd', $settings->site_key, $this->permaid, date('d/m:H'))), 0, 8);
+		$this->date = date('d/m/Y H:i:s', $this->timestamp);
 	}
 
 	function output($odd = true) {
@@ -120,7 +122,6 @@ class Quote {
 
 		$c = $this;
 		$c->style = sprintf('%s%s', $odd ? 'odd' : 'even', ($c->status == 'approved') ? '' : ' unapproved');
-		$c->date = date('d/m/Y H:i:s', $c->timestamp);
 		$c->tweet = $this->text_clean($c->text, 'www_tweet');
 		$c->tweet = urlencode(sprintf('%s - %s', $c->tweet, $c->permalink));
 		$c->tweet = sprintf('https://twitter.com/intent/tweet?text=%s', $c->tweet);
