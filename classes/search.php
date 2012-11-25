@@ -20,10 +20,10 @@
 require_once(classes_dir.'quote.php'); // Quote::READ
 
 class Search {
-	const SEARCH = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db AND quotes.hidden = 0 ORDER BY id DESC';
-	const SEARCH_HIDDEN = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db ORDER BY id DESC';
-	const COUNT = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db AND quotes.hidden = 0';
-	const COUNT_HIDDEN = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment) AND db = :db';
+	const SEARCH = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment %s) AND db = :db AND quotes.hidden = 0 ORDER BY id DESC';
+	const SEARCH_HIDDEN = 'SELECT %s FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment %s) AND db = :db ORDER BY id DESC';
+	const COUNT = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment %s) AND db = :db AND quotes.hidden = 0';
+	const COUNT_HIDDEN = 'SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND (text LIKE :text OR comment LIKE :comment %s) AND db = :db';
 
 	/* whether a search has been done with this class; called $read for consistance */
 	var $read = false;
@@ -46,10 +46,13 @@ class Search {
 			it later and we don't want to send garbage back */
 		$criteria = $this->clean_criteria($this->criteria);
 
+		$escape = $db->type == 'sqlite' ? 'ESCAPE \'\\\'' : '';
 		$query = $this->show_hidden ?
-			sprintf(Search::SEARCH_HIDDEN, Quote::READ) :
-			sprintf(Search::SEARCH, Quote::READ);
-		$query_count = $this->show_hidden ? Search::COUNT_HIDDEN : Search::COUNT;
+			sprintf(Search::SEARCH_HIDDEN, Quote::READ, $escape) :
+			sprintf(Search::SEARCH, Quote::READ, $escape);
+		$query_count = $this->show_hidden ?
+			sprintf(Search::COUNT_HIDDEN, $escape) :
+			sprintf(Search::COUNT, $escape);
 
 		/* this may look like a double query but it's not:
 			1) we will need to store the number of results anyway;
