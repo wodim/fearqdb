@@ -29,6 +29,7 @@ require(include_dir.'defines.php');
 /* initialise db */
 require(classes_dir.'db.php');
 $db = new DB();
+$db->type = $config['db']['type'];
 $db->user = $config['db']['user'];
 $db->pass = $config['db']['pass'];
 $db->name = $config['db']['name'];
@@ -49,7 +50,9 @@ if (!$settings->init()) {
 }
 
 /* encoding */
-$db->query(sprintf('SET NAMES utf8 COLLATE %s', $settings->collate));
+if ($db->type == 'mysql') {
+	$db->query(sprintf('SET NAMES utf8 COLLATE %s', $settings->collate));
+}
 mb_internal_encoding('utf8');
 
 // initialize Haanga

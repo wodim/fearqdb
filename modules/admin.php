@@ -37,15 +37,15 @@ function all_quotes($all_dbs = true) {
 	}
 
 	foreach ($results as $result) {
-		$return[] = $result->id;
+		$return[] = $result['id'];
 	}
 
 	return $return;
 }
 
 header('HTTP/1.1 403 Forbidden');
-header('Content-Type: text/plain');
-die('Access denied');
+header('Content-Type: text/plain; charset=utf8');
+//die('Access denied');
 
 switch ($params[1]) {
 	/* example modules. */
@@ -143,19 +143,55 @@ switch ($params[1]) {
 		foreach ($quotes as $quote) {
 			$db->query('INSERT INTO quotes2 (permaid, nick, date, ip, text, comment, db, status, hidden, api)
 				VALUES (:permaid, :nick, :date, :ip, :text, :comment, :db, :status, :hidden, :api)', array(
-				array(':permaid', $quote->permaid, PDO::PARAM_STR),
-				array(':nick', $quote->nick, PDO::PARAM_STR),
-				array(':date', $quote->date, PDO::PARAM_STR),
-				array(':ip', $quote->ip, PDO::PARAM_STR),
-				array(':text', $quote->text, PDO::PARAM_STR),
-				array(':comment', $quote->comment, PDO::PARAM_STR),
-				array(':db', $quote->db, PDO::PARAM_STR),
-				array(':status', $quote->status, PDO::PARAM_STR),
-				array(':hidden', $quote->hidden, PDO::PARAM_INT),
-				array(':api', $quote->api, PDO::PARAM_INT)
+				array(':permaid', $quote['permaid'], PDO::PARAM_STR),
+				array(':nick', $quote['nick'], PDO::PARAM_STR),
+				array(':date', $quote['date'], PDO::PARAM_STR),
+				array(':ip', $quote['ip'], PDO::PARAM_STR),
+				array(':text', $quote['text'], PDO::PARAM_STR),
+				array(':comment', $quote['comment'], PDO::PARAM_STR),
+				array(':db', $quote['db'], PDO::PARAM_STR),
+				array(':status', $quote['status'], PDO::PARAM_STR),
+				array(':hidden', $quote['hidden'], PDO::PARAM_INT),
+				array(':api', $quote['api'], PDO::PARAM_INT)
 			));
-			printf("Inserted %s\n", $quote->permaid);
+			printf("Inserted %s\n", $quote['permaid']);
 		}
 		printf("End after %d queries\n", $db->num_queries);
+		break;
+	case 'timestamp':
+		/* convert datetime to unix timestamps */
+		$quotes = $db->get_results('SELECT id, date, UNIX_TIMESTAMP(date) AS ts FROM quotes ORDER BY date');
+		foreach ($quotes as $quote) {
+			$db->query('UPDATE quotes SET timestamp = :timestamp WHERE id = :id', array(
+				array(':timestamp', $quote['ts'], PDO::PARAM_STR),
+				array(':id', $quote['id'], PDO::PARAM_STR)
+			));
+			printf("Updated %s\n", $quote['id']);
+		}
+		printf("End after %d queries\n", $db->num_queries);
+		break;
+	case 'sqlite':
+		/* dump everything and get it ready for a sqlite export */
+		$tables = $db->get_results('SHOW TABLES');
+		foreach ($tables as $table) {
+			$table = reset($table);
+			printf("-- Dumping data for table `%s`\n", $table);
+			$columns = $db->get_results(sprintf('DESCRIBE %s', $table));
+			$structure = array();
+			foreach ($columns as $column) {
+				$structure[] = sprintf('`%s`', $column['Field']);
+			}
+			$structure = implode(', ', $structure);
+			$rows = $db->get_results(sprintf('SELECT * FROM %s', $table));
+			foreach ($rows as $row) {
+				$values = array();
+				foreach ($row as $value) {
+					$values[] = ctype_digit($value) ? (int)$value : sprintf('\'%s\'', str_replace('\'', '\'\'', $value));
+				}
+				$values = implode(', ', $values);
+				printf("INSERT INTO %s (%s) VALUES (%s);\n", $table, $structure, $values);
+			}
+			printf("\n");
+		}
 		break;
 }

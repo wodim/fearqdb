@@ -18,23 +18,37 @@
 */
 
 class DB {
+	var $type = null;
+	var $debug = false;
+	var $persistent = false;
+	/* mysql */
 	var $user = null;
 	var $pass = null;
 	var $name = null;
 	var $socket = null;
 	var $host = null;
-	var $debug = false;
-	var $persistent = false;
+	/* sqlite */
+	var $file = null;
 
 	var $dbh = null;
 	var $num_queries = 0;
 
 	function init() {
-		$location = ($this->socket != null) ?
-			sprintf('unix-socket=%s', $this->socket) :
-			sprintf('host=%s', $this->host);
-		$dsn = sprintf('mysql:dbname=%s;%s;charset=utf8',
-			$this->name, $location);
+		switch ($this->type) {
+			case 'sqlite':
+				if (!file_exists($this->file)) {
+					$this->failure('Could not open the sqlite db file');
+				}
+				$dsn = sprintf('sqlite:%s', $this->file);
+				break;
+			case 'mysql':
+			default:
+				$location = ($this->socket != null) ?
+					sprintf('unix-socket=%s', $this->socket) :
+					sprintf('host=%s', $this->host);
+				$dsn = sprintf('mysql:dbname=%s;%s;charset=utf8',
+					$this->name, $location);
+		}
 
 		try {
 			$this->dbh = new PDO($dsn, $this->user, $this->pass,
@@ -67,7 +81,7 @@ class DB {
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
-		$results = $stmt->fetchAll(PDO::FETCH_BOTH);
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return isset($results[0]) ? $results[0] : null;
 	}
 
@@ -76,7 +90,7 @@ class DB {
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
 		$this->run($stmt, $binds);
 
-		$results = $stmt->fetchAll(PDO::FETCH_BOTH);
+		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $results ? $results : null;
 	}
 

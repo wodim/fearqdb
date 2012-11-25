@@ -18,7 +18,7 @@
 */
 
 class Quote {
-	const READ = 'id, permaid, nick, timestamp, ip, text, comment, status, hidden AS ts, db, api';
+	const READ = 'id, permaid, nick, timestamp, ip, text, comment, status, hidden, db, api';
 	const READ_BY_ID = 'SELECT id, permaid, nick, timestamp, ip, text, comment, status, hidden, db, api FROM quotes WHERE id = :id AND db = :db';
 	const READ_BY_PERMAID = 'SELECT id, permaid, nick, timestamp, ip, text, comment, status, hidden, db, api FROM quotes WHERE permaid = :permaid AND db = :db';
 
@@ -26,13 +26,12 @@ class Quote {
 	var $id = 0;
 	var $permaid = '';
 	var $nick = '';
-	var $date = '';
+	var $timestamp = 0;
 	var $ip = '';
 	var $text = '';
 	var $comment = '';
 	var $status = 'pending';
 	var $hidden = 0;
-	var $ts = 0;
 	var $db = '';
 	var $api = 0;
 
