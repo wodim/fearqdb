@@ -29,6 +29,10 @@ class Memcache {
 	function init() {
 		global $settings;
 
+		if ($this->enabled == false) {
+			return false;
+		}
+
 		$this->mch = new Memcached();
 		if (!$this->mch->addServer($this->server, $this->port)) {
 			debug('error when connecting to the memcache server');
@@ -43,6 +47,9 @@ class Memcache {
 	}
 
 	function get($key) {
+		if ($this->enabled == false) {
+			return false;
+		}
 		$this->debug(sprintf('get key %s', $key));
 		$return = $this->mch->get($key);
 		if ($this->mch->getResultCode() != Memcached::RES_SUCCESS) {
@@ -53,6 +60,9 @@ class Memcache {
 	}
 
 	function set($key, $value, $expiration = 0) {
+		if ($this->enabled == false) {
+			return false;
+		}
 		if (is_array($value) || is_object($value)) {
 			$this->debug(sprintf('set key %s exp %ds', $key, $expiration));
 		} else {
@@ -67,6 +77,9 @@ class Memcache {
 	}
 
 	function delete($key) {
+		if ($this->enabled == false) {
+			return false;
+		}
 		$this->debug(sprintf('delete key %s', $key));
 		$return = $this->mch->delete($key);
 		if ($this->mch->getResultCode() != Memcached::RES_SUCCESS) {
@@ -77,6 +90,9 @@ class Memcache {
 	}
 
 	function flush() {
+		if ($this->enabled == false) {
+			return false;
+		}
 		$this->debug(sprintf('flushing all keys'));
 		$return = $this->mch->flush();
 		if ($this->mch->getResultCode() != Memcached::RES_SUCCESS) {

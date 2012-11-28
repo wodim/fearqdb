@@ -55,15 +55,14 @@ if (!$settings->init()) {
 }
 
 /* initialise memcache */
-if ($config['memcache']['enabled']) {
-	require(classes_dir.'memcache.php');
-	$memcache = new Memcache();
-	$memcache->server = $config['memcache']['server'];
-	$memcache->port = $config['memcache']['port'];
-	$memcache->prefix = $config['memcache']['prefix'] ? $config['memcache']['prefix'] : 'fearqdb';
-	$memcache->debug = $config['memcache']['debug'];
-	$memcache->init();
-}
+require(classes_dir.'memcache.php');
+$memcache = new Memcache();
+$memcache->enabled = $config['memcache']['enabled'];
+$memcache->server = $config['memcache']['server'];
+$memcache->port = $config['memcache']['port'];
+$memcache->prefix = $config['memcache']['prefix'] ? $config['memcache']['prefix'] : 'fearqdb';
+$memcache->debug = $config['memcache']['debug'];
+$memcache->init();
 
 /* encoding */
 if ($db->type == 'mysql') {

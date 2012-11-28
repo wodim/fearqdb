@@ -97,12 +97,14 @@ class Settings {
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 
-		/* flush memcached pages */
-		$levels = array('anonymous', 'user');
-		foreach ($levels as $level) {
-			$pages = $memcache->page_list($level);
-			foreach ($pages as $page) {
-				$memcache->delete(sprintf('page_%d_level_%s', $page, $level));
+		if ($memcache->enabled) {
+			/* flush memcached pages */
+			$levels = array('anonymous', 'user');
+			foreach ($levels as $level) {
+				$pages = $memcache->page_list($level);
+				foreach ($pages as $page) {
+					$memcache->delete(sprintf('page_%d_level_%s', $page, $level));
+				}
 			}
 		}
 	}
