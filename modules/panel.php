@@ -194,6 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 } else {
 	$html->do_header(_('Administration'));
-	$html->output .= Haanga::Load('panel.html', null, true);
+	$html->output .= Haanga::Load('panel.html', array(), true);
 	$html->do_footer();
 }
