@@ -111,3 +111,5 @@ if (!isset($module)) {
 }
 
 $session->hit();
+
+echo $html->output;

@@ -38,7 +38,7 @@ header('Content-Type: application/rss+xml');
 $rss['date'] = date('r', $quotes[0]['timestamp']);
 
 $vars = compact('rss');
-Haanga::Load('rss-header.html', $vars);
+$html->output .= Haanga::Load('rss-header.html', $vars, true);
 
 $quote = new Quote();
 foreach ($quotes as $this_quote) {
@@ -46,4 +46,4 @@ foreach ($quotes as $this_quote) {
 	$quote->output_rss();
 }
 
-Haanga::Load('rss-footer.html');
+$html->output .= Haanga::Load('rss-footer.html');

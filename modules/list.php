@@ -67,5 +67,5 @@ foreach ($quotes as $this_quote) {
 	$odd = !$odd;
 }
 
-echo $pager;
+$html->output .= $pager;
 $html->do_footer();

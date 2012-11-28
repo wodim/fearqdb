@@ -70,6 +70,6 @@ $html->do_header(_('Submit new quote'));
 
 $vars = compact('session', 'nick');
 
-Haanga::Load('submit.html', $vars);
+$html->output .= Haanga::Load('submit.html', $vars, true);
 
 $html->do_footer();

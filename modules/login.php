@@ -59,7 +59,7 @@ switch ($params[0]) {
 				$message = ($params[1] == 'error') ? _('Invalid password. Try again.') : '';
 				$html->do_header(_('Log in'));
 				$vars = compact('origin', 'message');
-				Haanga::Load('userlogin.html', $vars);
+				$html->output .= Haanga::Load('userlogin.html', $vars, true);
 				$html->do_footer();
 		}
 		break;

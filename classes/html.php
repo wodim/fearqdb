@@ -18,6 +18,8 @@
 */
 
 class HTML {
+	var $output = null;
+
 	function do_header($title = null) {
 		global $session, $settings;
 
@@ -26,14 +28,14 @@ class HTML {
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
 		$vars = compact('title', 'topic', 'session');
-		Haanga::Load('header.html', $vars);
+		$this->output .= Haanga::Load('header.html', $vars, true);
 	}
 
 	function do_footer() {
 		global $start, $db, $session;
 
 		$vars = compact('session');
-		Haanga::Load('footer.html', $vars);
+		$this->output .= Haanga::Load('footer.html', $vars, true);
 		printf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
 	}
 
@@ -90,7 +92,7 @@ class HTML {
 		$session->hit();
 
 		$vars = compact('title', 'message');
-		Haanga::Load('sysmsg.html', $vars);
+		$this->output .= Haanga::Load('sysmsg.html', $vars, true);
 		$this->do_footer();
 		die();
 	}

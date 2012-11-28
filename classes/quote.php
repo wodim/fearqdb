@@ -114,7 +114,7 @@ class Quote {
 	}
 
 	function output($odd = true) {
-		global $session;
+		global $session, $html;
 		if (!$this->read) {
 			$session->log('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
 			die();
@@ -129,13 +129,13 @@ class Quote {
 		$c->comment = $this->text_clean($c->comment, 'www_comment');
 
 		$vars = compact('c');
-		Haanga::Load('quote.html', $vars);
+		$html->output .= Haanga::Load('quote.html', $vars, true);
 
 		return true;
 	}
 
 	function output_rss() {
-		global $session;
+		global $session, $html;
 		if (!$this->read) {
 			$session->log('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
 			die();
@@ -149,7 +149,7 @@ class Quote {
 		$c->ts = date('r', $c->timestamp);
 
 		$vars = compact('c');
-		Haanga::Load('rss-quote.html', $vars);
+		$html->output .= Haanga::Load('rss-quote.html', $vars, true);
 
 		return true;
 	}

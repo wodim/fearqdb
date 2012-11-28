@@ -36,11 +36,11 @@ switch ($params[0]) {
 			default:
 				$allow = "User-agent: *\nAllow: /";
 		}
-		echo $allow;
+		$html->output .= $allow;
 		break;
 	case 'opensearch.xml':
 		header('Content-Type: application/xml');
-		Haanga::Load('opensearch.html');
+		$html->output .= Haanga::Load('opensearch.html', null, true);
 		break;
 	case 'favicon.ico':
 		header('HTTP/1.1 301 Moved Permanently');
