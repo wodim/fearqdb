@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $settings, $html, $session, $push;
+global $settings, $html, $session, $push, $memcache;
 
 if ($session->level != 'admin') {
 	$html->do_sysmsg('Forbidden', null, 403);
@@ -177,6 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$db->query('UPDATE sites SET robots = \'disallow\' WHERE db = :db', array(
 						array(':db', $settings->db, PDO::PARAM_STR)
 					));
+					break;
+				case 'flush_memcache':
+					$memcache->flush();
 					break;
 			}
 			printf('successful %s', $_POST['misc_action']);
