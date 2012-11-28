@@ -17,6 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* ---------- DB ---------- */
 /* mysql or sqlite */
 $config['db']['type'] = null;
 
@@ -38,3 +39,9 @@ $config['db']['name'] = null;
 	(it is obviously not possible to use both at once) */
 $config['db']['socket'] = null;
 $config['db']['host'] = null;
+
+/* ---------- MEMCACHE ---------- */
+$config['memcache']['enabled'] = false;
+$config['memcache']['server'] = null;
+$config['memcache']['port'] = null;
+$config['memcache']['prefix'] = 'fearqdb';

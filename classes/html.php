@@ -36,7 +36,7 @@ class HTML {
 
 		$vars = compact('session');
 		$this->output .= Haanga::Load('footer.html', $vars, true);
-		printf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
+		$this->output .= sprintf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
 	}
 
 	function do_pages($page = 1, $total_pages, $query, $adjacents = 2) {

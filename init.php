@@ -46,6 +46,15 @@ if (!$db->init()) {
 	die('DBE');
 }
 
+/* initialise memcache */
+if ($config['memcache']['enabled']) {
+	require(classes_dir.'memcache.php');
+	$memcache = new Memcache();
+	$memcache->server = $config['memcache']['server'];
+	$memcache->port = $config['memcache']['port'];
+	$memcache->prefix = $config['memcache']['prefix'] ? $config['memcache']['prefix'] : 'fearqdb';
+}
+
 /* read settings, determine virtual host  */
 require(classes_dir.'settings.php');
 $settings = new Settings();
