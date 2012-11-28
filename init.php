@@ -46,6 +46,14 @@ if (!$db->init()) {
 	die('DBE');
 }
 
+/* read settings, determine virtual host  */
+require(classes_dir.'settings.php');
+$settings = new Settings();
+if (!$settings->init()) {
+	header('HTTP/1.1 500 Internal Server Error');
+	die('VHE');
+}
+
 /* initialise memcache */
 if ($config['memcache']['enabled']) {
 	require(classes_dir.'memcache.php');
@@ -53,14 +61,8 @@ if ($config['memcache']['enabled']) {
 	$memcache->server = $config['memcache']['server'];
 	$memcache->port = $config['memcache']['port'];
 	$memcache->prefix = $config['memcache']['prefix'] ? $config['memcache']['prefix'] : 'fearqdb';
-}
-
-/* read settings, determine virtual host  */
-require(classes_dir.'settings.php');
-$settings = new Settings();
-if (!$settings->init()) {
-	header('HTTP/1.1 500 Internal Server Error');
-	die('VHE');
+	$memcache->debug = $config['memcache']['debug'];
+	$memcache->init();
 }
 
 /* encoding */

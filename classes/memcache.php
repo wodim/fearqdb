@@ -22,8 +22,73 @@ class Memcache {
 	var $server = null;
 	var $port = 0;
 	var $prefix = null;
+	var $debug = false;
+
+	var $mch = null;
 
 	function init() {
+		global $settings;
 
+		$mch = new Memcached();
+		if (!$mch->addServer($this->server, $this->port)) {
+			debug('error when connecting to the memcache server');
+			$this->enabled = false;
+			return false;
+		}
+		$mch->setOption(Memcached::OPT_PREFIX_KEY,
+			sprintf('%s_%s_', $this->prefix, $settings->db));
+
+		$this->debug(sprintf('connected successfully to %s:%s', $this->server, $this->port));
+		return true;
+	}
+
+	function get($key) {
+		$this->debug(sprintf('get key %s'));
+		$return = $mch->get($key);
+		$result = $m->getResultCode();
+		if ($result != Memcached::RES_SUCCESS) {
+			debug('error fetching key %s: %d', $key, $result);
+			return false;
+		}
+		return true;
+	}
+
+	function set($key, $value, $expiration = 0) {
+		$this->debug(sprintf('set key %s=%s exp %ds'));
+		$return = $mch->set($key, $value, $expiration);
+		$result = $m->getResultCode();
+		if ($result != Memcached::RES_SUCCESS) {
+			debug('error storing key %s: %d', $key, $result);
+			return false;
+		}
+		return true;
+	}
+
+	function delete($key) {
+		$this->debug(sprintf('delete key %s'));
+		$return = $mch->delete($key);
+		$result = $m->getResultCode();
+		if ($result != Memcached::RES_SUCCESS) {
+			debug('error deleting key %s: %d', $key, $result);
+			return false;
+		}
+		return true;
+	}
+
+	function flush() {
+		$this->debug(sprintf('flushing all keys'));
+		$return = $mch->flush();
+		$result = $m->getResultCode();
+		if ($result != Memcached::RES_SUCCESS) {
+			debug('error flushing keys: %d', $result);
+			return false;
+		}
+		return true;
+	}
+
+	function debug($message) {
+		if ($this->debug) {
+			debug($message);
+		}
 	}
 }

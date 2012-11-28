@@ -45,3 +45,4 @@ $config['memcache']['enabled'] = false;
 $config['memcache']['server'] = null;
 $config['memcache']['port'] = null;
 $config['memcache']['prefix'] = 'fearqdb';
+$config['memcache']['debug'] = false;
