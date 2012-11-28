@@ -49,11 +49,15 @@ class Memcache {
 			$this->debug(sprintf('error fetching key %s: %s', $key, $this->mch->getResultMessage()));
 			return false;
 		}
-		return true;
+		return $return;
 	}
 
 	function set($key, $value, $expiration = 0) {
-		$this->debug(sprintf('set key %s=%s exp %ds', $key, $value, $expiration));
+		if (is_array($value) || is_object($value)) {
+			$this->debug(sprintf('set key %s exp %ds', $key, $expiration));
+		} else {
+			$this->debug(sprintf('set key %s=%s exp %ds', $key, $value, $expiration));
+		}
 		$return = $this->mch->set($key, $value, $expiration);
 		if ($this->mch->getResultCode() != Memcached::RES_SUCCESS) {
 			$this->debug(sprintf('error storing key %s: %s', $key, $this->mch->getResultMessage()));
@@ -86,5 +90,25 @@ class Memcache {
 		if ($this->debug) {
 			debug($message);
 		}
+	}
+
+	function page_add($page, $level) {
+		$level = ($level == 'anonymous') ? 'anonymous' : 'user';
+		$pages = $this->get(sprintf('misc_pages_%s', $level));
+		if (!$pages) {
+			$pages = array();
+		}
+		if (!in_array($page, $pages)) {
+			$pages[] = $page;
+		}
+		$this->set(sprintf('misc_pages_%s', $level), $pages);
+	}
+
+	function page_list($level) {
+		$pages = $this->get(sprintf('misc_pages_%s', $level));
+		if (!$pages) {
+			return false;
+		}
+		return $pages;
 	}
 }

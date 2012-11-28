@@ -31,7 +31,7 @@ class DB {
 	var $file = null;
 
 	var $dbh = null;
-	var $num_queries = 0;
+	var $num_queries = -1;
 
 	function init() {
 		switch ($this->type) {

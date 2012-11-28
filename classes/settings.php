@@ -82,7 +82,7 @@ class Settings {
 	}
 
 	function recount() {
-		global $db;
+		global $db, $memcache;
 
 		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
@@ -96,5 +96,14 @@ class Settings {
 			array(':pending_quotes', $pending_quotes, PDO::PARAM_INT),
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
+
+		/* flush memcached pages */
+		$levels = array('anonymous', 'user');
+		foreach ($levels as $level) {
+			$pages = $memcache->page_list($level);
+			foreach ($pages as $page) {
+				$memcache->delete(sprintf('page_%d_level_%s', $page, $level));
+			}
+		}
 	}
 }
