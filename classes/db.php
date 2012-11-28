@@ -31,7 +31,7 @@ class DB {
 	var $file = null;
 
 	var $dbh = null;
-	var $num_queries = -1;
+	var $num_queries = 0;
 
 	function init() {
 		switch ($this->type) {
@@ -40,6 +40,7 @@ class DB {
 					$this->failure('Could not open the sqlite db file');
 				}
 				$dsn = sprintf('sqlite:%s', $this->file);
+				$this->num_queries--;
 				break;
 			case 'mysql':
 			default:
@@ -48,6 +49,7 @@ class DB {
 					sprintf('host=%s', $this->host);
 				$dsn = sprintf('mysql:dbname=%s;%s;charset=utf8',
 					$this->name, $location);
+				$this->num_queries -= 2;
 		}
 
 		try {

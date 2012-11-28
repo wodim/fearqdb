@@ -21,21 +21,40 @@ class HTML {
 	var $output = null;
 
 	function do_header($title = null) {
-		global $session, $settings;
+		global $session, $settings, $memcache;
 
 		header('Content-Type: text/html; charset=UTF-8');
+
+		if ($session->level == 'anonymous') {
+			$cached = $memcache->get('header');
+			if ($cached !== false) {
+				$this->output .= $cached;
+				return true;
+			}
+		}
 		$topic = new stdClass();
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
 		$vars = compact('title', 'topic', 'session');
-		$this->output .= Haanga::Load('header.html', $vars, true);
+		$cached = Haanga::Load('header.html', $vars, true);
+		if ($session->level == 'anonymous') {
+			$memcache->set('header', $cached);
+		}
+		$this->output .= $cached;
 	}
 
 	function do_footer() {
-		global $start, $db, $session;
+		global $start, $db, $session, $memcache;
 
-		$vars = compact('session');
-		$this->output .= Haanga::Load('footer.html', $vars, true);
+		$cached = $memcache->get('footer');
+		if ($cached !== false) {
+			$this->output .= $cached;
+		} else {
+			$vars = compact('session');
+			$cached = Haanga::Load('footer.html', $vars, true);
+			$memcache->set('footer', $cached);
+			$this->output .= $cached;
+		}
 		$this->output .= sprintf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
 	}
 
