@@ -18,6 +18,9 @@
 */
 
 require('config.php');
+if (file_exists('local.php')) {
+	require('local.php');
+}
 
 define('include_dir', 'include/');
 define('modules_dir', 'modules/');
