@@ -111,6 +111,7 @@ class Quote {
 		$this->excerpt = $this->text_clean($this->text, 'excerpt');
 		$this->password = substr(md5(sprintf('a%sb%sc%sd', $settings->site_key, $this->permaid, date('d/m:H'))), 0, 8);
 		$this->date = date('d/m/Y H:i:s', $this->timestamp);
+		$this->permaid = (string)$this->permaid;
 	}
 
 	function output($odd = true) {
