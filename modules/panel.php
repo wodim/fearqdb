@@ -137,8 +137,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					echo 'Approving: ';
 					foreach ($quotes as $quoteid) {
 						$quote = new Quote();
-						$quote->permaid = $quoteid->permaid;
-						$quote->read();
+						$quote->permaid = $quoteid['permaid'];
+						if (!$quote->read()) {
+							continue;
+						}
 						printf('%s ', $quote->permaid);
 						$push->hit(sprintf(_('New quote: %s - %s'), $quote->permalink, $quote->excerpt));
 						$quote->status = 'approved';
