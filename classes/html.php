@@ -112,6 +112,7 @@ class HTML {
 		$vars = compact('title', 'message');
 		$this->output .= Haanga::Load('sysmsg.html', $vars, true);
 		$this->do_footer();
+		echo $this->output;
 		die();
 	}
 }
