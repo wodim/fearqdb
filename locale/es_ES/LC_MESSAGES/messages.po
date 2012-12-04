@@ -185,3 +185,24 @@ msgstr "%s ha enviado un quote y está esperando ser aprobado."
 
 msgid "New quote: %s - %s"
 msgstr "Nuevo quote: %s - %s"
+
+msgid "View quotes from:"
+msgstr "Ver quotes de:"
+
+msgid "Last week"
+msgstr "Última semana"
+
+msgid "Last month"
+msgstr "Último mes"
+
+msgid "Last three months"
+msgstr "Últimos tres meses"
+
+msgid "Last six months"
+msgstr "Últimos tres meses"
+
+msgid "Last year"
+msgstr "Último año"
+
+msgid "The beginning of time"
+msgstr "Siempre"
