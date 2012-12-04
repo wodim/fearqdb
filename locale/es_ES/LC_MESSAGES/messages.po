@@ -199,7 +199,7 @@ msgid "Last three months"
 msgstr "Últimos tres meses"
 
 msgid "Last six months"
-msgstr "Últimos tres meses"
+msgstr "Últimos seis meses"
 
 msgid "Last year"
 msgstr "Último año"
