@@ -134,7 +134,6 @@ a {
 	min-height: 60px;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
-	text-shadow: 0 0 3px white, 0 0 3px white, 0 0 3px white;
 }
 
 .quote.odd .text {
@@ -163,12 +162,12 @@ a {
 	font-style: normal;
 	border-radius: 2px;
 	padding: 1px 2px 0;
-	text-shadow: 0 0 5px white;
 }
 
 .quote .text strong em a {
 	color: black;
 	text-decoration: none;
+	text-shadow: 0 0 1px white;
 }
 
 .quote .text strong em.colour-0 {
