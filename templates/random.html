@@ -1,0 +1,11 @@
+<div class="filter">
+	<span>{% trans _('View quotes from:') %}</span>
+	<ul>
+		<li><a {{selected.oneweek}}href="{{settings.base_url}}random/week/1">{% trans _('Last week') %}</a></li>
+		<li><a {{selected.onemonth}}href="{{settings.base_url}}random/month/1">{% trans _('Last month') %}</a></li>
+		<li><a {{selected.threemonths}}href="{{settings.base_url}}random/month/3">{% trans _('Last three months') %}</a></li>
+		<li><a {{selected.sixmonths}}href="{{settings.base_url}}random/month/6">{% trans _('Last six months') %}</a></li>
+		<li><a {{selected.oneyear}}href="{{settings.base_url}}random/year/1">{% trans _('Last year') %}</a></li>
+		<li><a {{selected.all}}href="{{settings.base_url}}random/all">{% trans _('The beginning of time') %}</a></li>
+	</ul>
+</div>

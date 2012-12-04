@@ -110,7 +110,7 @@ a {
 }
 
 .content {
-	padding: 30px 35px 35px 25px;
+	padding: 30px 35px 35px 30px;
 }
 
 .quote {
@@ -129,7 +129,7 @@ a {
 	word-wrap: break-word;
 	background: url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
 	line-height: 16px;
-	width: 639px;
+	width: 634px;
 	float: left;
 	min-height: 60px;
 	border-top-right-radius: 3px;
@@ -511,8 +511,6 @@ input[type=text].sep {
 }
 
 .topic {
-	background: #fafafa;
-	background: url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
 	margin: -30px -35px 20px -25px;
 	padding: 12px 30px;
 	font-size: 9pt;
@@ -529,6 +527,43 @@ input[type=text].sep {
 
 .quote .meta.info .rest {
 	margin: 5px 7px;
+}
+
+.topic, .filter {
+	background: #fafafa;
+	background: url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
+}
+
+.filter {
+	padding: 12px;
+	font-size: 9pt;
+	margin-bottom: 30px;
+}
+
+.filter, .filter ul li a.selected {
+	border-radius: 3px;
+}
+
+.filter span {
+	font-weight: bold;
+	margin: 0 5px;
+}
+
+.filter ul, .filter ul li {
+	display: inline-block;
+}
+
+.filter ul li a {
+	padding: 5px 10px;
+	text-decoration: none;
+	/*color: #888;*/
+}
+
+.filter ul li a.selected {
+	background: #6d8cb7;
+	color: white;
+	font-weight: bold;
+	text-shadow: 0 2px 1px #4d73a7;
 }
 
 @media only screen and (max-width: 820px) {
