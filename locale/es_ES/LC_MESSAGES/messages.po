@@ -91,12 +91,6 @@ msgstr "Quote %d"
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-msgid "« prev"
-msgstr "« anterior"
-
-msgid "next »"
-msgstr "siguiente »"
-
 msgid "Are you lost?"
 msgstr "¿Te has perdido?"
 

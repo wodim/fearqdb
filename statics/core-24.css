@@ -367,6 +367,10 @@ strong.criteria {
 	border: 1px solid #45984c;
 }
 
+.pager span.arrow, .pager a.arrow {
+	padding: 3px 10px;
+}
+
 .footer {
 	font-weight: bold;
 	border-top: 1px solid #ccc;

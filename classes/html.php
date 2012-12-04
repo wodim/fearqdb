@@ -66,9 +66,9 @@ class HTML {
 
 		$pager = '<div class="pager">';
 		if ($page == 1) {
-			$pager .= '<span>'._('« prev').'</span>';
+			$pager .= '<span class="arrow">«</span>';
 		} else {
-			$pager .= '<a href="'.sprintf($query, $page - 1).'">'._('« prev').'</a>';
+			$pager .= '<a class="arrow" href="'.sprintf($query, $page - 1).'">«</a>';
 		}
 
 		for ($i = 1; $i < $total_pages + 1; $i++) {
@@ -88,9 +88,9 @@ class HTML {
 		}
 
 		if ($page == $total_pages) {
-			$pager .= '<span>'._('next »').'</span>';
+			$pager .= '<span class="arrow">»</span>';
 		} else {
-			$pager .= '<a href="'.sprintf($query, $page + 1).'">'._('next »').'</a>';
+			$pager .= '<a class="arrow" href="'.sprintf($query, $page + 1).'">»</a>';
 		}
 		return $pager.'</div>';
 	}
