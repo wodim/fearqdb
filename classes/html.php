@@ -21,7 +21,7 @@ class HTML {
 	var $output = null;
 
 	function do_header($title = null) {
-		global $session, $settings, $memcache, $home;
+		global $session, $settings, $memcache;
 
 		header('Content-Type: text/html; charset=UTF-8');
 
@@ -35,7 +35,7 @@ class HTML {
 		$topic = new stdClass();
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
-		$vars = compact('title', 'topic', 'session', 'home');
+		$vars = compact('title', 'topic', 'session');
 		$cached = Haanga::Load('header.html', $vars, true);
 		if ($session->level == 'anonymous') {
 			$memcache->set('header', $cached);

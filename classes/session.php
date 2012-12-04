@@ -32,6 +32,7 @@ class Session {
 	var $hit = false;
 	var $sysmsg = false;
 	var $nick = '';
+	var $home = false;
 
 	function init() {
 		global $settings, $db, $params;

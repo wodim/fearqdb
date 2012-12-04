@@ -76,7 +76,7 @@
 		</div>
 		<div class="page">
 			<div class="content">
-{% if topic.text && home %}
+{% if topic.text && session.home %}
 				<div class="topic">
 					<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text}}</span>
 				</div>

@@ -40,7 +40,6 @@ foreach ($params as $k => $v) {
 }
 
 $params[0] = isset($params[0]) ? $params[0] : 'page';
-$module = $home = false;
 
 switch ($params[0]) {
 	case 'robots.txt':
@@ -98,7 +97,7 @@ switch ($params[0]) {
 	default:
 		if (!$params[0]) {
 			$module = 'list';
-			$home = true;
+			$session->home = true;
 			require(modules_dir.'list.php');
 		} else {
 			$module = 'quote';
