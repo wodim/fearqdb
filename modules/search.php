@@ -66,7 +66,7 @@ if (!$search->results) {
 		$odd = !$odd;
 	}
 
-	echo $pager;
+	$html->output .= $pager;
 
 	$html->do_footer();
 }

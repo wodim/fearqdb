@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$start = microtime(true);
-
 require('init.php');
 
 if ($settings->no_rewrite) {
@@ -115,3 +113,4 @@ if (!isset($module)) {
 $session->hit();
 
 echo $html->output;
+printf('<!-- %.4f seconds, %d queries -->', microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], $db->num_queries);

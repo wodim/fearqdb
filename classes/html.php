@@ -55,7 +55,6 @@ class HTML {
 			$memcache->set('footer', $cached);
 			$this->output .= $cached;
 		}
-		$this->output .= sprintf('<!-- %.4f seconds, %d queries -->', (microtime(true) - $start), $db->num_queries);
 	}
 
 	function do_pages($page = 1, $total_pages, $query, $adjacents = 2) {
@@ -113,6 +112,7 @@ class HTML {
 		$vars = compact('title', 'message');
 		$this->output .= Haanga::Load('sysmsg.html', $vars, true);
 		$this->do_footer();
+		echo $this->output;
 		die();
 	}
 }

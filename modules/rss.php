@@ -46,4 +46,4 @@ foreach ($quotes as $this_quote) {
 	$quote->output_rss();
 }
 
-$html->output .= Haanga::Load('rss-footer.html');
+$html->output .= Haanga::Load('rss-footer.html', array(), true);

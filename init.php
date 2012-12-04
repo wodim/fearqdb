@@ -108,7 +108,6 @@ if (!is_bot() && ($settings->privacy_level == 2
 	&& $session->level == 'anonymous'
 	&& !preg_match(sprintf('/^%s(login|api|userlogin)/', preg_quote($settings->base_url, '/')), $_SERVER['REQUEST_URI']))) {
 	$html->do_sysmsg(_('Log in'), _('You must log in to read any quote.'), 403);
-	die();
 }
 
 /* make privacy_level_for_bots effective */
