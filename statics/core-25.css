@@ -570,6 +570,14 @@ input[type=text].sep {
 	text-shadow: 0 2px 1px #4d73a7;
 }
 
+.quote.topich .text {
+	min-height: inherit;
+}
+
+.quote.topich .meta .nick {
+	margin-bottom: 0;
+}
+
 @media only screen and (max-width: 820px) {
 	.quote .meta.info {
 		float: none;
@@ -580,7 +588,7 @@ input[type=text].sep {
 	.quote .text {
 		float: none;
 		width: auto;
-		max-height: inherit;
+		min-height: inherit;
 	}
 
 	.quote .meta .nick,
@@ -607,7 +615,7 @@ input[type=text].sep {
 	}
 
 	.title, .header {
-		height: 72px;
+		height: 62px;
 	}
 
 	.bar {
@@ -628,5 +636,32 @@ input[type=text].sep {
 		-webkit-transition: none;
 		-o-transition: none;
 		-ms-transition: none;
+	}
+
+	.quote .meta a.id {
+		display: inline-block;
+		margin: 0;
+		border-radius: 2px 2px 2px 0;
+	}
+	
+	.quote .meta.info .rest {
+		display: inline-block;
+	}
+
+	.pager a, .pager span {
+		padding: 6px 10px;
+	}
+
+	.pager a.arrow, .pager span.arrow {
+		padding: 6px 13px;
+	}
+
+	.filter ul li {
+		margin-bottom: 8px;
+	}
+
+	.header ul.bar {
+		display: block;
+		float: none;
 	}
 }

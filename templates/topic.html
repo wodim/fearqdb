@@ -1,0 +1,18 @@
+<div class="quote topich {{topic.style}}">
+	<div class="meta info">
+		<div class="rest">
+			<span class="nick">{{topic.nick|escape}}</span>
+			{% if topic.timelapse %}
+				<span class="ts lapse" title="{{topic.date}}">{{topic.timelapse}}</span>
+			{% else %}
+				<span class="ts">{{topic.date}}</span>
+			{% endif %}
+		</div>
+	</div>
+	<div class="text">{{topic.text}}</div>
+{% if topic.ip && ((session.level == 'admin') || (settings.ip_show)) && 1 == 0 %}
+	<div class="meta small">
+		<span class="comment"><strong>IP:</strong> {{topic.ip}}</span>
+	</div>
+{% endif %}
+</div>

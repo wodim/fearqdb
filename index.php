@@ -81,6 +81,9 @@ switch ($params[0]) {
 	case 'panel':
 		require(modules_dir.'panel.php');
 		break;
+	case 'topics':
+		require(modules_dir.'topics.php');
+		break;
 	case 'userlogin':
 	case 'login':
 	case 'logout':
