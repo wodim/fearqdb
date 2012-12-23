@@ -171,5 +171,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `topics` (
+  `id` INTEGER,
+  `timestamp` INTEGER,
+  `nick` TEXT,
+  `text` TEXT,
+  `db` TEXT,
+  `ip` TEXT,
+  `user_agent` TEXT,
+  PRIMARY KEY (`id`)
+);
+
 INSERT INTO `api` (`id`, `key`, `name`, `approved`, `db`) VALUES
 (1, '', 'web', 0, '');

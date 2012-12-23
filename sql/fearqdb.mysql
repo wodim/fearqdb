@@ -178,5 +178,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
+CREATE TABLE IF NOT EXISTS `topics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timestamp` int(11) NOT NULL,
+  `nick` varchar(20) NOT NULL,
+  `text` varchar(1000) NOT NULL,
+  `db` varchar(10) NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `user_agent` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+
 INSERT INTO `api` (`id`, `key`, `name`, `approved`, `db`) VALUES
 (1, '', 'web', 0, '');

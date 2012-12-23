@@ -231,13 +231,22 @@ switch ($params[1]) {
 				array('success' => 0,
 					'error' => 'access_denied')));
 		}
-		$return = $db->query('UPDATE sites SET topic_text = :topic_text, topic_nick = :topic_nick WHERE db = :db', array(
+		$returna = $db->query('INSERT INTO topics (timestamp, nick, text, db, ip, user_agent)
+				VALUES (:timestamp, :nick, :text, :db, :ip, :user_agent)', array(
+			array(':timestamp', time(), PDO::PARAM_INT),
+			array(':nick', isset($_POST['nick']) ? $_POST['nick'] : '', PDO::PARAM_STR),
+			array(':text', $_POST['topic'], PDO::PARAM_STR),
+			array(':db', $settings->db, PDO::PARAM_STR),
+			array(':ip', $session->ip, PDO::PARAM_STR),
+			array(':user_agent', isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', PDO::PARAM_STR)
+		));
+		$returnb = $db->query('UPDATE sites SET topic_text = :topic_text, topic_nick = :topic_nick WHERE db = :db', array(
 			array(':topic_text', $_POST['topic'], PDO::PARAM_STR),
 			array(':topic_nick', isset($_POST['nick']) ? $_POST['nick'] : '', PDO::PARAM_STR),
 			array(':db', $settings->db, PDO::PARAM_STR)
 		));
 		out(array('results' =>
-			array('success' => (bool)$return ? 1 : 0)));
+			array('success' => ((bool)$returna && (bool)$returnb) ? 1 : 0)));
 		break;
 	default:
 		$session->log(sprintf('JSON API access with invalid METHOD: %s', $params[1]));
