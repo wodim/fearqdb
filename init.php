@@ -50,7 +50,7 @@ if (!$db->init()) {
 require(classes_dir.'settings.php');
 $settings = new Settings();
 if (!$settings->init() &&
-	!(isset($params[0]) && $params[0] == '_')) {
+	!preg_match('/^\/_\//', $_SERVER['REQUEST_URI'])) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('VHE');
 }
