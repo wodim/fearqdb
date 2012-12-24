@@ -19,19 +19,32 @@
 
 $statics = array('padlock_odd', 'padlock_even', 'medal_odd', 'medal_even');
 
+function notfound() {
+	header('HTTP/1.0 404 Not Found');
+	Haanga::Load('bare404.html', array());
+	die();
+}
+
+function headers($contenttype) {
+	header('Cache-Control: public, max-age=31536000');
+	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
+	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
+	header(sprintf('Content-Type: %s; charset=utf-8', $contenttype));
+}
+
 if (count($params) < 3) {
-	$html->do_sysmsg(_('Page not found'), null, 404);
+	notfound();
 }
 
 if (!preg_match('/^[a-z_]+$/', $params[2])) {
-	$html->do_sysmsg(_('Page not found'), null, 404);
+	notfound();
 }
 
 /* css */
 if ($params[1] == 'css') {
 	if (!file_exists(sprintf('templates/%s.css', $params[2])) &&
 		!file_exists(sprintf('templates/private/%s.css', $params[2]))) {
-		$html->do_sysmsg(_('Page not found'), null, 404);
+		notfound();
 	}
 
 	foreach ($statics as $static) {
@@ -39,10 +52,7 @@ if ($params[1] == 'css') {
 		$timestamp[$static] = md5(sprintf('%s%s', filemtime(sprintf('statics/%s.png', $static)), $settings->site_key));
 	}
 
-	header('Cache-Control: public, max-age=31536000');
-	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
-	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
-	header('Content-Type: text/css; charset=utf-8');
+	headers('text/css');
 
 	$vars = compact('timestamp');
 	if (file_exists(sprintf('templates/%s.css', $params[2]))) {
@@ -55,13 +65,10 @@ if ($params[1] == 'css') {
 if ($params[1] == 'png') {
 	if (!file_exists(sprintf('statics/%s.png', $params[2])) &&
 		!file_exists(sprintf('statics/private/%s.png', $params[2]))) {
-		$html->do_sysmsg(_('Page not found'), null, 404);
+		notfound();
 	}
 
-	header('Cache-Control: public, max-age=31536000');
-	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
-	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
-	header('Content-Type: image/png');
+	headers('image/png');
 
 	if (file_exists(sprintf('statics/%s.png', $params[2]))) {
 		readfile(sprintf('statics/%s.png', $params[2]));
@@ -73,13 +80,10 @@ if ($params[1] == 'png') {
 if ($params[1] == 'js') {
 	if (!file_exists(sprintf('statics/%s.js', $params[2])) &&
 		!file_exists(sprintf('statics/private/%s.js', $params[2]))) {
-		$html->do_sysmsg(_('Page not found'), null, 404);
+		notfound();
 	}
 
-	header('Cache-Control: public, max-age=31536000');
-	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
-	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
-	header('Content-Type: application/x-javascript; charset=utf-8');
+	headers('application/javascript');
 
 	if (file_exists(sprintf('statics/%s.js', $params[2]))) {
 		readfile(sprintf('statics/%s.js', $params[2]));
