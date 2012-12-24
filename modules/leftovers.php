@@ -34,13 +34,15 @@ switch ($params[0]) {
 			default:
 				$allow = "User-agent: *\nAllow: /\nDisallow: /_/";
 		}
-		$html->output .= $allow;
+		echo $allow;
 		break;
 	case 'opensearch.xml':
 		header('Content-Type: application/xml');
-		$html->output .= Haanga::Load('opensearch.html', null, true);
+		Haanga::Load('opensearch.html');
 		break;
 	case 'favicon.ico':
 		header('HTTP/1.1 301 Moved Permanently');
 		header(sprintf('Location: %s_/image/fearqdb', $settings->statics_url));
 }
+
+die();

@@ -21,7 +21,7 @@ $statics = array('padlock_odd', 'padlock_even', 'medal_odd', 'medal_even');
 
 function notfound() {
 	header('HTTP/1.0 404 Not Found');
-	Haanga::Load('bare404.html', array());
+	Haanga::Load('bare404.html');
 	die();
 }
 
