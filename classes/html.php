@@ -38,7 +38,7 @@ class HTML {
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
 		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
 		if ($settings->snowstorm) {
-			$timestamp['snowstorm'] = md5(sprintf('%s%s', filemtime('statics/snowstorm.js'), $settings->site_key));
+			$timestamp['snowstorm_closure'] = md5(sprintf('%s%s', filemtime('statics/snowstorm_closure.js'), $settings->site_key));
 		}
 		if ($settings->analytics_enabled) {
 			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));

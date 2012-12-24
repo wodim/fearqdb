@@ -12,10 +12,10 @@
 {% endif %}
 		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}_/css/core/{{timestamp.core}}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="{{settings.statics_url}}_/image/fearqdb/{{timestamp.fearqdb}}" type="image/x-png"/>
+		<link rel="shortcut icon" href="{{settings.statics_url}}_/png/fearqdb/{{timestamp.fearqdb}}" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
 {% if settings.snowstorm %}
-		<script src="{{settings.statics_url}}_/js/snowstorm/{{timestamp.snowstorm}}"></script>
+		<script src="{{settings.statics_url}}_/js/snowstorm_closure/{{timestamp.snowstorm}}"></script>
 		<script>
 			snowStorm.flakesMax = 100;
 			snowStorm.flakesMaxActive = 100;

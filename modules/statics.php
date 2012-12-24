@@ -29,7 +29,8 @@ if (!preg_match('/^[a-z_]+$/', $params[2])) {
 
 /* css */
 if ($params[1] == 'css') {
-	if (!file_exists(sprintf('templates/%s.css', $params[2]))) {
+	if (!file_exists(sprintf('templates/%s.css', $params[2])) &&
+		!file_exists(sprintf('templates/private/%s.css', $params[2]))) {
 		$html->do_sysmsg(_('Page not found'), null, 404);
 	}
 
@@ -40,31 +41,51 @@ if ($params[1] == 'css') {
 
 	header('Cache-Control: public, max-age=31536000');
 	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
+	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
 	header('Content-Type: text/css; charset=utf-8');
+
 	$vars = compact('timestamp');
-	Haanga::Load('core.css', $vars);
+	if (file_exists(sprintf('templates/%s.css', $params[2]))) {
+		Haanga::Load(sprintf('%s.css', $params[2]), $vars);
+	} elseif (file_exists(sprintf('templates/private/%s.css', $params[2]))) {
+		Haanga::Load(sprintf('private/%s.css', $params[2]), $vars);
+	}
 }
 
-if ($params[1] == 'image') {
-	if (!file_exists(sprintf('statics/%s.png', $params[2]))) {
+if ($params[1] == 'png') {
+	if (!file_exists(sprintf('statics/%s.png', $params[2])) &&
+		!file_exists(sprintf('statics/private/%s.png', $params[2]))) {
 		$html->do_sysmsg(_('Page not found'), null, 404);
 	}
 
 	header('Cache-Control: public, max-age=31536000');
 	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
+	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
 	header('Content-Type: image/png');
-	readfile(sprintf('statics/%s.png', $params[2]));
+
+	if (file_exists(sprintf('statics/%s.png', $params[2]))) {
+		readfile(sprintf('statics/%s.png', $params[2]));
+	} elseif (file_exists(sprintf('statics/private/%s.png', $params[2]))) {
+		readfile(sprintf('statics/private/%s.png', $params[2]));
+	}
 }
 
 if ($params[1] == 'js') {
-	if (!file_exists(sprintf('statics/%s.js', $params[2]))) {
+	if (!file_exists(sprintf('statics/%s.js', $params[2])) &&
+		!file_exists(sprintf('statics/private/%s.js', $params[2]))) {
 		$html->do_sysmsg(_('Page not found'), null, 404);
 	}
 
 	header('Cache-Control: public, max-age=31536000');
 	header('Expires: Thu, 01 Jan 2099 00:00:00 GMT');
+	header('Last-Modified: Sun, 01 Jan 2012 00:00:00 GMT');
 	header('Content-Type: application/x-javascript; charset=utf-8');
-	readfile(sprintf('statics/%s.js', $params[2]));
+
+	if (file_exists(sprintf('statics/%s.js', $params[2]))) {
+		readfile(sprintf('statics/%s.js', $params[2]));
+	} elseif (file_exists(sprintf('statics/private/%s.js', $params[2]))) {
+		readfile(sprintf('statics/private/%s.js', $params[2]));
+	}
 }
 
 die(); /* otherwise, the queries counter would be shown. */
