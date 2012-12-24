@@ -14,14 +14,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}_/png/fearqdb/{{timestamp.fearqdb}}" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
-{% if settings.snowstorm %}
-		<script src="{{settings.statics_url}}_/js/snowstorm_closure/{{timestamp.snowstorm_closure}}"></script>
-		<script>
-			snowStorm.flakesMax = 100;
-			snowStorm.flakesMaxActive = 100;
-			snowStorm.useTwinkleEffect = true;
-		</script>
-{% endif %}
 {% if settings.analytics_enabled %}
 		<script>
 			var _gaq = _gaq || [];

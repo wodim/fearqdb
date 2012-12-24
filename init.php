@@ -49,7 +49,8 @@ if (!$db->init()) {
 /* read settings, determine virtual host  */
 require(classes_dir.'settings.php');
 $settings = new Settings();
-if (!$settings->init()) {
+if (!$settings->init() &&
+	!(isset($params[0]) && $params[0] == '_')) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('VHE');
 }

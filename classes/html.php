@@ -23,7 +23,7 @@ class HTML {
 	function do_header($title = null) {
 		global $session, $settings, $memcache;
 
-		header('Content-Type: text/html; charset=UTF-8');
+		header('Content-Type: text/html; charset=utf-8');
 
 		if ($session->level == 'anonymous') {
 			$cached = $memcache->get('header');
@@ -37,9 +37,6 @@ class HTML {
 		$topic->nick = htmlentities($settings->topic_nick);
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
 		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
-		if ($settings->snowstorm) {
-			$timestamp['snowstorm_closure'] = md5(sprintf('%s%s', filemtime('statics/snowstorm_closure.js'), $settings->site_key));
-		}
 		if ($settings->analytics_enabled) {
 			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));
 		}
@@ -52,13 +49,17 @@ class HTML {
 	}
 
 	function do_footer() {
-		global $start, $db, $session, $memcache;
+		global $start, $db, $session, $memcache, $settings;
 
+		$timestamp = array();
+		if ($settings->snowstorm) {
+			$timestamp['snowstorm_closure'] = md5(sprintf('%s%s', filemtime('statics/snowstorm_closure.js'), $settings->site_key));
+		}
 		$cached = $memcache->get('footer');
 		if ($cached !== false) {
 			$this->output .= $cached;
 		} else {
-			$vars = compact('session');
+			$vars = compact('session', 'timestamp');
 			$cached = Haanga::Load('footer.html', $vars, true);
 			$memcache->set('footer', $cached);
 			$this->output .= $cached;
