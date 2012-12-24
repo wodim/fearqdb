@@ -36,6 +36,7 @@ class HTML {
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
+		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
 		if ($settings->snowstorm) {
 			$timestamp['snowstorm'] = md5(sprintf('%s%s', filemtime('statics/snowstorm.js'), $settings->site_key));
 		}
