@@ -19,8 +19,6 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $session, $settings;
-
 $nick = $session->nick ? $session->nick : '';
 
 /* create a new session using %url%/submit/%nick%/%password%, this is, autologin and then redir to /submit */

@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $params, $session, $html, $settings;
-
 function origin_redir($origin) {
 	if (strpos($origin, $settings->base_url) !== 0) {
 		$origin = $settings->base_url;

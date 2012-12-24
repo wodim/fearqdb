@@ -19,8 +19,6 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $settings;
-
 $query = sprintf('SELECT %s FROM quotes
 	WHERE status = \'approved\' AND quotes.db = :db AND hidden = 0
 	ORDER BY id DESC LIMIT %d', Quote::READ, $settings->page_size * 5);

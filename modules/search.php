@@ -20,8 +20,6 @@
 require(classes_dir.'quote.php');
 require(classes_dir.'search.php');
 
-global $params, $session, $settings;
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	isset($_POST['query'])) {
 	redir(sprintf('%ssearch/%s',

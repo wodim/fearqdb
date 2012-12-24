@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $settings, $html, $session, $push, $memcache;
-
 if ($session->level != 'admin') {
 	$html->do_sysmsg('Forbidden', null, 403);
 }

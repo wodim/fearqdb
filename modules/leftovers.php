@@ -17,8 +17,6 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-global $params, $settings;
-
 /* this isn't possible if base_url is not /. the user would have to include these
 	files by hand. */
 if ($settings->base_url != '/') {
@@ -34,7 +32,7 @@ switch ($params[0]) {
 				break;
 			case 'allow':
 			default:
-				$allow = "User-agent: *\nAllow: /";
+				$allow = "User-agent: *\nAllow: /\nDisallow: /_/";
 		}
 		$html->output .= $allow;
 		break;

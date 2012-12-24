@@ -20,8 +20,6 @@
 require(classes_dir.'quote.php');
 require(classes_dir.'search.php');
 
-global $params, $settings, $session;
-
 $cached_key = null;
 
 /* move json functions to utils.php? */

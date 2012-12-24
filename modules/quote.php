@@ -19,8 +19,6 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $session, $settings;
-
 if (isset($params[0]) && strlen($params[0]) == 4) {
 	$quote = new Quote();
 	$quote->permaid = $params[0];

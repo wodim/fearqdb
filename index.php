@@ -84,6 +84,9 @@ switch ($params[0]) {
 	case 'topics':
 		require(modules_dir.'topics.php');
 		break;
+	case '_':
+		require(modules_dir.'statics.php');
+		break;
 	case 'userlogin':
 	case 'login':
 	case 'logout':

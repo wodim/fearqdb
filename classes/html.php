@@ -35,7 +35,14 @@ class HTML {
 		$topic = new stdClass();
 		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
 		$topic->nick = htmlentities($settings->topic_nick);
-		$vars = compact('title', 'topic', 'session');
+		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
+		if ($settings->snowstorm) {
+			$timestamp['snowstorm'] = md5(sprintf('%s%s', filemtime('statics/snowstorm.js'), $settings->site_key));
+		}
+		if ($settings->analytics_enabled) {
+			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));
+		}
+		$vars = compact('title', 'topic', 'session', 'timestamp');
 		$cached = Haanga::Load('header.html', $vars, true);
 		if ($session->level == 'anonymous') {
 			$memcache->set('header', $cached);

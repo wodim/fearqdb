@@ -19,8 +19,6 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $settings;
-
 if (isset($params[1]) && ctype_digit($params[1]) && $params[1] > 0) {
 	$page_number = $params[1];
 } elseif (!isset($params[1])) {
@@ -33,29 +31,21 @@ if (isset($params[1]) && $page_number == 1) {
 	redir();
 }
 
-$cached = $memcache->get(sprintf('page_%d_data_%s', $page_number, $session->level));
-if ($cached !== false) {
-	$quotes = $cached;
+if ($session->level == 'reader' || $session->level == 'admin') {
+	$query = sprintf(
+		'SELECT %s FROM quotes WHERE (quotes.status = \'approved\' OR quotes.status = \'pending\')
+			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
+	);
 } else {
-	if ($session->level == 'reader' || $session->level == 'admin') {
-		$query = sprintf(
-			'SELECT %s FROM quotes WHERE (quotes.status = \'approved\' OR quotes.status = \'pending\')
-				AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
-		);
-	} else {
-		$query = sprintf(
-			'SELECT %s FROM quotes WHERE quotes.status = \'approved\'
-				AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
-		);
-	}
-
-	$quotes = $db->get_results($query, array(
-		array(':db', $settings->db, PDO::PARAM_STR)
-	));
-
-	$memcache->set(sprintf('page_%d_data_%s', $page_number, $session->level), $quotes);
-	$memcache->page_add($page_number, $session->level);
+	$query = sprintf(
+		'SELECT %s FROM quotes WHERE quotes.status = \'approved\'
+			AND db = :db ORDER BY id DESC LIMIT %d,%d', Quote::READ, (($page_number - 1) * $settings->page_size), $settings->page_size
+	);
 }
+
+$quotes = $db->get_results($query, array(
+	array(':db', $settings->db, PDO::PARAM_STR)
+));
 
 if (!$quotes) {
 	$html->do_sysmsg(_('Page not found'), null, 404);

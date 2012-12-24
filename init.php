@@ -77,7 +77,7 @@ Haanga::configure(array(
 	'cache_dir' => 'templates/compiled/',
 	'compiler' => array(
 		'global' => array('settings', 'session'),
-		'strip_whitespace' => false,
+		'strip_whitespace' => true,
 		'allow_exec' => false,
 		'autoescape' => false
 	)

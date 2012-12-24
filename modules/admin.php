@@ -19,8 +19,6 @@
 
 require(classes_dir.'quote.php');
 
-global $params, $db;
-
 if (!isset($params[1])) {
 	$params[1] = 'index';
 }
