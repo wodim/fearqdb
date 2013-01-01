@@ -22,6 +22,9 @@ require(classes_dir.'search.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 	isset($_POST['query'])) {
+	if (trim($_POST['query']) == '') {
+		redir($settings->base_url);
+	}
 	redir(sprintf('%ssearch/%s',
 		$settings->base_url,
 		urlencode($_POST['query'])));
