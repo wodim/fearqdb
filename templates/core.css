@@ -145,11 +145,11 @@ a {
 }
 
 .quote.odd .text.hidden {
-	background: bottom right no-repeat url("_/png/padlock_odd/{{timestamp.padlock_odd}}"), url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
+	background: bottom right no-repeat url("../../../_/png/padlock_odd/{{timestamp.padlock_odd}}"), url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
 }
 
 .quote.even .text.hidden {
-	background: bottom right no-repeat url("_/png/padlock_even/{{timestamp.padlock_even}}"), url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
+	background: bottom right no-repeat url("../../../_/png/padlock_even/{{timestamp.padlock_even}}"), url("data:image/gif;base64,R0lGODlhAgACAKEBAPf39////////////yH5BAEKAAIALAAAAAACAAIAAAICjFEAOw==");
 }
 
 .quote .text.hidden span {
