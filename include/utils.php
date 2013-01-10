@@ -89,7 +89,10 @@ function highlight($text, $highlight) {
 	do {
 		// unfortunately we have to do this each time...
 		$plain = mb_strtolower(iconv('UTF-8', 'ASCII//TRANSLIT', translit_fix($text)));
-		$offset = @mb_strpos($plain, $criteria, $pos);
+		if ($pos > mb_strlen($plain)) {
+			break;
+		}
+		$offset = mb_strpos($plain, $criteria, $pos);
 		if ($offset === false) {
 			break;
 		}
