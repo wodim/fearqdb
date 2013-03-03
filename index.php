@@ -123,5 +123,3 @@ if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
 } else {
 	printf('<!-- %.4f seconds, %d queries -->', microtime(true) - $start, $db->num_queries);
 }
-
-printf(' <!-- %s -->', exec('git rev-parse HEAD'));
