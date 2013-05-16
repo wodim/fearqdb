@@ -81,7 +81,7 @@ class HTML {
 		}
 
 		for ($i = 1; $i < $total_pages + 1; $i++) {
-			if ($i == 1 || $i == $total_pages || $adjacents > abs($page - $i)) {
+			if ($i == 1 || $adjacents > abs($page - $i)) {
 				if ($i == $page) {
 					$pager .= '<span class="current">'.$i.'</span>';
 				} else {
