@@ -71,92 +71,16 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   PRIMARY KEY (`id`)
 );
 
--- url: the url up to the WITH leading / and WITH NO http://
---   eg: example.net/qdb/
--- base_url: the base url for your qdb, this is, / + folder + / and, if you have no
---   mod_rewrite, index.php (if you want) + ?m=
---   eg: /
---   eg: /qdb/
---   eg: /qdb/index.php?m=
---   eg: /qdb/?m=
--- full_url: those two urls, merged.
---   eg: http://example.net/qdb/?m=
--- statics_url: the url that includes your static content, WITH the leading /
---   eg: http://qdb.example.net/statics/
---   eg: http://qdbstatic.net/
--- site_key: your site key; used to generate passwords, cookies and so on.
---   in case of disclosure, just change it.
--- lang: your language, for gettext.
---   eg: es
--- locale: your locale, for gettext.
---   eg: es_ES.UTF-8
--- collate: database collation for the search module.
---   eg: utf8_spanish_ci
---   This way if you do a search with "que", it will find "que" and "qué", which
---   is useful.
--- ip_show: whether ip addresses will be shown on the website.
---   ** authorised API key owners can read all IP addresses, it doesn't matter **
---   **                   whether you set ip_show on or off                    **
--- analytics_enabled: include Google Analytics javascript code
--- analytics_code: your GA account
---   eg: UA-13371488-1
--- snowstorm: snow storm!
--- db: matches the 'db' field in all the other tables. allows you to have several
---   domains running in the same database/tables and using the same code.
--- irc: a brief description of where your irc channel is.
---   eg: "#goddammit at EFnet"
--- name: the name of your site used in the header, in the <title>, etc
---   eg: "#goddammit quote database"
--- nname: short name of your site, one word
---   eg: gddmtqdb
--- cookie: the name of the cookie your site will use
---   eg: qdb_session
--- privacy_level: privacy level for quotes for normal web users.
---   -1: all quotes are shown, even the hidden ones
---    0: normal
---    1: all quotes are hidden, but nick/date are visible
---    2: you have to be logged in to actually read any quote
--- privacy_level_for_bots: same but for bots, don't rely on this since a normal
---   user can change his/her user agent and make him/her look like a bot!
--- page_size: quotes per page
--- robots: 'disallow' to block robots via robots.txt
+-- you should not have to touch any of this by hand.
 -- topic_text: content of the last topic that was set. it will be shown in every page.
 -- topic_nick: nick of the person who set that topic.
--- push_enabled: push notifications enabled. requires curl
--- push_url: push url
--- extra_css: css code that will be included inline, inside <head>
 -- approved_quotes: no. of approved quotes, used to avoid count(1) on each page
 -- pending_quotes: no. of pending quotes, used to avoid count(1) on each page for admins
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` INTEGER,
-  `url` TEXT,
-  `base_url` TEXT,
-  `full_url` TEXT,
-  `statics_url` TEXT,
-  `site_key` TEXT,
-  `lang` TEXT,
-  `locale` TEXT,
-  `collate` TEXT,
-  `ip_show` INTEGER,
-  `analytics_enabled` INTEGER,
-  `analytics_code` TEXT,
-  `snowstorm` INTEGER,
-  `db` TEXT,
-  `irc` TEXT,
-  `name` TEXT,
-  `nname` TEXT,
-  `cookie` TEXT,
-  `privacy_level` INTEGER,
-  `privacy_level_for_bots` INTEGER,
-  `page_size` INTEGER,
-  `robots` TEXT,
   `topic_text` TEXT,
   `topic_nick` TEXT,
-  `push_enabled` INTEGER,
-  `push_url` TEXT,
-  `push_params` TEXT,
-  `extra_css` TEXT,
   `approved_quotes` INTEGER,
   `pending_quotes` INTEGER,
   PRIMARY KEY (`id`)

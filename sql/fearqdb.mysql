@@ -78,92 +78,16 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
--- url: the url up to the WITH leading / and WITH NO http://
---   eg: example.net/qdb/
--- base_url: the base url for your qdb, this is, / + folder + / and, if you have no
---   mod_rewrite, index.php (if you want) + ?m=
---   eg: /
---   eg: /qdb/
---   eg: /qdb/index.php?m=
---   eg: /qdb/?m=
--- full_url: those two urls, merged.
---   eg: http://example.net/qdb/?m=
--- statics_url: the url that includes your static content, WITH the leading /
---   eg: http://qdb.example.net/statics/
---   eg: http://qdbstatic.net/
--- site_key: your site key; used to generate passwords, cookies and so on.
---   in case of disclosure, just change it.
--- lang: your language, for gettext.
---   eg: es
--- locale: your locale, for gettext.
---   eg: es_ES.UTF-8
--- collate: database collation for the search module.
---   eg: utf8_spanish_ci
---   This way if you do a search with "que", it will find "que" and "qué", which
---   is useful.
--- ip_show: whether ip addresses will be shown on the website.
---   ** authorised API key owners can read all IP addresses, it doesn't matter **
---   **                   whether you set ip_show on or off                    **
--- analytics_enabled: include Google Analytics javascript code
--- analytics_code: your GA account
---   eg: UA-13371488-1
--- snowstorm: snow storm!
--- db: matches the 'db' field in all the other tables. allows you to have several
---   domains running in the same database/tables and using the same code.
--- irc: a brief description of where your irc channel is.
---   eg: "#goddammit at EFnet"
--- name: the name of your site used in the header, in the <title>, etc
---   eg: "#goddammit quote database"
--- nname: short name of your site, one word
---   eg: gddmtqdb
--- cookie: the name of the cookie your site will use
---   eg: qdb_session
--- privacy_level: privacy level for quotes for normal web users.
---   -1: all quotes are shown, even the hidden ones
---    0: normal
---    1: all quotes are hidden, but nick/date are visible
---    2: you have to be logged in to actually read any quote
--- privacy_level_for_bots: same but for bots, don't rely on this since a normal
---   user can change his/her user agent and make him/her look like a bot!
--- page_size: quotes per page
--- robots: 'disallow' to block robots via robots.txt
+-- you should not have to touch any of this by hand.
 -- topic_text: content of the last topic that was set. it will be shown in every page.
 -- topic_nick: nick of the person who set that topic.
--- push_enabled: push notifications enabled. requires curl
--- push_url: push url
--- extra_css: css code that will be included inline, inside <head>
 -- approved_quotes: no. of approved quotes, used to avoid count(1) on each page
 -- pending_quotes: no. of pending quotes, used to avoid count(1) on each page for admins
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `url` varchar(64) NOT NULL,
-  `base_url` varchar(64) NOT NULL,
-  `full_url` varchar(64) NOT NULL,
-  `statics_url` varchar(64) NOT NULL,
-  `site_key` varchar(32) NOT NULL,
-  `lang` varchar(5) NOT NULL,
-  `locale` varchar(16) NOT NULL,
-  `collate` varchar(24) NOT NULL,
-  `ip_show` tinyint(1) NOT NULL,
-  `analytics_enabled` tinyint(1) NOT NULL,
-  `analytics_code` varchar(16) NOT NULL,
-  `snowstorm` tinyint(1) NOT NULL,
-  `db` varchar(10) NOT NULL,
-  `irc` varchar(32) NOT NULL,
-  `name` varchar(32) NOT NULL,
-  `nname` varchar(10) NOT NULL,
-  `cookie` varchar(16) NOT NULL,
-  `privacy_level` int(11) NOT NULL,
-  `privacy_level_for_bots` int(11) NOT NULL,
-  `page_size` int(11) NOT NULL,
-  `robots` enum('allow','disallow') NOT NULL DEFAULT 'allow',
   `topic_text` varchar(1000) NOT NULL,
   `topic_nick` varchar(20) NOT NULL,
-  `push_enabled` tinyint(1) NOT NULL,
-  `push_url` varchar(64) NOT NULL,
-  `push_params` varchar(128) NOT NULL,
-  `extra_css` varchar(1024) NOT NULL,
   `approved_quotes` int(11) NOT NULL,
   `pending_quotes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
