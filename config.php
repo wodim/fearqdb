@@ -45,48 +45,49 @@ $config['db']['host'] = null;
 
 $sites = Array();
 
-$sites[] = Array();
-/* domain. Example: qdb.es */
-$sites[]['domain'] = '';
-/* site unique id used internally in the database */
-$sites[]['db'] = '';
-/* base url. Most probably, / (don't touch it if unsure) */
-$sites[]['base_url'] = '/';
-/* a private site key, used to generate cookies and other things.
-   use a random string. */
-$sites[]['site_key'] = '';
-/* language of the site, such as 'en' or 'es' */
-$sites[]['lang'] = 'en';
-/* locale of the site */
-$sites[]['locale'] = 'es_ES.utf8';
-/* collation for the database */
-$sites[]['collate'] = 'utf8_english_ci';
-/* show the ip address of those who sent the quotes to all users.
-   if it's false, they will be shown to registered users anyway. */
-$sites[]['ip_show'] = '';
-/* google analytics code. leave blank if you don't use ga */
-$sites[]['analytics_code'] = '';
-/* a different url for the statics folder. leave blank if you don't need it */
-$sites[]['statics_url'] = '';
-/* the title of this site */
-$sites[]['title'] = '';
-/* text shown at the footer */
-$sites[]['footer'] = '';
-/* privacy level of the quotes. possible values:
-   -1: all quotes are shown, even the hidden ones
-    0: normal
-    1: all quotes are hidden, but nick/date are visible
-    2: you have to be logged in to actually read any quote
-   the second variable applies to bots such as the google crawler */
-$sites[]['privacy_level'] = 0;
-$sites[]['privacy_level_for_bots'] = 0;
-/* amount of quotes per page */
-$sites[]['page_size'] = 10;
-/* allow or disallow robots with robots.txt */
-$sites[]['robots'] = 'allow';
-/* push server used for sending topics from irc to the site */
-$sites[]['push_enabled'] = false;
-$sites[]['push_url'] = '';
-$sites[]['push_params'] = '';
-/* extra css to insert in all pages */
-$sites[]['extra_css'] = '';
+$sites[] = Array(
+	/* domain. Example: qdb.es */
+	'domain' => '',
+	/* site unique id used internally in the database */
+	'db' => '',
+	/* base url. Most probably, / (don't touch it if unsure) */
+	'base_url' => '/',
+	/* a private site key, used to generate cookies and other things.
+	   use a random string. */
+	'site_key' => '',
+	/* language of the site, such as 'en' or 'es' */
+	'lang' => 'en',
+	/* locale of the site */
+	'locale' => 'en_US.utf8',
+	/* collation for the database */
+	'collate' => 'utf8_english_ci',
+	/* show the ip address of those who sent the quotes to all users.
+	   if it's false, they will be shown to registered users anyway. */
+	'ip_show' => false,
+	/* google analytics code. leave blank if you don't use ga */
+	'analytics_code' => '',
+	/* a different url for the statics folder. leave blank if you don't need it */
+	'statics_url' => '',
+	/* the title of this site */
+	'title' => '',
+	/* text shown at the footer */
+	'footer' => '',
+	/* privacy level of the quotes. possible values:
+	   -1: all quotes are shown, even the hidden ones
+	    0: normal
+	    1: all quotes are hidden, but nick/date are visible
+	    2: you have to be logged in to actually read any quote
+	   the second variable applies to bots such as the google crawler */
+	'privacy_level' => 0,
+	'privacy_level_for_bots' => 0,
+	/* amount of quotes per page */
+	'page_size' => 10,
+	/* allow or disallow robots with robots.txt */
+	'robots' => 'allow',
+	/* push server used for sending topics from irc to the site */
+	'push_enabled' => false,
+	'push_url' => '',
+	'push_params' => '',
+	/* extra css to insert in all pages */
+	'extra_css' => '',
+);

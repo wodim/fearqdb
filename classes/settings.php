@@ -20,7 +20,7 @@
 class Settings {
 	const READ = 'SELECT id, db, topic_text, topic_nick,
 		approved_quotes, pending_quotes
-		FROM sites WHERE url = :url';
+		FROM sites WHERE db = :db';
 	var $id = 0;
 
 	/* in config.php */
@@ -55,16 +55,28 @@ class Settings {
 	var $read = false;
 
 	function init() {
-		global $db;
+		global $db, $sites;
 
-		$url = sprintf('%s%s', $_SERVER['HTTP_HOST'], preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']));
+		$site = null;
+		foreach ($sites as $this_site) {
+			if ($this_site['domain'] == $_SERVER['HTTP_HOST']) {
+				$site = $this_site;
+			}
+		}
+		if (!$site) {
+			return $this->read;
+		}
+
 		$results = $db->get_row(Settings::READ, array(
-			array(':url', $url, PDO::PARAM_STR)
+			array(':db', $site['db'], PDO::PARAM_STR)
 		));
 		if (!$results) {
 			return $this->read;
 		}
 
+		foreach ($site as $variable => $value) {
+			$this->$variable = ctype_digit($value) ? (int)$value : $value;
+		}
 		foreach ($results as $variable => $value) {
 			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
@@ -78,10 +90,10 @@ class Settings {
 	function recount() {
 		global $db, $memcache;
 
-		$approved_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'approved\' AND db = :db', array(
+		$approved_quotes = $db->get_var('SELECT COUNT(*) FROM quotes WHERE status = \'approved\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
-		$pending_quotes = $db->get_var('SELECT COUNT(1) FROM quotes WHERE status = \'pending\' AND db = :db', array(
+		$pending_quotes = $db->get_var('SELECT COUNT(*) FROM quotes WHERE status = \'pending\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
 		$db->query('UPDATE sites
