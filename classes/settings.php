@@ -18,42 +18,36 @@
 */
 
 class Settings {
-	const READ = 'SELECT id, site_key, lang, locale, `collate`,
-		ip_show, analytics_enabled, analytics_code,
-		url, base_url, full_url, statics_url, snowstorm, db, irc, name, nname, cookie,
-		privacy_level, privacy_level_for_bots, page_size, robots,
-		topic_text, topic_nick, push_enabled, push_url, push_params, extra_css,
+	const READ = 'SELECT id, db, topic_text, topic_nick,
 		approved_quotes, pending_quotes
 		FROM sites WHERE url = :url';
-	/* we are entitled to add reasonable defaults here!! */
 	var $id = 0;
-	var $url = '';
+
+	/* in config.php */
+	var $domain = '';
+	var $db = '';
 	var $base_url = '';
-	var $full_url = '';
 	var $site_key = '';
 	var $lang = '';
 	var $locale = '';
 	var $collate = '';
 	var $ip_show = false;
-	var $analytics_enabled = false;
 	var $analytics_code = '';
-	var $statics_url = '';
-	var $snowstorm = false;
-	var $db = '';
-	var $irc = '';
-	var $name = '';
-	var $nname = '';
-	var $cookie = '';
+	var $statics_url = null;
+	var $title = '';
+	var $footer = '';
 	var $privacy_level = 0;
 	var $privacy_level_for_bots = '';
 	var $page_size = 10;
 	var $robots = 'allow';
-	var $topic_text = '';
-	var $topic_nick = '';
 	var $push_enabled = '';
 	var $push_url = '';
 	var $push_params = '';
 	var $extra_css = null;
+
+	/* in the database */
+	var $topic_text = '';
+	var $topic_nick = '';
 	var $approved_quotes = 0;
 	var $pending_quotes = 0;
 
