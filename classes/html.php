@@ -37,7 +37,7 @@ class HTML {
 		$topic->nick = htmlentities($settings->topic_nick);
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
 		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
-		if ($settings->analytics_enabled) {
+		if ($settings->analytics_code) {
 			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));
 		}
 		$vars = compact('title', 'topic', 'session', 'timestamp');
@@ -52,9 +52,6 @@ class HTML {
 		global $start, $db, $session, $memcache, $settings;
 
 		$timestamp = array();
-		if ($settings->snowstorm) {
-			$timestamp['snowstorm_closure'] = md5(sprintf('%s%s', filemtime('statics/snowstorm_closure.js'), $settings->site_key));
-		}
 		$cached = $memcache->get('footer');
 		if ($cached !== false) {
 			$this->output .= $cached;

@@ -43,6 +43,13 @@ $config['db']['name'] = null;
 $config['db']['socket'] = null;
 $config['db']['host'] = null;
 
+/* ---------- MEMCACHE ---------- */
+$config['memcache']['enabled'] = false;
+$config['memcache']['server'] = null;
+$config['memcache']['port'] = null;
+$config['memcache']['prefix'] = 'fearqdb';
+$config['memcache']['debug'] = false;
+
 $sites = Array();
 
 $sites[] = Array(
@@ -52,6 +59,9 @@ $sites[] = Array(
 	'db' => '',
 	/* base url. Most probably, / (don't touch it if unsure) */
 	'base_url' => '/',
+	/* full url. if you don't use http you may want to change this.
+	   https://qdb.es/ for example */
+	'full_url' => '',
 	/* a private site key, used to generate cookies and other things.
 	   use a random string. */
 	'site_key' => '',

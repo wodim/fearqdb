@@ -1,16 +1,8 @@
 				<div class="clear"></div>
 				<div class="footer">
-					<span>{{settings.name}}</span><span class="nomobile"> - {{settings.irc}}</span>
+					<span>{{settings.title}}</span><span class="nomobile"> - {{settings.footer}}</span>
 				</div>
 			</div>
 		</div>
-{% if settings.snowstorm %}
-		<script src="{{settings.statics_url}}_/js/snowstorm_closure/{{timestamp.snowstorm_closure}}"></script>
-		<script>
-			snowStorm.flakesMax = 100;
-			snowStorm.flakesMaxActive = 100;
-			snowStorm.useTwinkleEffect = true;
-		</script>
-{% endif %}
 	</body>
 </html>

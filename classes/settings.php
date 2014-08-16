@@ -27,6 +27,7 @@ class Settings {
 	var $domain = '';
 	var $db = '';
 	var $base_url = '';
+	var $full_url = '';
 	var $site_key = '';
 	var $lang = '';
 	var $locale = '';
@@ -50,6 +51,9 @@ class Settings {
 	var $topic_nick = '';
 	var $approved_quotes = 0;
 	var $pending_quotes = 0;
+
+	/* automatically generated */
+	var $cookie = '';
 
 	var $no_rewrite = false;
 	var $read = false;
@@ -79,6 +83,14 @@ class Settings {
 		}
 		foreach ($results as $variable => $value) {
 			$this->$variable = ctype_digit($value) ? (int)$value : $value;
+		}
+
+		$this->cookie = $this->db.'_session';
+		if (!$this->full_url) {
+			$this->full_url = "http://{$this->domain}{$this->base_url}";
+		}
+		if (!$this->statics_url) {
+			$this->statics_url = $this->base_url;
 		}
 
 		/* does the user have mod_rewrite? */

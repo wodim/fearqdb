@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="utf-8" />
 {% if title %}
-		<title>{{title}} - {{settings.name}}</title>
+		<title>{{title}} - {{settings.title}}</title>
 {% else %}
-		<title>{{settings.name}}</title>
+		<title>{{settings.title}}</title>
 {% endif %}
 {% if session.sysmsg %}
 		<meta name="robots" content="noindex,nofollow" />
@@ -14,7 +14,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}_/png/fearqdb/{{timestamp.fearqdb}}" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
-{% if settings.analytics_enabled %}
+{% if settings.analytics_code %}
 		<script>
 			var _gaq = _gaq || [];
 				_gaq.push(['_setAccount', '{{settings.analytics_code}}']);
@@ -34,7 +34,7 @@
 		</style>
 {% endif %}
 {% if settings.base_url == '/' %}
-		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.name}}">
+		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.title}}">
 {% endif %}
 	</head>
 	<body>
@@ -42,9 +42,9 @@
 			<div class="header">
 				<span class="name">
 {% if settings.no_rewrite %}
-					<a href="{{settings.full_url}}page">{{settings.name}}</a>
+					<a href="{{settings.full_url}}page">{{settings.title}}</a>
 {% else %}
-					<a href="{{settings.full_url}}">{{settings.name}}</a>
+					<a href="{{settings.full_url}}">{{settings.title}}</a>
 {% endif %}
 				</span>
 				<div class="search">
