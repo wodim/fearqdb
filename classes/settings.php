@@ -21,7 +21,7 @@ class Settings {
 	const READ = 'SELECT id, db, topic_text, topic_nick,
 		approved_quotes, pending_quotes
 		FROM sites WHERE db = :db';
-	var $id = 0;
+	const INSERT = 'INSERT INTO sites (db) VALUES :db';
 
 	/* in config.php */
 	var $domain = '';
@@ -75,7 +75,12 @@ class Settings {
 			array(':db', $site['db'], PDO::PARAM_STR)
 		));
 		if (!$results) {
-			return $this->read;
+			/* new installation */
+			$db->query(Settings::INSERT, array(
+				array(':db', $this->db, PDO::PARAM_STR),
+			));
+			/* how new anyway... */
+			$this->recount();
 		}
 
 		foreach ($site as $variable => $value) {
