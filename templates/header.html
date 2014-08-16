@@ -33,9 +33,7 @@
 			{{settings.extra_css}}
 		</style>
 {% endif %}
-{% if settings.base_url == '/' %}
-		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="{{settings.title}}">
-{% endif %}
+		<link rel="search" type="application/opensearchdescription+xml" href="{{settings.full_url}}opensearch.xml" title="{{settings.title}}">
 	</head>
 	<body>
 		<div class="title">
@@ -70,6 +68,7 @@
 			<div class="content">
 {% if topic.text && session.home %}
 				<div class="topic">
-					<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text}}</span>
+					<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text|escape}}
+						— by <strong>{{topic.nick|escape}}</strong></span>
 				</div>
 {% endif %}

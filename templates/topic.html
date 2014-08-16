@@ -9,7 +9,7 @@
 			{% endif %}
 		</div>
 	</div>
-	<div class="text">{{topic.text}}</div>
+	<div class="text">{{topic.text|escape}}</div>
 {% if topic.ip && ((session.level == 'admin') || (settings.ip_show)) && 1 == 0 %}
 	<div class="meta small">
 		<span class="comment"><strong>IP:</strong> {{topic.ip}}</span>

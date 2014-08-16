@@ -32,9 +32,10 @@ class HTML {
 				return true;
 			}
 		}
-		$topic = new stdClass();
-		$topic->text = format_whitespace(format_link(htmlspecialchars($settings->topic_text)));
-		$topic->nick = htmlentities($settings->topic_nick);
+		$topic = Array(
+			'text' => format_whitespace(format_link($settings->topic_text)),
+			'nick' => $settings->topic_nick,
+		);
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
 		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
 		if ($settings->analytics_code) {
