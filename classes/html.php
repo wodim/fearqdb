@@ -37,10 +37,12 @@ class HTML {
 			'nick' => $settings->topic_nick,
 		);
 		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
+		$timestamp['js'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.js'), $settings->site_key));
 		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
 		if ($settings->analytics_code) {
 			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));
 		}
+		$timestamp['zepto'] = md5(sprintf('%s%s', filemtime('statics/zepto.js'), $settings->site_key));
 		$vars = compact('title', 'topic', 'session', 'timestamp');
 		$cached = Haanga::Load('header.html', $vars, true);
 		if ($session->level == 'anonymous') {

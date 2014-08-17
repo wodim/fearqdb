@@ -14,6 +14,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="{{settings.statics_url}}_/png/fearqdb/{{timestamp.fearqdb}}" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
+		<script src="{{settings.statics_url}}_/js/zepto/{{timestamp.zepto}}"></script>
+		<script src="{{settings.statics_url}}_/js/fearqdb/{{timestamp.js}}"></script>
 {% if settings.analytics_code %}
 		<script>
 			var _gaq = _gaq || [];
@@ -29,7 +31,7 @@
 		</script>
 {% endif %}
 {% if settings.extra_css %}
-		<style type="text/css">
+		<style>
 			{{settings.extra_css}}
 		</style>
 {% endif %}
@@ -45,13 +47,8 @@
 					<a href="{{settings.full_url}}">{{settings.title}}</a>
 {% endif %}
 				</span>
-				<div class="search">
-					<form method="post" action="{{settings.base_url}}search">
-						<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
-						<input type="submit" />
-					</form>
-				</div>
-				<ul class="bar">
+				<a class="hamburger" href="#" id="hamburger"></a>
+				<ul class="bar nomobile" id="bar">
 					<li><a href="{{settings.base_url}}random">{% trans _('Random') %}</a></li>
 {% if session.level == 'reader' %}
 					<li><a href="{{settings.base_url}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %}</a></li>
@@ -61,14 +58,22 @@
 					<li><a href="{{settings.base_url}}logout/{{session.xsrf}}/{{session.origin}}">{% trans _('Log out') %} ({{session.nick}})</a></li>
 {% endif %}
 					<li class="nomobile"><a href="{{settings.base_url}}submit" class="submit">{% trans _('Submit quote') %}</a></li>
+					<li>
+						<div class="search">
+							<form method="post" action="{{settings.base_url}}search">
+								<input type="text" name="query" placeholder="{% trans _('search the database...') %}" value="{{session.search}}" />
+								<input type="submit" />
+							</form>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="page">
-			<div class="content">
 {% if topic.text && session.home %}
-				<div class="topic">
-					<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text|escape}}
-						— by <strong>{{topic.nick|escape}}</strong></span>
-				</div>
+			<div class="topic">
+				<span class="text"><strong>{% trans _('Channel topic:') %}</strong> {{topic.text|escape}}
+					— by <strong>{{topic.nick|escape}}</strong></span>
+			</div>
 {% endif %}
+			<div class="content">
