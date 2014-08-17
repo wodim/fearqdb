@@ -71,16 +71,16 @@ class DB {
 	}
 
 	function query($query, $binds = null) {
-		$stmt = $this->dbh->prepare($query);
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
+		$stmt = $this->dbh->prepare($query);
 		$this->run($stmt, $binds);
 
 		return $stmt->rowCount();
 	}
 
 	function get_row($query, $binds = null) {
-		$stmt = $this->dbh->prepare($query);
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
+		$stmt = $this->dbh->prepare($query);
 		$this->run($stmt, $binds);
 
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -88,8 +88,8 @@ class DB {
 	}
 
 	function get_results($query, $binds = null) {
-		$stmt = $this->dbh->prepare($query);
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
+		$stmt = $this->dbh->prepare($query);
 		$this->run($stmt, $binds);
 
 		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -97,8 +97,8 @@ class DB {
 	}
 
 	function get_var($query, $binds = null) {
-		$stmt = $this->dbh->prepare($query);
 		$this->debug(sprintf('%s(%s)', __FUNCTION__, $query));
+		$stmt = $this->dbh->prepare($query);
 		$this->run($stmt, $binds);
 
 		$results = $stmt->fetch(PDO::FETCH_NUM);

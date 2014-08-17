@@ -21,7 +21,9 @@ class Settings {
 	const READ = 'SELECT id, db, topic_text, topic_nick,
 		approved_quotes, pending_quotes
 		FROM sites WHERE db = :db';
-	const INSERT = 'INSERT INTO sites (db) VALUES :db';
+	const INSERT = 'INSERT INTO sites (db, topic_text, topic_nick,
+		approved_quotes, pending_quotes) VALUES (:db, "", "",
+		0, 0)';
 
 	/* in config.php */
 	var $domain = '';
@@ -79,15 +81,18 @@ class Settings {
 			$db->query(Settings::INSERT, array(
 				array(':db', $site['db'], PDO::PARAM_STR),
 			));
-			/* how new anyway... */
-			$this->recount();
 		}
 
 		foreach ($site as $variable => $value) {
 			$this->$variable = ctype_digit($value) ? (int)$value : $value;
 		}
-		foreach ($results as $variable => $value) {
-			$this->$variable = ctype_digit($value) ? (int)$value : $value;
+		if ($results) {
+			foreach ($results as $variable => $value) {
+				$this->$variable = ctype_digit($value) ? (int)$value : $value;
+			}
+		} else {
+			/* new installation */
+			$this->recount();
 		}
 
 		$this->cookie = $this->db.'_session';
@@ -119,8 +124,10 @@ class Settings {
 			array(':pending_quotes', $pending_quotes, PDO::PARAM_INT),
 			array(':db', $this->db, PDO::PARAM_STR)
 		));
+		$this->approved_quotes = $approved_quotes;
+		$this->pending_quotes = $pending_quotes;
 
-		if ($memcache->enabled) {
+		if (isset($memcache) && $memcache->enabled) {
 			/* flush memcached pages */
 			$levels = array('anonymous', 'user');
 			foreach ($levels as $level) {
