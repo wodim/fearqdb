@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
 
 CREATE TABLE IF NOT EXISTS `sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `db` varchar(10) NOT NULL,
   `topic_text` varchar(1000) NOT NULL,
   `topic_nick` varchar(20) NOT NULL,
   `approved_quotes` int(11) NOT NULL,

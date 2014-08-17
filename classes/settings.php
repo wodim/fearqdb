@@ -77,7 +77,7 @@ class Settings {
 		if (!$results) {
 			/* new installation */
 			$db->query(Settings::INSERT, array(
-				array(':db', $this->db, PDO::PARAM_STR),
+				array(':db', $site['db'], PDO::PARAM_STR),
 			));
 			/* how new anyway... */
 			$this->recount();
