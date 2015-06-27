@@ -96,7 +96,7 @@ class Quote {
 		}
 
 		foreach ($results as $variable => $value) {
-			$this->$variable = ctype_digit($value) ? (int)$value : $value;
+			$this->$variable = (ctype_digit($value) && !in_array($variable, ['permaid'])) ? (int)$value : $value;
 		}
 
 		if (preg_match('/^(.*)!/', $this->nick, $matches)) {
