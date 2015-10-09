@@ -21,49 +21,25 @@ class HTML {
 	var $output = null;
 
 	function do_header($title = null) {
-		global $session, $settings, $memcache;
+		global $session, $settings;
 
 		header('Content-Type: text/html; charset=utf-8');
 
-		if ($session->level == 'anonymous') {
-			$cached = $memcache->get('header');
-			if ($cached !== false) {
-				$this->output .= $cached;
-				return true;
-			}
-		}
 		$topic = Array(
 			'text' => format_whitespace(format_link($settings->topic_text)),
 			'nick' => $settings->topic_nick,
 		);
-		$timestamp['core'] = md5(sprintf('%s%s', filemtime('templates/core.css'), $settings->site_key));
-		$timestamp['js'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.js'), $settings->site_key));
-		$timestamp['fearqdb'] = md5(sprintf('%s%s', filemtime('statics/fearqdb.png'), $settings->site_key));
-		if ($settings->analytics_code) {
-			$timestamp['ga'] = md5(sprintf('%s%s', filemtime('statics/ga.js'), $settings->site_key));
-		}
-		$timestamp['zepto'] = md5(sprintf('%s%s', filemtime('statics/zepto.js'), $settings->site_key));
-		$vars = compact('title', 'topic', 'session', 'timestamp');
+		$vars = compact('title', 'topic', 'session');
 		$cached = Haanga::Load('header.html', $vars, true);
-		if ($session->level == 'anonymous') {
-			$memcache->set('header', $cached);
-		}
 		$this->output .= $cached;
 	}
 
 	function do_footer() {
-		global $start, $db, $session, $memcache, $settings;
+		global $start, $db, $session, $settings;
 
 		$timestamp = array();
-		$cached = $memcache->get('footer');
-		if ($cached !== false) {
-			$this->output .= $cached;
-		} else {
-			$vars = compact('session', 'timestamp');
-			$cached = Haanga::Load('footer.html', $vars, true);
-			$memcache->set('footer', $cached);
-			$this->output .= $cached;
-		}
+		$vars = compact('session', 'timestamp');
+		$this->output .= Haanga::Load('footer.html', $vars, true);
 	}
 
 	function do_pages($page = 1, $total_pages, $query, $adjacents = 2) {

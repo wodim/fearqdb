@@ -43,13 +43,6 @@ $config['db']['name'] = null;
 $config['db']['socket'] = null;
 $config['db']['host'] = null;
 
-/* ---------- MEMCACHE ---------- */
-$config['memcache']['enabled'] = false;
-$config['memcache']['server'] = null;
-$config['memcache']['port'] = null;
-$config['memcache']['prefix'] = 'fearqdb';
-$config['memcache']['debug'] = false;
-
 $sites = Array();
 
 $sites[] = Array(

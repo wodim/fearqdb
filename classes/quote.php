@@ -49,7 +49,7 @@ class Quote {
 	var $date = '';
 
 	function read($results = null) {
-		global $db, $settings, $session, $memcache;
+		global $db, $settings, $session;
 
 		/* we may already have results (eg. when called from list.php)
 			but maybe we do not, so fetch from the db */
@@ -60,29 +60,11 @@ class Quote {
 				return false;
 			}
 			if ($this->id) {
-				/* memcache */
-				$cached = $memcache->get(sprintf('quote_id_%d_data', $this->id));
-				if ($cached !== false) {
-					foreach ($cached as $variable => $value) {
-						$this->$variable = ctype_digit($value) ? (int)$value : $value;
-					}
-					return true;
-				}
-
 				$results = $db->get_row(Quote::READ_BY_ID, array(
 					array(':id', $this->id, PDO::PARAM_INT),
 					array(':db', $settings->db, PDO::PARAM_STR)
 				));
 			} elseif ($this->permaid) {
-				/* memcache */
-				$cached = $memcache->get(sprintf('quote_permaid_%s_data', $this->permaid));
-				if ($cached !== false) {
-					foreach ($cached as $variable => $value) {
-						$this->$variable = ctype_digit($value) ? (int)$value : $value;
-					}
-					return true;
-				}
-
 				$results = $db->get_row(Quote::READ_BY_PERMAID, array(
 					array(':permaid', $this->permaid, PDO::PARAM_STR),
 					array(':db', $settings->db, PDO::PARAM_STR)
@@ -115,8 +97,6 @@ class Quote {
 
 		$this->generate();
 		$this->read = true;
-		$memcache->set(sprintf('quote_id_%d_data', $this->id), $this);
-		$memcache->set(sprintf('quote_permaid_%s_data', $this->permaid), $this);
 		return true;
 	}
 
@@ -135,13 +115,7 @@ class Quote {
 	}
 
 	function output($odd = true) {
-		global $session, $html, $memcache;
-		/* memcache */
-		$cached = $memcache->get(sprintf('quote_id_%d_html_%s', $this->id, $session->level));
-		if ($cached !== false) {
-			$html->output .= $cached;
-			return true;
-		}
+		global $session, $html;
 
 		if (!$this->read) {
 			$session->log('Eeeks! Trying to print a quote that haven\'t been read yet (id=%d)', $this->id);
@@ -157,9 +131,7 @@ class Quote {
 		$c->comment = $this->text_clean($c->comment, 'www_comment');
 
 		$vars = compact('c');
-		$cache = Haanga::Load('quote.html', $vars, true);
-		$memcache->set(sprintf('quote_id_%d_html_%s', $this->id, $session->level), $cache);
-		$html->output .= $cache;
+		$html->output .= Haanga::Load('quote.html', $vars, true);
 
 		return true;
 	}

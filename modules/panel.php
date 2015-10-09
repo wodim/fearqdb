@@ -176,9 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						array(':db', $settings->db, PDO::PARAM_STR)
 					));
 					break;
-				case 'flush_memcache':
-					$memcache->flush();
-					break;
 			}
 			printf('successful %s', $_POST['misc_action']);
 			break;

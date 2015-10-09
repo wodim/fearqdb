@@ -42,7 +42,7 @@ switch ($params[0]) {
 		break;
 	case 'favicon.ico':
 		header('HTTP/1.1 301 Moved Permanently');
-		header(sprintf('Location: %s_/image/fearqdb', $settings->statics_url));
+		header(sprintf('Location: %sfearqdb.png', $settings->statics_url));
 }
 
 die();

@@ -1,6 +1,9 @@
 				<div class="clear"></div>
 				<div class="footer">
-					<span>{{settings.title}}</span><span class="nomobile"> - {{settings.footer}}</span>
+					<span>{{settings.title}}</span>
+{% if settings.footer %}
+					<span class="nomobile"> - {{settings.footer}}</span>
+{% endif %}
 				</div>
 			</div>
 		</div>

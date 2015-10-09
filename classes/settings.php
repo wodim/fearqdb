@@ -100,7 +100,7 @@ class Settings {
 			$this->full_url = "http://{$this->domain}{$this->base_url}";
 		}
 		if (!$this->statics_url) {
-			$this->statics_url = $this->base_url;
+			$this->statics_url = "{$this->base_url}statics/";
 		}
 
 		/* does the user have mod_rewrite? */
@@ -110,7 +110,7 @@ class Settings {
 	}
 
 	function recount() {
-		global $db, $memcache;
+		global $db;
 
 		$approved_quotes = $db->get_var('SELECT COUNT(*) FROM quotes WHERE status = \'approved\' AND db = :db', array(
 			array(':db', $this->db, PDO::PARAM_STR)
@@ -126,16 +126,5 @@ class Settings {
 		));
 		$this->approved_quotes = $approved_quotes;
 		$this->pending_quotes = $pending_quotes;
-
-		if (isset($memcache) && $memcache->enabled) {
-			/* flush memcached pages */
-			$levels = array('anonymous', 'user');
-			foreach ($levels as $level) {
-				$pages = $memcache->page_list($level);
-				foreach ($pages as $page) {
-					$memcache->delete(sprintf('page_%d_level_%s', $page, $level));
-				}
-			}
-		}
 	}
 }

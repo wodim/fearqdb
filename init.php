@@ -49,21 +49,10 @@ if (!$db->init()) {
 /* read settings, determine virtual host  */
 require(classes_dir.'settings.php');
 $settings = new Settings();
-if (!$settings->init() &&
-	!preg_match('/^\/_\//', $_SERVER['REQUEST_URI'])) {
+if (!$settings->init()) {
 	header('HTTP/1.1 500 Internal Server Error');
 	die('VHE');
 }
-
-/* initialise memcache */
-require(classes_dir.'memcache.php');
-$memcache = new Memcache();
-$memcache->enabled = $config['memcache']['enabled'];
-$memcache->server = $config['memcache']['server'];
-$memcache->port = $config['memcache']['port'];
-$memcache->prefix = $config['memcache']['prefix'] ? $config['memcache']['prefix'] : 'fearqdb';
-$memcache->debug = $config['memcache']['debug'];
-$memcache->init();
 
 /* encoding */
 if ($db->type == 'mysql') {
@@ -107,7 +96,7 @@ textdomain('messages');
 // redir to /login if not in ^/login already
 if (!is_bot() && ($settings->privacy_level == 2
 	&& $session->level == 'anonymous'
-	&& !preg_match(sprintf('/^%s(login|api|userlogin|_)/', preg_quote($settings->base_url, '/')), $_SERVER['REQUEST_URI']))) {
+	&& !preg_match(sprintf('/^%s(login|api|userlogin)/', preg_quote($settings->base_url, '/')), $_SERVER['REQUEST_URI']))) {
 	$html->do_sysmsg(_('Log in'), _('You must log in to read any quote.'), 403);
 }
 
