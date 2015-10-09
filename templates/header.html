@@ -10,12 +10,12 @@
 {% if session.sysmsg %}
 		<meta name="robots" content="noindex,nofollow" />
 {% endif %}
-		<link rel="stylesheet" type="text/css" media="all" href="{{settings.statics_url}}fearqdb.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="{{settings.static_url}}fearqdb.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="{{settings.statics_url}}fearqdb.png" type="image/x-png"/>
+		<link rel="shortcut icon" href="{{settings.static_url}}fearqdb.png" type="image/x-png"/>
 		<link rel="alternate" type="application/rss+xml" title="{% trans _('Latest quotes') %}" href="{{settings.full_url}}rss" />
-		<script src="{{settings.statics_url}}zepto.js"></script>
-		<script src="{{settings.statics_url}}fearqdb.js"></script>
+		<script src="{{settings.static_url}}zepto.js"></script>
+		<script src="{{settings.static_url}}fearqdb.js"></script>
 {% if settings.analytics_code %}
 		<script>
 			var _gaq = _gaq || [];
@@ -25,7 +25,7 @@
 				_gaq.push(['_trackPageview']);
 
 			(function() {
-				var ga = document.createElement('script'); ga.async = true; ga.src = '{{settings.statics_url}}ga.js';
+				var ga = document.createElement('script'); ga.async = true; ga.src = '{{settings.static_url}}ga.js';
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>

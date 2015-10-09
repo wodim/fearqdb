@@ -36,7 +36,7 @@ class Settings {
 	var $collate = '';
 	var $ip_show = false;
 	var $analytics_code = '';
-	var $statics_url = null;
+	var $static_url = null;
 	var $title = '';
 	var $footer = '';
 	var $privacy_level = 0;
@@ -99,8 +99,8 @@ class Settings {
 		if (!$this->full_url) {
 			$this->full_url = "http://{$this->domain}{$this->base_url}";
 		}
-		if (!$this->statics_url) {
-			$this->statics_url = "{$this->base_url}statics/";
+		if (!$this->static_url) {
+			$this->static_url = "{$this->base_url}static/";
 		}
 
 		/* does the user have mod_rewrite? */

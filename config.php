@@ -69,8 +69,8 @@ $sites[] = Array(
 	'ip_show' => false,
 	/* google analytics code. leave blank if you don't use ga */
 	'analytics_code' => '',
-	/* a different url for the statics folder. leave blank if you don't need it */
-	'statics_url' => '',
+	/* a different url for the static folder. leave blank if you don't need it */
+	'static_url' => '',
 	/* the title of this site */
 	'title' => '',
 	/* text shown at the footer */
