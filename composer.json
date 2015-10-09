@@ -1,0 +1,6 @@
+{
+  "require": {
+    "ext-mbstring": "*",
+    "ext-gettext": "*"
+  }
+}
