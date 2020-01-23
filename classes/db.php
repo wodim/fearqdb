@@ -107,7 +107,7 @@ class DB {
 
 	function run(&$stmt, $binds = null) {
 		/* apply binds, if any */
-		if (is_array($binds) && count($binds > 0)) {
+		if (is_array($binds) && count($binds) > 0) {
 			foreach ($binds as $bind) {
 				$stmt->bindValue($bind[0], $bind[1], $bind[2]);
 			}
